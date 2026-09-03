@@ -1,0 +1,15 @@
+# Settings for Cloud Run backend
+runConfig:
+  minInstances: 0
+  maxInstances: 5
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 1024
+
+# Environment variables can be configured here or in Firebase Console
+env:
+  - variable: NEXT_PUBLIC_APP_URL
+    value: https://toolhub.web.app
+    availability:
+      - RUNTIME
+      - BUILD
