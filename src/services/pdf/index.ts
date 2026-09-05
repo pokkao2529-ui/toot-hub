@@ -9,12 +9,16 @@ import { convertPdfToJpg, type PdfToJpgOptions, type PdfToJpgResult } from './pd
 import { renderPdfThumbnails, getPdfPageCount, type PageThumbnail } from './pdf-thumbnail.service';
 import { validateFile, validateFileList, sanitizeFilename, type ValidationResult } from './pdf-validation.service';
 
+import { addWatermark, type WatermarkOptions } from './watermark.service';
+import { addPageNumbers, type PageNumbersOptions, type PageNumberPosition, type PageNumberFormat } from './page-numbers.service';
+import { unlockPdf, type UnlockPdfOptions } from './unlock.service';
+
 /**
  * Centralized PDF Service Layer Facade
  * Follows clean architecture: UI -> pdfService -> Isolated Service -> Engine
  */
 export const pdfService = {
-  // Client Services (Phase 1)
+  // Client Services (Phase 1 & Phase 2)
   merge: mergePdfs,
   split: splitPdf,
   removePages: removePages,
@@ -23,6 +27,9 @@ export const pdfService = {
   rotate: rotatePdf,
   jpgToPdf: convertJpgToPdf,
   pdfToJpg: convertPdfToJpg,
+  watermark: addWatermark,
+  pageNumbers: addPageNumbers,
+  unlock: unlockPdf,
 
   // Rendering & Utilities
   renderThumbnails: renderPdfThumbnails,
@@ -35,20 +42,11 @@ export const pdfService = {
   compress: async () => {
     throw new Error('ฟังก์ชันบีบอัด PDF กำลังพัฒนา (Server Mode)');
   },
-  watermark: async () => {
-    throw new Error('ฟังก์ชันใส่ลายน้ำกำลังพัฒนา');
-  },
-  pageNumbers: async () => {
-    throw new Error('ฟังก์ชันใส่เลขหน้ากำลังพัฒนา');
-  },
   ocr: async () => {
     throw new Error('ฟังก์ชัน OCR กำลังพัฒนา (AI/Server Mode)');
   },
   protect: async () => {
     throw new Error('ฟังก์ชันล็อกรหัสผ่านกำลังพัฒนา');
-  },
-  unlock: async () => {
-    throw new Error('ฟังก์ชันปลดล็อกรหัสผ่านกำลังพัฒนา');
   },
   sign: async () => {
     throw new Error('ฟังก์ชันเซ็นชื่อกำลังพัฒนา');
@@ -73,6 +71,11 @@ export type {
   JpgToPdfOptions,
   PdfToJpgOptions,
   PdfToJpgResult,
+  WatermarkOptions,
+  PageNumbersOptions,
+  PageNumberPosition,
+  PageNumberFormat,
+  UnlockPdfOptions,
   PageThumbnail,
   ValidationResult,
 };

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ChevronRight, ShieldCheck, Zap, Lock, HelpCircle } from 'lucide-react';
 import { type PdfToolDefinition, PDF_CATEGORIES, getToolsByCategory } from '@/config/pdf-tools';
 import { DynamicIcon } from '@/components/common/DynamicIcon';
+import { AdBanner } from '@/components/ads/AdBanner';
+import { JsonLd } from '@/components/seo/JsonLd';
 
 interface PdfToolLayoutProps {
   tool: PdfToolDefinition;
@@ -41,6 +43,9 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
+      {/* Google SEO Rich Snippets */}
+      <JsonLd tool={tool} faqs={displayFaqs} />
+
       {/* Navigation Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -77,7 +82,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
       {/* Main Container */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Tool Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 mb-4 shadow-sm">
             <DynamicIcon name={tool.icon} size={32} />
           </div>
@@ -99,6 +104,9 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
             </span>
           </div>
         </div>
+
+        {/* Ad Slot: Top Leaderboard */}
+        <AdBanner format="horizontal" className="mb-8" />
 
         {/* Step Indicator */}
         <div className="max-w-xl mx-auto mb-10">
