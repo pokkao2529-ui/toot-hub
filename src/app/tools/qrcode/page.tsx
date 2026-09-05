@@ -29,6 +29,9 @@ import {
   downloadDataUrl,
   downloadBlob,
   generatePromptPayPayload,
+  generateWifiPayload,
+  generateMecardPayload,
+  generateVCardPayload,
 } from '@/services/qrcode';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -64,6 +67,7 @@ export default function QRCodeGeneratorPage() {
   const [vcardPhone, setVcardPhone] = useState('');
   const [vcardEmail, setVcardEmail] = useState('');
   const [vcardOrg, setVcardOrg] = useState('');
+  const [contactFormat, setContactFormat] = useState<'mecard' | 'vcard'>('mecard');
 
   // Styling states
   const [colorDark, setColorDark] = useState('#000000');
@@ -96,13 +100,28 @@ export default function QRCodeGeneratorPage() {
           return '';
         }
       case 'wifi':
-        if (!wifiSsid.trim()) return '';
-        return `WIFI:S:${wifiSsid};T:${wifiEncryption};P:${wifiPassword};H:${wifiHidden ? 'true' : 'false'};;`;
+        return generateWifiPayload({
+          ssid: wifiSsid,
+          password: wifiPassword,
+          encryption: wifiEncryption,
+          hidden: wifiHidden,
+        });
       case 'text':
         return text.trim();
       case 'vcard':
-        if (!vcardName.trim() && !vcardPhone.trim()) return '';
-        return `BEGIN:VCARD\nVERSION:3.0\nN:${vcardName}\nFN:${vcardName}\nORG:${vcardOrg}\nTEL:${vcardPhone}\nEMAIL:${vcardEmail}\nEND:VCARD`;
+        return contactFormat === 'mecard'
+          ? generateMecardPayload({
+              name: vcardName,
+              phone: vcardPhone,
+              email: vcardEmail,
+              org: vcardOrg,
+            })
+          : generateVCardPayload({
+              name: vcardName,
+              phone: vcardPhone,
+              email: vcardEmail,
+              org: vcardOrg,
+            });
       default:
         return '';
     }
@@ -120,6 +139,7 @@ export default function QRCodeGeneratorPage() {
     vcardPhone,
     vcardEmail,
     vcardOrg,
+    contactFormat,
   ]);
 
   // Live render to canvas
@@ -395,6 +415,17 @@ export default function QRCodeGeneratorPage() {
               {/* Tab: Wi-Fi */}
               {qrType === 'wifi' && (
                 <div className="space-y-4">
+                  <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-xs text-blue-900 dark:text-blue-200 space-y-1.5">
+                    <p className="font-bold flex items-center gap-1.5">
+                      <Wifi size={15} className="text-blue-600 dark:text-blue-400" />
+                      <span>คำแนะนำการสแกนเชื่อมต่อ Wi-Fi:</span>
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 text-[11px] text-blue-800 dark:text-blue-300">
+                      <li><strong>ใช้กล้องปกติของมือถือ (iPhone / Android Camera)</strong>: ส่องแล้วจะขึ้นปุ่ม <em>"เข้าร่วมเครือข่าย" (Join Network)</em> และต่อเน็ตให้อัตโนมัติทันที 100%</li>
+                      <li><strong>หากสแกนด้วยแอป LINE</strong>: ระบบความปลอดภัยของ iOS/Android ไม่อนุญาตให้แอปแชทสั่งเปลี่ยน Wi-Fi ของเครื่องโดยตรง แอป LINE จึงจะแสดงชื่อ SSID และรหัสผ่าน พร้อมปุ่มคัดลอกให้แทน</li>
+                    </ul>
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
                       ชื่อสัญญาณ Wi-Fi (SSID)
@@ -468,54 +499,89 @@ export default function QRCodeGeneratorPage() {
 
               {/* Tab: vCard */}
               {qrType === 'vcard' && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      ชื่อ - นามสกุล
-                    </label>
-                    <input
-                      type="text"
-                      value={vcardName}
-                      onChange={(e) => setVcardName(e.target.value)}
-                      placeholder="เช่น สมชาย ใจดี"
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
-                    />
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">รูปแบบโค้ดนามบัตร:</span>
+                    <div className="flex items-center gap-3 text-xs">
+                      <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                        <input
+                          type="radio"
+                          name="contactFormat"
+                          value="mecard"
+                          checked={contactFormat === 'mecard'}
+                          onChange={() => setContactFormat('mecard')}
+                          className="text-red-600 focus:ring-red-500"
+                        />
+                        <span>MECARD (แนะนำสำหรับ LINE & มือถือไทย 🇹🇭)</span>
+                      </label>
+                      <label className="flex items-center gap-1.5 cursor-pointer font-medium">
+                        <input
+                          type="radio"
+                          name="contactFormat"
+                          value="vcard"
+                          checked={contactFormat === 'vcard'}
+                          onChange={() => setContactFormat('vcard')}
+                          className="text-red-600 focus:ring-red-500"
+                        />
+                        <span>vCard 3.0 (สากล)</span>
+                      </label>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      เบอร์โทรศัพท์
-                    </label>
-                    <input
-                      type="tel"
-                      value={vcardPhone}
-                      onChange={(e) => setVcardPhone(e.target.value)}
-                      placeholder="0812345678"
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
-                    />
+
+                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                    <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
+                    <span>รองรับการสแกนผ่านแอป LINE และกล้องมือถือทุกรุ่น สแกนแล้วเปิดหน้า <strong>"เพิ่มรายชื่อติดต่อ"</strong> หรือกดโทรออกได้ทันที 100% ไม่แสดงตัวอักษรขยะ</span>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      อีเมล
-                    </label>
-                    <input
-                      type="email"
-                      value={vcardEmail}
-                      onChange={(e) => setVcardEmail(e.target.value)}
-                      placeholder="name@example.com"
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      ชื่อบริษัท / องค์กร
-                    </label>
-                    <input
-                      type="text"
-                      value={vcardOrg}
-                      onChange={(e) => setVcardOrg(e.target.value)}
-                      placeholder="ชื่อบริษัทหรือแผนก"
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
-                    />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                        ชื่อ - นามสกุล
+                      </label>
+                      <input
+                        type="text"
+                        value={vcardName}
+                        onChange={(e) => setVcardName(e.target.value)}
+                        placeholder="เช่น สมชาย ใจดี"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                        เบอร์โทรศัพท์
+                      </label>
+                      <input
+                        type="tel"
+                        value={vcardPhone}
+                        onChange={(e) => setVcardPhone(e.target.value)}
+                        placeholder="0812345678"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                        อีเมล
+                      </label>
+                      <input
+                        type="email"
+                        value={vcardEmail}
+                        onChange={(e) => setVcardEmail(e.target.value)}
+                        placeholder="name@example.com"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                        ชื่อบริษัท / องค์กร
+                      </label>
+                      <input
+                        type="text"
+                        value={vcardOrg}
+                        onChange={(e) => setVcardOrg(e.target.value)}
+                        placeholder="ชื่อบริษัทหรือแผนก"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
