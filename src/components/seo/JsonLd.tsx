@@ -3,21 +3,31 @@
 import React from 'react';
 import type { PdfToolDefinition } from '@/config/pdf-tools';
 
-interface JsonLdProps {
-  tool: PdfToolDefinition;
+export interface JsonLdProps {
+  tool?: PdfToolDefinition;
+  title?: string;
+  description?: string;
+  url?: string;
   faqs?: { question: string; answer: string }[];
   appUrl?: string;
 }
 
 export const JsonLd: React.FC<JsonLdProps> = ({
   tool,
+  title,
+  description,
+  url,
   faqs = [],
-  appUrl = 'https://toot-hub.vercel.app',
+  appUrl = 'https://toot-glawawfah-pokkao2529-7498.vercel.app',
 }) => {
+  const toolName = tool ? `${tool.nameTH} (${tool.name})` : (title || 'TOOL HUB');
+  const toolDesc = tool ? tool.seoDescription : (description || 'ศูนย์รวมเครื่องมือออนไลน์ฟรี');
+  const toolRoute = tool ? tool.route : (url || '');
+
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: `${tool.nameTH} (${tool.name})`,
+    name: toolName,
     operatingSystem: 'All',
     applicationCategory: 'BusinessApplication',
     offers: {
@@ -30,22 +40,25 @@ export const JsonLd: React.FC<JsonLdProps> = ({
       ratingValue: '4.9',
       ratingCount: '1280',
     },
-    description: tool.seoDescription,
-    url: `${appUrl}${tool.route}`,
+    description: toolDesc,
+    url: `${appUrl}${toolRoute}`,
   };
 
-  const faqSchema = faqs.length > 0 ? {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: f.answer,
-      },
-    })),
-  } : null;
+  const faqSchema =
+    faqs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: f.answer,
+            },
+          })),
+        }
+      : null;
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -60,14 +73,14 @@ export const JsonLd: React.FC<JsonLdProps> = ({
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'PDF Suite',
-        item: `${appUrl}/pdf`,
+        name: tool ? 'PDF Suite' : 'QR Code Suite',
+        item: tool ? `${appUrl}/pdf` : `${appUrl}/tools/qrcode`,
       },
       {
         '@type': 'ListItem',
         position: 3,
-        name: tool.nameTH,
-        item: `${appUrl}${tool.route}`,
+        name: tool ? tool.nameTH : (title || 'เครื่องมือ'),
+        item: `${appUrl}${toolRoute}`,
       },
     ],
   };

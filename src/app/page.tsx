@@ -6,9 +6,13 @@ import {
   Shield,
   Zap,
   ArrowRight,
-  Layers,
   CheckCircle,
   FileCheck,
+  QrCode,
+  CreditCard,
+  Wifi,
+  Image as ImageIcon,
+  ShieldCheck,
 } from 'lucide-react';
 import { PDF_TOOLS } from '@/config/pdf-tools';
 
@@ -27,6 +31,13 @@ export default function HomePage() {
           </div>
           <div className="flex items-center space-x-4">
             <Link
+              href="/tools/qrcode"
+              className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
+            >
+              <QrCode size={16} className="text-red-600" />
+              <span>QR Code Suite</span>
+            </Link>
+            <Link
               href="/pdf"
               className="text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-700 flex items-center gap-1"
             >
@@ -42,33 +53,40 @@ export default function HomePage() {
         <section className="pt-16 pb-20 sm:pt-24 sm:pb-32 px-4 sm:px-6 text-center max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full bg-red-50 dark:bg-red-950/60 px-4 py-1.5 text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 mb-6">
             <Sparkles size={14} />
-            <span>ศูนย์รวมเครื่องมือเว็บแอปพลิเคชันออนไลน์ฟรี</span>
+            <span>ศูนย์รวมเครื่องมือเว็บแอปพลิเคชันออนไลน์ฟรี ครบวงจร</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
             เครื่องมือทำงานออนไลน์ที่ <br />
             <span className="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 bg-clip-text text-transparent">
-              รวดเร็ว ปลอดภัย และฟรี
+              รวดเร็ว ปลอดภัย และฟรี 100%
             </span>
           </h1>
 
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
-            แพลตฟอร์มศูนย์รวมเครื่องมือจัดการเอกสาร ไฟล์ และระบบอัจฉริยะ ใช้งานง่ายบนทุกอุปกรณ์ ประมวลผลบนเบราว์เซอร์ 100%
+            แพลตฟอร์มศูนย์รวมเครื่องมือจัดการเอกสาร PDF, สร้าง QR Code อัจฉริยะ และระบบจัดการไฟล์ ใช้งานง่ายบนทุกอุปกรณ์ ประมวลผลบนเบราว์เซอร์ปลอดภัย 100%
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/pdf"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-bold text-base shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2"
+              href="/tools/qrcode"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-base shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2.5"
             >
-              <FileText size={20} />
+              <QrCode size={20} />
+              <span>สร้าง QR Code ฟรี (พร้อมเพย์/ลิงก์)</span>
+            </Link>
+            <Link
+              href="/pdf"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-500 text-slate-800 dark:text-slate-200 font-bold text-base shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <FileText size={20} className="text-red-600" />
               <span>เข้าสู่ PDF Suite ({PDF_TOOLS.length} เครื่องมือ)</span>
             </Link>
           </div>
 
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-xs font-semibold text-slate-500">
             <span className="flex items-center gap-1.5">
-              <CheckCircle size={16} className="text-emerald-500" /> ไม่ต้องติดตั้งโปรแกรม
+              <CheckCircle size={16} className="text-emerald-500" /> ฟรีตลอดชีพ ไม่จำกัดครั้ง
             </span>
             <span className="flex items-center gap-1.5">
               <Shield size={16} className="text-emerald-500" /> ข้อมูลไม่ถูกส่งออกนอกเครื่อง
@@ -76,6 +94,108 @@ export default function HomePage() {
             <span className="flex items-center gap-1.5">
               <Zap size={16} className="text-emerald-500" /> ความเร็วระดับ WebAssembly
             </span>
+          </div>
+        </section>
+
+        {/* Featured Suite: QR Code Suite */}
+        <section className="py-16 bg-gradient-to-b from-slate-100 to-white dark:from-slate-950 dark:to-slate-900 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+              <div>
+                <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck size={14} />
+                  <span>New Module • ฟรีตลอดชีพ ไม่มีวันหมดอายุ</span>
+                </span>
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
+                  QR Code Suite — สร้างคิวอาร์โค้ดครบวงจร
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  สร้าง QR Code ลิงก์เว็บไซต์, พร้อมเพย์รับเงิน, สแกนต่อ Wi-Fi และฝังรูปภาพโลโก้ตรงกลาง คมชัดระดับ HD
+                </p>
+              </div>
+
+              <Link
+                href="/tools/qrcode"
+                className="mt-4 md:mt-0 text-sm font-bold text-red-600 hover:text-red-700 flex items-center gap-1"
+              >
+                <span>เปิดเครื่องมือสร้าง QR Code</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <Link
+                href="/tools/qrcode"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-red-500 hover:shadow-lg hover:shadow-red-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center font-bold mb-4">
+                  <QrCode size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-red-600 transition mb-1">
+                  QR Code ลิงก์ URL & โซเชียล
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  สร้าง QR โค้ดจากลิงก์เว็บไซต์, Google Drive, แผนที่ Google Maps หรือเพจ Facebook
+                </p>
+                <span className="text-xs font-bold text-red-600 flex items-center gap-1">
+                  สร้างเลย <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/qrcode"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold mb-4">
+                  <CreditCard size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 transition mb-1">
+                  พร้อมเพย์ (PromptPay 🇹🇭)
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  คิวอาร์โค้ดรับเงินตามมาตรฐาน EMVCo สแกนจ่ายได้ทุกแอปธนาคาร ระบุยอดเงินได้
+                </p>
+                <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                  สร้างเลย <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/qrcode"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center font-bold mb-4">
+                  <Wifi size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition mb-1">
+                  สแกนต่อ Wi-Fi อัตโนมัติ
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  สร้าง QR โค้ดสัญญาณเน็ตบ้านหรือร้านกาแฟ ลูกค้าสแกนแล้วต่อเน็ตทันที ไม่ต้องบอกรหัส
+                </p>
+                <span className="text-xs font-bold text-blue-600 flex items-center gap-1">
+                  สร้างเลย <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/qrcode"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center font-bold mb-4">
+                  <ImageIcon size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-purple-600 transition mb-1">
+                  ฝังรูปภาพ & โลโก้แบรนด์
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  อัปโหลดโลโก้ร้านค้าหรือไอคอนมาแปะตรงกลาง พร้อมระบบกันลายทับ คมชัดระดับเวกเตอร์ SVG
+                </p>
+                <span className="text-xs font-bold text-purple-600 flex items-center gap-1">
+                  สร้างเลย <ArrowRight size={13} />
+                </span>
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -91,7 +211,7 @@ export default function HomePage() {
                   PDF Suite — เครื่องมือจัดการเอกสาร PDF
                 </h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  รวม แยก ตัด หมุน จัดเรียง และแปลงไฟล์เอกสาร PDF ทันใจในคลิกเดียว
+                  รวม แยก ตัด หมุน จัดเรียง ใส่ลายน้ำ ใส่เลขหน้า และแปลงไฟล์เอกสาร PDF ทันใจในคลิกเดียว
                 </p>
               </div>
 
@@ -138,7 +258,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-8 text-center text-xs text-slate-500">
-        <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี</p>
+        <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี • ปลอดภัย ไม่เก็บข้อมูล</p>
       </footer>
     </div>
   );
