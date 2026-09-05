@@ -48,7 +48,7 @@ export default function QRCodeGeneratorPage() {
   const [qrType, setQrType] = useState<QRType>('url');
 
   // Input states
-  const [url, setUrl] = useState('https://toot-glawawfah-pokkao2529-7498.vercel.app');
+  const [url, setUrl] = useState('https://toot-hub.vercel.app');
   const [promptPayTarget, setPromptPayTarget] = useState('');
   const [promptPayAmount, setPromptPayAmount] = useState('');
   const [promptPayError, setPromptPayError] = useState('');

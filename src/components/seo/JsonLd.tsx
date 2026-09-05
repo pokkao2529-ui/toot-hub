@@ -18,7 +18,7 @@ export const JsonLd: React.FC<JsonLdProps> = ({
   description,
   url,
   faqs = [],
-  appUrl = 'https://toot-glawawfah-pokkao2529-7498.vercel.app',
+  appUrl = 'https://toot-hub.vercel.app',
 }) => {
   const toolName = tool ? `${tool.nameTH} (${tool.name})` : (title || 'TOOL HUB');
   const toolDesc = tool ? tool.seoDescription : (description || 'ศูนย์รวมเครื่องมือออนไลน์ฟรี');
