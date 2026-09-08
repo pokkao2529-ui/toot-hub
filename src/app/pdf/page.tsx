@@ -13,6 +13,8 @@ export default function PdfDirectoryPage() {
 
   const filteredTools = useMemo(() => {
     return PDF_TOOLS.filter((tool) => {
+      // Ensure only 100% active, working tools are displayed for clean UX and AdSense compliance
+      if (tool.status !== 'active') return false;
       const matchesCategory =
         selectedCategory === 'all' || tool.category === selectedCategory;
       const matchesSearch =
