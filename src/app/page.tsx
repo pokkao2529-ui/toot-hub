@@ -13,6 +13,8 @@ import {
   Wifi,
   Image as ImageIcon,
   ShieldCheck,
+  Sliders,
+  Archive,
 } from 'lucide-react';
 import { PDF_TOOLS } from '@/config/pdf-tools';
 
@@ -29,17 +31,24 @@ export default function HomePage() {
               TOOL HUB
             </span>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <Link
+              href="/tools/image/compress"
+              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1.5 transition"
+            >
+              <ImageIcon size={16} className="text-rose-600" />
+              <span>Image Suite</span>
+            </Link>
             <Link
               href="/tools/qrcode"
-              className="text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
+              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
             >
               <QrCode size={16} className="text-red-600" />
               <span>QR Code Suite</span>
             </Link>
             <Link
               href="/pdf"
-              className="text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-700 flex items-center gap-1"
+              className="text-xs sm:text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-700 flex items-center gap-1"
             >
               <span>PDF Suite</span>
               <ArrowRight size={16} />
@@ -51,7 +60,7 @@ export default function HomePage() {
       {/* Hero */}
       <main className="flex-1">
         <section className="pt-16 pb-20 sm:pt-24 sm:pb-32 px-4 sm:px-6 text-center max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full bg-red-50 dark:bg-red-950/60 px-4 py-1.5 text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/60 px-4 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900 mb-6">
             <Sparkles size={14} />
             <span>ศูนย์รวมเครื่องมือเว็บแอปพลิเคชันออนไลน์ฟรี ครบวงจร</span>
           </div>
@@ -64,23 +73,30 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
-            แพลตฟอร์มศูนย์รวมเครื่องมือจัดการเอกสาร PDF, สร้าง QR Code อัจฉริยะ และระบบจัดการไฟล์ ใช้งานง่ายบนทุกอุปกรณ์ ประมวลผลบนเบราว์เซอร์ปลอดภัย 100%
+            แพลตฟอร์มศูนย์รวมเครื่องมือบีบอัดรูปภาพ, จัดการเอกสาร PDF, สร้าง QR Code อัจฉริยะ ใช้งานง่ายบนทุกอุปกรณ์ ประมวลผลบนเบราว์เซอร์ปลอดภัย 100%
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/tools/qrcode"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-base shadow-lg shadow-red-500/25 transition flex items-center justify-center gap-2.5"
+              href="/tools/image/compress"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition flex items-center justify-center gap-2.5"
             >
-              <QrCode size={20} />
-              <span>สร้าง QR Code ฟรี (พร้อมเพย์/ลิงก์)</span>
+              <ImageIcon size={20} />
+              <span>บีบอัดรูปภาพฟรี (ลดขนาด 80%)</span>
+            </Link>
+            <Link
+              href="/tools/qrcode"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-500 text-slate-800 dark:text-slate-200 font-bold text-base shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <QrCode size={20} className="text-red-600" />
+              <span>สร้าง QR Code ฟรี</span>
             </Link>
             <Link
               href="/pdf"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-500 text-slate-800 dark:text-slate-200 font-bold text-base shadow-sm transition flex items-center justify-center gap-2"
             >
               <FileText size={20} className="text-red-600" />
-              <span>เข้าสู่ PDF Suite ({PDF_TOOLS.length} เครื่องมือ)</span>
+              <span>PDF Suite ({PDF_TOOLS.length} เครื่องมือ)</span>
             </Link>
           </div>
 
@@ -97,6 +113,108 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Featured Suite: Image Suite */}
+        <section className="py-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+              <div>
+                <span className="text-xs font-bold text-rose-600 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles size={14} />
+                  <span>New Module • ปลอดภัย ประมวลผลในเครื่อง 100%</span>
+                </span>
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
+                  Image Suite — บีบอัดและจัดการรูปภาพออนไลน์
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  ลดขนาดรูปภาพ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% คมชัดเหมือนเดิม ไม่เปลืองเน็ตและพื้นที่เก็บข้อมูล
+                </p>
+              </div>
+
+              <Link
+                href="/tools/image/compress"
+                className="mt-4 md:mt-0 text-sm font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1"
+              >
+                <span>เปิดเครื่องมือบีบอัดรูปภาพ</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <Link
+                href="/tools/image/compress"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-rose-500 hover:shadow-lg hover:shadow-rose-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center font-bold mb-4">
+                  <ImageIcon size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-rose-600 transition mb-1">
+                  บีบอัดภาพ JPG / JPEG
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  ลดขนาดไฟล์ภาพถ่ายจากกล้องและมือถือได้สูงสุด 80% เพื่อส่งไลน์หรืออัปโหลดลงเว็บ
+                </p>
+                <span className="text-xs font-bold text-rose-600 flex items-center gap-1">
+                  เริ่มบีบอัด <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/image/compress"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-rose-500 hover:shadow-lg hover:shadow-rose-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center font-bold mb-4">
+                  <Sliders size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-purple-600 transition mb-1">
+                  บีบอัดภาพ PNG
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  ลดขนาดไฟล์ PNG กราฟิก โลโก้ และภาพหน้าจอโดยยังคงความคมชัดและพื้นหลังโปร่งใส
+                </p>
+                <span className="text-xs font-bold text-purple-600 flex items-center gap-1">
+                  เริ่มบีบอัด <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/image/compress"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold mb-4">
+                  <Zap size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 transition mb-1">
+                  แปลงภาพเป็น WebP ยุคใหม่
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  แปลงภาพเป็น WebP ไฟล์เล็กจิ๋ว โหลดเร็ว เหมาะสำหรับผู้ทำเว็บไซต์และพ่อค้าแม่ค้าออนไลน์
+                </p>
+                <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                  เริ่มแปลง <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
+                href="/tools/image/compress"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center font-bold mb-4">
+                  <Archive size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 transition mb-1">
+                  บีบอัดพร้อมกัน & โหลด ZIP
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  ลากใส่ทีละ 20-50 ภาพ บีบอัดพร้อมกันในคลิกเดียว แล้วดาวน์โหลดรวมเป็นไฟล์ .ZIP ได้ทันที
+                </p>
+                <span className="text-xs font-bold text-blue-600 flex items-center gap-1">
+                  เริ่มใช้งาน <ArrowRight size={13} />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Suite: QR Code Suite */}
         <section className="py-16 bg-gradient-to-b from-slate-100 to-white dark:from-slate-950 dark:to-slate-900 border-t border-slate-200 dark:border-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,7 +222,7 @@ export default function HomePage() {
               <div>
                 <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider flex items-center gap-1.5">
                   <ShieldCheck size={14} />
-                  <span>New Module • ฟรีตลอดชีพ ไม่มีวันหมดอายุ</span>
+                  <span>Module • ฟรีตลอดชีพ ไม่มีวันหมดอายุ</span>
                 </span>
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
                   QR Code Suite — สร้างคิวอาร์โค้ดครบวงจร
