@@ -542,6 +542,30 @@ export default function QRCodeGeneratorPage() {
                       </label>
                     </div>
                   </div>
+
+                  {wifiSsid.trim() && (
+                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5">
+                      <div className="font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+                        <span>📶 ข้อมูล Wi-Fi ที่บรรจุใน QR Code:</span>
+                        <span className="text-[10px] text-emerald-600 font-semibold">พร้อมสแกน</span>
+                      </div>
+                      <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+                        <span>ชื่อสัญญาณ (SSID):</span>
+                        <span className="font-mono font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 px-2 py-0.5 rounded">
+                          "{wifiSsid}"
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+                        <span>รหัสผ่าน:</span>
+                        <span className="font-mono font-bold text-slate-800 dark:text-slate-200">
+                          {wifiPassword ? `"${wifiPassword}"` : '(ไม่มีรหัสผ่าน)'}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-800">
+                        ⚠️ หมายเหตุ: กล้อง iPhone จะเชื่อมต่อได้เมื่อชื่อ <span className="text-red-500 font-bold">"{wifiSsid}"</span> สะกดตรงกับชื่อที่เร้าเตอร์ปล่อยออกมาจริง 100% (รวมตัวพิมพ์เล็ก-ใหญ่และเว้นวรรค)
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
