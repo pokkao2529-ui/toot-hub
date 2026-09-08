@@ -38,6 +38,7 @@ import {
 } from '@/services/qrcode';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { Footer } from '@/components/layout/Footer';
 
 type QRType = 'url' | 'promptpay' | 'wifi' | 'text' | 'vcard';
 
@@ -920,9 +921,7 @@ export default function QRCodeGeneratorPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 text-center text-xs text-slate-500">
-        <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี • ปลอดภัย ไม่เก็บข้อมูล</p>
-      </footer>
+      <Footer />
 
       {/* Mobile Save Modal */}
       {mobileModalImg && (

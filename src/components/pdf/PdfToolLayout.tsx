@@ -7,6 +7,7 @@ import { type PdfToolDefinition, PDF_CATEGORIES, getToolsByCategory } from '@/co
 import { DynamicIcon } from '@/components/common/DynamicIcon';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { Footer } from '@/components/layout/Footer';
 
 interface PdfToolLayoutProps {
   tool: PdfToolDefinition;
@@ -245,15 +246,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 TOOL HUB — ชุดเครื่องมือ PDF ออนไลน์ครบวงจร ปลอดภัย รวดเร็ว และฟรี</p>
-          <div className="flex items-center space-x-4">
-            <Link href="/pdf" className="hover:text-red-600">เครื่องมือทั้งหมด</Link>
-            <Link href="/" className="hover:text-red-600">หน้าหลัก</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

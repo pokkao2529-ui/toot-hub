@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Search, Sparkles, Shield, ArrowRight, CheckCircle, HelpCircle } from 'lucide-react';
 import { PDF_CATEGORIES, PDF_TOOLS, type ToolCategory } from '@/config/pdf-tools';
 import { DynamicIcon } from '@/components/common/DynamicIcon';
+import { Footer } from '@/components/layout/Footer';
 
 export default function PdfDirectoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -307,15 +308,7 @@ export default function PdfDirectoryPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-10 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 TOOL HUB. All rights reserved. ศูนย์รวมเครื่องมือออนไลน์ฟรี</p>
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="hover:text-red-600">หน้าหลัก</Link>
-            <Link href="/pdf" className="hover:text-red-600">PDF Suite</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -17,6 +17,7 @@ import {
   Archive,
 } from 'lucide-react';
 import { PDF_TOOLS } from '@/config/pdf-tools';
+import { Footer } from '@/components/layout/Footer';
 
 export default function HomePage() {
   const activeTools = PDF_TOOLS.filter((t) => t.status === 'active');
@@ -159,25 +160,25 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href="/tools/image/compress"
-                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-rose-500 hover:shadow-lg hover:shadow-rose-500/10 transition"
+                href="/tools/image/convert"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/10 transition"
               >
                 <div className="h-10 w-10 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center font-bold mb-4">
                   <Sliders size={20} />
                 </div>
                 <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-purple-600 transition mb-1">
-                  บีบอัดภาพ PNG
+                  แปลงไฟล์ภาพ JPG ↔ PNG ↔ WebP
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                  ลดขนาดไฟล์ PNG กราฟิก โลโก้ และภาพหน้าจอโดยยังคงความคมชัดและพื้นหลังโปร่งใส
+                  สลับนามสกุลรูปภาพแบบกลุ่ม แปลงไฟล์พร้อมกันหลายภาพ และโหลดเป็น ZIP ในคลิกเดียว
                 </p>
                 <span className="text-xs font-bold text-purple-600 flex items-center gap-1">
-                  เริ่มบีบอัด <ArrowRight size={13} />
+                  เริ่มแปลงไฟล์ <ArrowRight size={13} />
                 </span>
               </Link>
 
               <Link
-                href="/tools/image/compress"
+                href="/tools/image/convert"
                 className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10 transition"
               >
                 <div className="h-10 w-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold mb-4">
@@ -375,9 +376,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-8 text-center text-xs text-slate-500">
-        <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี • ปลอดภัย ไม่เก็บข้อมูล</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
