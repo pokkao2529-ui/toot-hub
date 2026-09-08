@@ -26,8 +26,8 @@ export function generateWifiPayload(options: WifiQROptions): string {
   const escSsid = escapeWifiString(ssid.trim());
   const escPass = escapeWifiString(password);
 
-  // Standard format for iOS and Android: WIFI:S:MySSID;T:WPA;P:MyPassword;;
-  let payload = `WIFI:S:${escSsid};T:${encryption};`;
+  // Official Apple & ZXing format: WIFI:T:WPA;S:MySSID;P:MyPassword;;
+  let payload = `WIFI:T:${encryption};S:${escSsid};`;
 
   if (encryption !== 'nopass' && escPass) {
     payload += `P:${escPass};`;
