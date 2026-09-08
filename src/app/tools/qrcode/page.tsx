@@ -22,12 +22,15 @@ import {
   CheckCircle2,
   AlertCircle,
   Smartphone,
+  X,
+  Share2,
 } from 'lucide-react';
 import {
   renderQRCodeToCanvas,
   generateQRCodeSVG,
   downloadDataUrl,
   downloadBlob,
+  dataUrlToBlob,
   generatePromptPayPayload,
   generateWifiPayload,
   generateMecardPayload,
@@ -79,6 +82,8 @@ export default function QRCodeGeneratorPage() {
   // Status states
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [mobileModalImg, setMobileModalImg] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -195,21 +200,60 @@ export default function QRCodeGeneratorPage() {
     const payload = getPayload();
     if (!payload) return;
 
-    // Create an offscreen canvas with target high-res width
-    const exportCanvas = document.createElement('canvas');
-    await renderQRCodeToCanvas(exportCanvas, {
-      text: payload,
-      width: downloadResolution,
-      margin: 2,
-      colorDark,
-      colorLight,
-      logoDataUrl,
-      logoSizePercent,
-      errorCorrectionLevel: 'H',
-    });
+    setIsSaving(true);
+    try {
+      // Create an offscreen canvas with target high-res width
+      const exportCanvas = document.createElement('canvas');
+      await renderQRCodeToCanvas(exportCanvas, {
+        text: payload,
+        width: downloadResolution,
+        margin: 2,
+        colorDark,
+        colorLight,
+        logoDataUrl,
+        logoSizePercent,
+        errorCorrectionLevel: 'H',
+      });
 
-    const dataUrl = exportCanvas.toDataURL('image/png');
-    downloadDataUrl(dataUrl, `qrcode-toolhub-${Date.now()}.png`);
+      const dataUrl = exportCanvas.toDataURL('image/png');
+      const filename = `qrcode-toolhub-${Date.now()}.png`;
+
+      // Check if mobile device or touch-enabled
+      const isMobile =
+        typeof window !== 'undefined' &&
+        (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+          (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
+
+      // On mobile: try Web Share API first so user can save directly to Photos / Camera Roll
+      if (isMobile && typeof navigator !== 'undefined' && navigator.share && navigator.canShare) {
+        try {
+          const blob = dataUrlToBlob(dataUrl);
+          const file = new File([blob], filename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'QR Code',
+              text: 'บันทึก QR Code จาก TOOL HUB',
+            });
+            return;
+          }
+        } catch (shareErr: any) {
+          if (shareErr.name === 'AbortError') {
+            return;
+          }
+        }
+      }
+
+      if (isMobile) {
+        // Mobile fallback modal (touch & hold to save into camera roll)
+        setMobileModalImg(dataUrl);
+      } else {
+        // Desktop direct download
+        downloadDataUrl(dataUrl, filename);
+      }
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Download SVG
@@ -223,7 +267,27 @@ export default function QRCodeGeneratorPage() {
       margin: 2,
     });
     const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    downloadBlob(blob, `qrcode-toolhub-${Date.now()}.svg`);
+    const filename = `qrcode-toolhub-${Date.now()}.svg`;
+
+    const isMobile =
+      typeof window !== 'undefined' &&
+      (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+        (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
+
+    if (isMobile && typeof navigator !== 'undefined' && navigator.share && navigator.canShare) {
+      try {
+        const file = new File([blob], filename, { type: 'image/svg+xml' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'QR Code SVG',
+          });
+          return;
+        }
+      } catch (e) {}
+    }
+
+    downloadBlob(blob, filename);
   };
 
   // Copy to Clipboard
@@ -835,6 +899,80 @@ export default function QRCodeGeneratorPage() {
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 text-center text-xs text-slate-500">
         <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี • ปลอดภัย ไม่เก็บข้อมูล</p>
       </footer>
+
+      {/* Mobile Save Modal */}
+      {mobileModalImg && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center relative space-y-4">
+            <button
+              onClick={() => setMobileModalImg(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-800 dark:hover:text-white transition"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 text-xs font-bold">
+              <Smartphone size={14} />
+              <span>บันทึกภาพสำหรับมือถือ</span>
+            </div>
+
+            <h3 className="text-base font-black text-slate-900 dark:text-white">
+              แตะค้างที่รูปภาพเพื่อบันทึก
+            </h3>
+
+            {/* High-res Image Container */}
+            <div className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-950 inline-block border border-slate-200 dark:border-slate-800">
+              <img
+                src={mobileModalImg}
+                alt="QR Code ผลลัพธ์"
+                className="max-w-[240px] h-auto rounded-lg mx-auto pointer-events-auto select-all"
+              />
+            </div>
+
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-[11px] text-amber-900 dark:text-amber-200 text-left space-y-1">
+              <p className="font-bold">👆 วิธีบันทึกลงแกลเลอรีรูปภาพ:</p>
+              <p>1. <strong>แตะค้างที่รูปภาพด้านบน</strong> ประมาณ 1 วินาที</p>
+              <p>2. เลือก <strong>"บันทึกรูปภาพ" (Save to Photos)</strong> หรือ "แชร์"</p>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              {typeof navigator !== 'undefined' && (navigator as any).share && (
+                <button
+                  onClick={async () => {
+                    try {
+                      const blob = dataUrlToBlob(mobileModalImg);
+                      const file = new File([blob], `qrcode-${Date.now()}.png`, { type: 'image/png' });
+                      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                          files: [file],
+                          title: 'QR Code',
+                          text: 'สร้างด้วย TOOL HUB',
+                        });
+                      }
+                    } catch (e) {}
+                  }}
+                  className="w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-red-500/20 transition"
+                >
+                  <Share2 size={15} />
+                  <span>เปิดเมนูแชร์ / บันทึก (Share Sheet)</span>
+                </button>
+              )}
+
+              <button
+                onClick={() => setMobileModalImg(null)}
+                className="w-full py-2 px-4 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+              >
+                ปิดหน้าต่าง
+              </button>
+            </div>
+
+            <p className="text-[10px] text-slate-400">
+              💡 หากเปิดในแอป LINE แนะนำแตะปุ่มจุดสามจุด (...) ที่มุมขวาบน แล้วเลือก "เปิดด้วยเบราว์เซอร์เริ่มต้น" (Safari / Chrome)
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
