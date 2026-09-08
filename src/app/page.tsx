@@ -15,8 +15,11 @@ import {
   ShieldCheck,
   Sliders,
   Archive,
+  BookOpen,
+  Calendar,
 } from 'lucide-react';
 import { PDF_TOOLS } from '@/config/pdf-tools';
+import { BLOG_POSTS } from '@/config/blog-posts';
 import { Footer } from '@/components/layout/Footer';
 
 export default function HomePage() {
@@ -46,6 +49,13 @@ export default function HomePage() {
             >
               <QrCode size={16} className="text-red-600" />
               <span>QR Code Suite</span>
+            </Link>
+            <Link
+              href="/blog"
+              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
+            >
+              <BookOpen size={16} className="text-amber-500" />
+              <span>บทความ</span>
             </Link>
             <Link
               href="/pdf"
@@ -367,6 +377,66 @@ export default function HomePage() {
                   <div className="flex items-center text-xs font-bold text-red-600">
                     <span>เปิดใช้งาน</span>
                     <ArrowRight size={13} className="ml-1" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Knowledge & Guides Section (SEO & AdSense Value Boost) */}
+        <section className="py-16 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
+              <div>
+                <span className="text-xs font-bold text-amber-600 uppercase tracking-wider flex items-center gap-1.5">
+                  <BookOpen size={14} />
+                  <span>Knowledge Hub • บทความและคู่มือมีประโยชน์</span>
+                </span>
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
+                  สาระน่ารู้ & เทคนิคการใช้งานเครื่องมือ
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  คู่มือวิธีบีบอัดภาพไม่ให้แตก, เทคนิคแปลงเป็น WebP ให้เว็บโหลดเร็ว, และการสร้าง QR Code รับเงิน
+                </p>
+              </div>
+
+              <Link
+                href="/blog"
+                className="mt-4 md:mt-0 text-sm font-bold text-red-600 hover:text-red-700 flex items-center gap-1"
+              >
+                <span>อ่านบทความทั้งหมด ({BLOG_POSTS.length})</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {BLOG_POSTS.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-amber-500 hover:shadow-lg hover:shadow-amber-500/10 transition flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-3 text-xs text-slate-400">
+                      <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                        {post.categoryName}
+                      </span>
+                      <span>{post.readTime}</span>
+                    </div>
+                    <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-amber-600 transition line-clamp-2 mb-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                      {post.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <span className="text-[11px] text-slate-400">{post.date}</span>
+                    <span className="font-bold text-red-600 flex items-center gap-1">
+                      อ่านต่อ <ArrowRight size={12} />
+                    </span>
                   </div>
                 </Link>
               ))}

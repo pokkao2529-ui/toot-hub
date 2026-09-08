@@ -102,9 +102,14 @@ export const Footer: React.FC = () => {
           {/* Legal & Company (Mandatory for AdSense) */}
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white mb-3">
-              ข้อมูลและนโยบาย
+              ข้อมูลและบทความ
             </h4>
             <ul className="space-y-2 text-xs">
+              <li>
+                <Link href="/blog" className="hover:text-red-600 transition font-medium text-red-600 dark:text-red-400">
+                  บทความและคู่มือ (Blog & Guides)
+                </Link>
+              </li>
               <li>
                 <Link href="/about" className="hover:text-red-600 transition">
                   เกี่ยวกับเรา (About Us)
@@ -133,6 +138,9 @@ export const Footer: React.FC = () => {
         <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© 2026 TOOL HUB. ศูนย์รวมเครื่องมือออนไลน์ฟรี • All rights reserved.</p>
           <div className="flex items-center gap-6">
+            <Link href="/blog" className="hover:text-slate-700 dark:hover:text-slate-300">
+              Blog
+            </Link>
             <Link href="/privacy-policy" className="hover:text-slate-700 dark:hover:text-slate-300">
               Privacy Policy
             </Link>

@@ -10,6 +10,12 @@ export interface JsonLdProps {
   url?: string;
   faqs?: { question: string; answer: string }[];
   appUrl?: string;
+  article?: {
+    headline: string;
+    description: string;
+    datePublished?: string;
+    authorName?: string;
+  };
 }
 
 export const JsonLd: React.FC<JsonLdProps> = ({
@@ -19,6 +25,7 @@ export const JsonLd: React.FC<JsonLdProps> = ({
   url,
   faqs = [],
   appUrl = 'https://toot-hub.vercel.app',
+  article,
 }) => {
   const toolName = tool ? `${tool.nameTH} (${tool.name})` : (title || 'TOOL HUB');
   const toolDesc = tool ? tool.seoDescription : (description || 'ศูนย์รวมเครื่องมือออนไลน์ฟรี');
@@ -85,12 +92,43 @@ export const JsonLd: React.FC<JsonLdProps> = ({
     ],
   };
 
+  const articleSchema = article
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: article.headline,
+        description: article.description,
+        author: {
+          '@type': 'Organization',
+          name: article.authorName || 'TOOL HUB',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'TOOL HUB',
+          logo: {
+            '@type': 'ImageObject',
+            url: `${appUrl}/favicon.ico`,
+          },
+        },
+        datePublished: article.datePublished || '2026-09-08',
+        mainEntityOfPage: `${appUrl}${toolRoute}`,
+      }
+    : null;
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-      />
+      {!article && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+        />
+      )}
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      )}
       {faqSchema && (
         <script
           type="application/ld+json"
