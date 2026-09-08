@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -15,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TOOL HUB — ศูนย์รวมเครื่องมือออนไลน์ฟรี & PDF Suite",
   description: "ศูนย์รวมเครื่องมือออนไลน์คุณภาพสูง ฟรี ปลอดภัย และรวดเร็ว พร้อมชุดเครื่องมือ PDF Suite ครบวงจร",
+  other: {
+    "google-adsense-account": "ca-pub-5688187756853332",
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +31,14 @@ export default function RootLayout({
       lang="th"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5688187756853332"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -18,7 +18,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   format = 'horizontal',
   className = '',
 }) => {
-  const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-5688187756853332';
 
   useEffect(() => {
     if (clientId && typeof window !== 'undefined') {
