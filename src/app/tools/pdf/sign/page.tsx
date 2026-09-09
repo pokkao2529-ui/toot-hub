@@ -54,9 +54,11 @@ export default function SignPdfPage() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
 
-  // Stamp "สำเนาถูกต้อง" State
+  // Stamp "สำเนาถูกต้อง" State (มาตรฐานข้าราชการ)
+  const [stampFullName, setStampFullName] = useState<string>('');
   const [stampPurpose, setStampPurpose] = useState<string>('ใช้สำหรับสมัครงานเท่านั้น');
   const [stampDate, setStampDate] = useState<string>('');
+  const [includePurposeInStamp, setIncludePurposeInStamp] = useState<boolean>(false);
 
   // Type Name State
   const [typedName, setTypedName] = useState<string>('');
@@ -199,43 +201,54 @@ export default function SignPdfPage() {
     }
 
     if (activeTab === 'stamp') {
+      const canvasWidth = 440;
+      const canvasHeight = includePurposeInStamp ? 210 : 175;
       const stampCanvas = document.createElement('canvas');
-      stampCanvas.width = 400;
-      stampCanvas.height = 160;
+      stampCanvas.width = canvasWidth;
+      stampCanvas.height = canvasHeight;
       const ctx = stampCanvas.getContext('2d');
       if (!ctx) return null;
 
-      // Clean transparent background
+      // Clean transparent background - NO dashed border
       ctx.clearRect(0, 0, stampCanvas.width, stampCanvas.height);
 
       ctx.fillStyle = penColor;
       ctx.strokeStyle = penColor;
-
-      // Draw dashed border stamp box
-      ctx.lineWidth = 2;
-      ctx.setLineDash([6, 4]);
-      ctx.strokeRect(10, 10, 380, 140);
-      ctx.setLineDash([]);
-
-      // Draw "สำเนาถูกต้อง"
-      ctx.font = 'bold 22px Prompt, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('สำเนาถูกต้อง', 200, 45);
 
-      // Draw purpose text
-      ctx.font = '14px Prompt, sans-serif';
-      ctx.fillText(stampPurpose, 200, 75);
+      // 1. สำเนาถูกต้อง
+      ctx.font = 'bold 22px "Prompt", "Noto Sans Thai", sans-serif';
+      ctx.fillText('สำเนาถูกต้อง', canvasWidth / 2, 32);
 
-      // Draw date text
-      ctx.font = '12px Prompt, sans-serif';
-      ctx.fillText(`วันที่: ${stampDate}`, 200, 100);
-
-      // If user drew a signature, overlay it inside the stamp!
+      // 2. ลายเซ็น / ลายมือชื่อ
       const drawCanvas = drawCanvasRef.current;
       if (drawCanvas && hasDrawn) {
-        ctx.drawImage(drawCanvas, 100, 95, 200, 50);
+        ctx.drawImage(drawCanvas, (canvasWidth - 200) / 2, 42, 200, 50);
       } else {
-        ctx.fillText('(ลงลายมือชื่อ)', 200, 130);
+        // เส้นประสำหรับลงลายมือชื่อ
+        ctx.beginPath();
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(canvasWidth / 2 - 85, 80);
+        ctx.lineTo(canvasWidth / 2 + 85, 80);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 3. ชื่อ-นามสกุล ตัวบรรจง (เช่น นายพีรวิชญ์ อภินิษฐวงศ์)
+      ctx.font = '15px "Prompt", "Noto Sans Thai", sans-serif';
+      const effectiveName = stampFullName.trim() || typedName.trim();
+      const displayName = effectiveName ? `(${effectiveName})` : '( .................................................... )';
+      ctx.fillText(displayName, canvasWidth / 2, 112);
+
+      // 4. วันที่ (เช่น วันที่: 9 ก.ย. 2569)
+      ctx.font = '13px "Prompt", "Noto Sans Thai", sans-serif';
+      ctx.fillText(`วันที่: ${stampDate}`, canvasWidth / 2, 142);
+
+      // 5. วัตถุประสงค์ (ถ้าเลือกเปิดแสดงในตรายาง)
+      if (includePurposeInStamp && stampPurpose.trim()) {
+        ctx.font = '13px "Prompt", "Noto Sans Thai", sans-serif';
+        ctx.fillText(stampPurpose.trim(), canvasWidth / 2, 175);
       }
 
       return stampCanvas.toDataURL('image/png');
@@ -277,8 +290,55 @@ export default function SignPdfPage() {
       dataUrl,
       relX: 0.35, // 35% from left
       relY: 0.70, // 70% from top
-      relWidth: activeTab === 'stamp' ? 0.38 : 0.28,
-      relHeight: activeTab === 'stamp' ? 0.16 : 0.10,
+      relWidth: activeTab === 'stamp' ? 0.35 : 0.28,
+      relHeight: activeTab === 'stamp' ? (includePurposeInStamp ? 0.16 : 0.13) : 0.10,
+    };
+
+    setPlacedSignatures((prev) => [...prev, newSig]);
+    setSelectedSigId(newSig.id);
+  };
+
+  // Add wide purpose banner across document (separate element)
+  const handlePlacePurposeBanner = () => {
+    if (!stampPurpose.trim()) {
+      alert('กรุณาระบุข้อความวัตถุประสงค์');
+      return;
+    }
+
+    const bannerCanvas = document.createElement('canvas');
+    bannerCanvas.width = 800;
+    bannerCanvas.height = 80;
+    const ctx = bannerCanvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, bannerCanvas.width, bannerCanvas.height);
+    ctx.fillStyle = penColor;
+    ctx.strokeStyle = penColor;
+
+    // Draw clean parallel lines across
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(10, 15);
+    ctx.lineTo(790, 15);
+    ctx.moveTo(10, 65);
+    ctx.lineTo(790, 65);
+    ctx.stroke();
+
+    // Text between lines
+    ctx.font = 'bold 22px "Prompt", "Noto Sans Thai", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`- - - ${stampPurpose.trim()} - - -`, 400, 40);
+
+    const dataUrl = bannerCanvas.toDataURL('image/png');
+    const newSig: PlacedSignature = {
+      id: `purpose_${Date.now()}`,
+      pageNumber: currentPage,
+      dataUrl,
+      relX: 0.15,
+      relY: 0.50,
+      relWidth: 0.70, // wide across document, can be resized/moved anywhere!
+      relHeight: 0.07,
     };
 
     setPlacedSignatures((prev) => [...prev, newSig]);
@@ -932,26 +992,40 @@ export default function SignPdfPage() {
                 {/* TAB 2: CERTIFIED TRUE COPY STAMP */}
                 {activeTab === 'stamp' && (
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                        วัตถุประสงค์ในการใช้สำเนา
-                      </label>
-                      <select
-                        value={stampPurpose}
-                        onChange={(e) => setStampPurpose(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="ใช้สำหรับสมัครงานเท่านั้น">ใช้สำหรับสมัครงานเท่านั้น</option>
-                        <option value="ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น">ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น</option>
-                        <option value="ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น">ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น</option>
-                        <option value="ใช้สำหรับติดต่อราชการเท่านั้น">ใช้สำหรับติดต่อราชการเท่านั้น</option>
-                        <option value="ใช้สำหรับการทำสัญญาเท่านั้น">ใช้สำหรับการทำสัญญาเท่านั้น</option>
-                      </select>
+                    {/* Preview box showing the 1, 2, 3, 4 sequence */}
+                    <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
+                      <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-2">
+                        ลำดับข้อความตามมาตรฐานราชการ (ไม่มีกรอบรอยปะ):
+                      </div>
+                      <div className="space-y-1 text-center font-semibold text-slate-800 dark:text-slate-200">
+                        <p className="text-sm font-bold text-blue-600">1. สำเนาถูกต้อง</p>
+                        <p className="text-xs text-slate-400 italic">2. (ลายมือชื่อ / ลายเซ็น)</p>
+                        <p className="text-xs">3. ({stampFullName.trim() || typedName.trim() || 'ชื่อ-นามสกุล ตัวบรรจง'})</p>
+                        <p className="text-xs text-slate-500">4. วันที่: {stampDate}</p>
+                        {includePurposeInStamp && (
+                          <p className="text-xs text-blue-500 font-bold">5. {stampPurpose}</p>
+                        )}
+                      </div>
                     </div>
 
+                    {/* Input 3: ชื่อ-นามสกุล ตัวบรรจง */}
                     <div>
                       <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                        วันที่รับรอง
+                        3. ชื่อ-นามสกุล (ตัวบรรจง)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="เช่น นายพีรวิชญ์ อภินิษฐวงศ์"
+                        value={stampFullName}
+                        onChange={(e) => setStampFullName(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    {/* Input 4: วันที่รับรอง */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                        4. วันที่รับรอง
                       </label>
                       <input
                         type="text"
@@ -961,8 +1035,49 @@ export default function SignPdfPage() {
                       />
                     </div>
 
+                    {/* Section 5: วัตถุประสงค์ (แยกทำ หรือระบุในตรายาง) */}
+                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                            5. วัตถุประสงค์ในการใช้สำเนา
+                          </label>
+                          <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-semibold text-slate-500 hover:text-blue-600">
+                            <input
+                              type="checkbox"
+                              checked={includePurposeInStamp}
+                              onChange={(e) => setIncludePurposeInStamp(e.target.checked)}
+                              className="rounded text-blue-600 focus:ring-blue-500"
+                            />
+                            <span>รวมในตรายาง</span>
+                          </label>
+                        </div>
+                        <select
+                          value={stampPurpose}
+                          onChange={(e) => setStampPurpose(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="ใช้สำหรับสมัครงานเท่านั้น">ใช้สำหรับสมัครงานเท่านั้น</option>
+                          <option value="ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น">ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น</option>
+                          <option value="ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น">ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น</option>
+                          <option value="ใช้สำหรับติดต่อราชการเท่านั้น">ใช้สำหรับติดต่อราชการเท่านั้น</option>
+                          <option value="ใช้สำหรับการทำสัญญาเท่านั้น">ใช้สำหรับการทำสัญญาเท่านั้น</option>
+                        </select>
+                      </div>
+
+                      {/* Separate button to place wide purpose banner across document */}
+                      <button
+                        type="button"
+                        onClick={handlePlacePurposeBanner}
+                        className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-blue-950/60 border border-slate-200 dark:border-slate-700 hover:border-blue-300 text-blue-600 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+                      >
+                        <Plus size={14} />
+                        <span>วางข้อความวัตถุประสงค์คาดเอกสาร (กว้างเต็มหน้า)</span>
+                      </button>
+                    </div>
+
                     <div className="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-xl text-xs text-blue-800 dark:text-blue-300">
-                      💡 <strong>เคล็ดลับ:</strong> หากต้องการให้ลายเซ็นของคุณประทับอยู่ข้างในตรายางรับรอง ให้ไปที่แท็บ <strong>"วาดลายเซ็น"</strong> เพื่อเซ็นชื่อไว้ก่อน จากนั้นกลับมากดปุ่มวางที่นี่ได้ทันทีครับ
+                      💡 <strong>คำแนะนำ:</strong> หากต้องการให้มีลายเซ็นจริง ให้ไปที่แท็บ <strong>"วาดลายเซ็น"</strong> เพื่อเซ็นชื่อไว้ก่อน จากนั้นกลับมากดปุ่มวางที่นี่ได้ทันทีครับ (ไม่มีกรอบรอยปะ)
                     </div>
                   </div>
                 )}
