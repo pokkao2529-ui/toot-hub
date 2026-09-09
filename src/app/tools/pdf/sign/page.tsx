@@ -24,6 +24,10 @@ import {
   Sparkles,
   ShieldCheck,
   Calendar,
+  ArrowUp,
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function SignPdfPage() {
@@ -309,18 +313,131 @@ export default function SignPdfPage() {
     if (selectedSigId === id) setSelectedSigId(null);
   };
 
-  // Dragging placed signature on page
-  const handleSigDrag = (id: string, deltaX: number, deltaY: number) => {
+  // Mouse / Touch Dragging Handler
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+    sig: PlacedSignature
+  ) => {
+    if ('button' in e && e.button !== 0) return;
+    e.stopPropagation();
+    setSelectedSigId(sig.id);
+    setIsDragging(true);
+
     const container = pageContainerRef.current;
     if (!container) return;
     const rect = container.getBoundingClientRect();
 
+    const startClientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const startClientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const startRelX = sig.relX;
+    const startRelY = sig.relY;
+
+    const onMove = (moveEvent: MouseEvent | TouchEvent) => {
+      moveEvent.preventDefault();
+      const currentClientX = 'touches' in moveEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+      const currentClientY = 'touches' in moveEvent ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+      const deltaX = currentClientX - startClientX;
+      const deltaY = currentClientY - startClientY;
+
+      const newRelX = Math.max(0, Math.min(1 - sig.relWidth, startRelX + deltaX / rect.width));
+      const newRelY = Math.max(0, Math.min(1 - sig.relHeight, startRelY + deltaY / rect.height));
+
+      setPlacedSignatures((prev) =>
+        prev.map((s) => (s.id === sig.id ? { ...s, relX: newRelX, relY: newRelY } : s))
+      );
+    };
+
+    const onEnd = () => {
+      setIsDragging(false);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+    };
+
+    window.addEventListener('mousemove', onMove, { passive: false });
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onEnd);
+  };
+
+  // Corner Resize Handler
+  const handleResizeStart = (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+    sig: PlacedSignature
+  ) => {
+    if ('button' in e && e.button !== 0) return;
+    e.stopPropagation();
+    e.preventDefault();
+
+    const container = pageContainerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+
+    const startClientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const startRelWidth = sig.relWidth;
+    const aspectRatio = sig.relHeight / sig.relWidth;
+
+    const onMove = (moveEvent: MouseEvent | TouchEvent) => {
+      moveEvent.preventDefault();
+      const currentClientX = 'touches' in moveEvent ? moveEvent.touches[0].clientX : moveEvent.clientX;
+      const deltaX = currentClientX - startClientX;
+      const deltaRelWidth = deltaX / rect.width;
+
+      const newW = Math.max(0.08, Math.min(0.95 - sig.relX, startRelWidth + deltaRelWidth));
+      const newH = Math.max(0.03, Math.min(0.95 - sig.relY, newW * aspectRatio));
+
+      setPlacedSignatures((prev) =>
+        prev.map((s) => (s.id === sig.id ? { ...s, relWidth: newW, relHeight: newH } : s))
+      );
+    };
+
+    const onEnd = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+    };
+
+    window.addEventListener('mousemove', onMove, { passive: false });
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onEnd);
+  };
+
+  // Nudge Signature with buttons
+  const handleNudge = (id: string, deltaRelX: number, deltaRelY: number) => {
     setPlacedSignatures((prev) =>
       prev.map((s) => {
         if (s.id !== id) return s;
-        const newRelX = Math.max(0, Math.min(1 - s.relWidth, s.relX + deltaX / rect.width));
-        const newRelY = Math.max(0, Math.min(1 - s.relHeight, s.relY + deltaY / rect.height));
+        const newRelX = Math.max(0, Math.min(1 - s.relWidth, s.relX + deltaRelX));
+        const newRelY = Math.max(0, Math.min(1 - s.relHeight, s.relY + deltaRelY));
         return { ...s, relX: newRelX, relY: newRelY };
+      })
+    );
+  };
+
+  // Quick Position Placement
+  const handleQuickPosition = (id: string, pos: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'center') => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => {
+        if (s.id !== id) return s;
+        if (pos === 'bottom-right') {
+          return { ...s, relX: Math.max(0, 0.95 - s.relWidth), relY: Math.max(0, 0.88 - s.relHeight) };
+        }
+        if (pos === 'bottom-left') {
+          return { ...s, relX: 0.05, relY: Math.max(0, 0.88 - s.relHeight) };
+        }
+        if (pos === 'bottom-center') {
+          return { ...s, relX: Math.max(0, (1 - s.relWidth) / 2), relY: Math.max(0, 0.88 - s.relHeight) };
+        }
+        if (pos === 'center') {
+          return { ...s, relX: Math.max(0, (1 - s.relWidth) / 2), relY: Math.max(0, (1 - s.relHeight) / 2) };
+        }
+        return s;
       })
     );
   };
@@ -330,8 +447,8 @@ export default function SignPdfPage() {
     setPlacedSignatures((prev) =>
       prev.map((s) => {
         if (s.id !== id) return s;
-        const newW = Math.max(0.08, Math.min(0.8, s.relWidth * scaleFactor));
-        const newH = Math.max(0.03, Math.min(0.4, s.relHeight * scaleFactor));
+        const newW = Math.max(0.08, Math.min(0.85, s.relWidth * scaleFactor));
+        const newH = Math.max(0.03, Math.min(0.5, s.relHeight * scaleFactor));
         return { ...s, relWidth: newW, relHeight: newH };
       })
     );
@@ -533,11 +650,16 @@ export default function SignPdfPage() {
                   return (
                     <div
                       key={sig.id}
-                      onClick={() => setSelectedSigId(sig.id)}
-                      className={`absolute cursor-move group transition-all ${
+                      onMouseDown={(e) => handleDragStart(e, sig)}
+                      onTouchStart={(e) => handleDragStart(e, sig)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedSigId(sig.id);
+                      }}
+                      className={`absolute select-none group transition-shadow ${
                         isSelected
-                          ? 'ring-2 ring-blue-500 shadow-xl'
-                          : 'hover:ring-1 hover:ring-blue-300'
+                          ? 'ring-2 ring-blue-500 shadow-2xl z-20 cursor-grab active:cursor-grabbing'
+                          : 'hover:ring-1 hover:ring-blue-300 z-10 cursor-pointer'
                       }`}
                       style={{
                         left: `${sig.relX * 100}%`,
@@ -552,54 +674,146 @@ export default function SignPdfPage() {
                         className="w-full h-full object-contain pointer-events-none"
                       />
 
-                      {/* Controls on Selected Signature */}
+                      {/* Top Bar for Selected Signature */}
                       {isSelected && (
-                        <div className="absolute -top-7 right-0 flex items-center gap-1 bg-slate-900 text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-md z-20">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleScaleChange(sig.id, 0.9);
-                            }}
-                            className="hover:text-blue-300 px-1"
-                            title="ย่อขนาด"
+                        <>
+                          {/* Drag Badge */}
+                          <div className="absolute -top-7 left-0 bg-blue-600 text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-md flex items-center gap-1 cursor-grab active:cursor-grabbing select-none pointer-events-none">
+                            <Move size={11} />
+                            <span>ลากเลื่อนตำแหน่ง</span>
+                          </div>
+
+                          {/* Quick Scale & Delete Toolbar */}
+                          <div className="absolute -top-7 right-0 flex items-center gap-1 bg-slate-900 text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-md z-20">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleScaleChange(sig.id, 0.9);
+                              }}
+                              className="hover:text-blue-300 px-1 font-bold"
+                              title="ย่อขนาด"
+                            >
+                              - ย่อ
+                            </button>
+                            <span className="text-slate-500">|</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleScaleChange(sig.id, 1.1);
+                              }}
+                              className="hover:text-blue-300 px-1 font-bold"
+                              title="ขยายขนาด"
+                            >
+                              + ขยาย
+                            </button>
+                            <span className="text-slate-500">|</span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removePlacedSignature(sig.id);
+                              }}
+                              className="hover:text-rose-400 text-rose-300 px-1"
+                              title="ลบ"
+                            >
+                              <Trash2 size={11} />
+                            </button>
+                          </div>
+
+                          {/* Corner Resize Handle */}
+                          <div
+                            onMouseDown={(e) => handleResizeStart(e, sig)}
+                            onTouchStart={(e) => handleResizeStart(e, sig)}
+                            className="absolute -bottom-2.5 -right-2.5 w-6 h-6 bg-blue-600 hover:bg-blue-700 border-2 border-white rounded-full cursor-nwse-resize shadow-md flex items-center justify-center text-white text-[9px] font-bold z-30 select-none"
+                            title="ลากเพื่อปรับขนาดลายเซ็น"
                           >
-                            -
-                          </button>
-                          <span>ย่อ/ขยาย</span>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleScaleChange(sig.id, 1.1);
-                            }}
-                            className="hover:text-blue-300 px-1"
-                            title="ขยายขนาด"
-                          >
-                            +
-                          </button>
-                          <span className="text-slate-500">|</span>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removePlacedSignature(sig.id);
-                            }}
-                            className="hover:text-rose-400 text-rose-300 px-1"
-                            title="ลบ"
-                          >
-                            <Trash2 size={11} />
-                          </button>
-                        </div>
+                            ↔
+                          </div>
+                        </>
                       )}
                     </div>
                   );
                 })}
               </div>
 
+              {/* Selected Signature Precision Control Panel */}
+              {selectedSigId && (
+                <div className="mt-4 w-full p-4 bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-900/60 rounded-2xl shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <Move size={14} className="text-blue-600" />
+                      <span>ปรับตำแหน่งลายเซ็นที่เลือก (คลิกลากที่รูป หรือใช้ปุ่มด้านล่าง)</span>
+                    </span>
+
+                    {/* Quick Position Pills */}
+                    <div className="flex flex-wrap gap-1.5 text-[11px] font-bold">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-right')}
+                        className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-600 hover:bg-blue-100 rounded-lg border border-blue-200 dark:border-blue-900 transition"
+                      >
+                        มุมล่างขวา
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-center')}
+                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-lg transition"
+                      >
+                        กึ่งกลางล่าง
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-left')}
+                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-lg transition"
+                      >
+                        มุมล่างซ้าย
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Nudge Direction Buttons */}
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleNudge(selectedSigId, 0, -0.03)}
+                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                      title="เลื่อนขึ้น"
+                    >
+                      <ArrowUp size={14} /> <span>ขึ้น</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleNudge(selectedSigId, 0, 0.03)}
+                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                      title="เลื่อนลง"
+                    >
+                      <ArrowDown size={14} /> <span>ลง</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleNudge(selectedSigId, -0.03, 0)}
+                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                      title="เลื่อนซ้าย"
+                    >
+                      <ArrowLeft size={14} /> <span>ซ้าย</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleNudge(selectedSigId, 0.03, 0)}
+                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                      title="เลื่อนขวา"
+                    >
+                      <ArrowRight size={14} /> <span>ขวา</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Instructions below preview */}
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 text-center">
-                💡 คลิกที่ลายเซ็นบนเอกสารเพื่อปรับขนาด (+) หรือลบออก • สามารถลงชื่อได้หลายจุดในแต่ละหน้า
+                💡 สามารถคลิกค้างแล้วลากลายเซ็นไปวางที่จุดใดก็ได้บนเอกสาร หรือใช้ปุ่มลูกศรเพื่อจัดตำแหน่งให้ตรงจุด
               </p>
             </div>
 
