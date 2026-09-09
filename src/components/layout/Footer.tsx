@@ -87,6 +87,11 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/tools/image/resize" className="hover:text-red-600 transition">
+                  ปรับขนาดรูปภาพ (1-2 นิ้ว, Social, Shopee)
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools/image/convert" className="hover:text-red-600 transition">
                   แปลงไฟล์ภาพ (JPG ↔ PNG ↔ WebP)
                 </Link>

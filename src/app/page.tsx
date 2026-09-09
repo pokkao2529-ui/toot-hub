@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Sliders,
   Archive,
+  Maximize2,
   BookOpen,
   Calendar,
 } from 'lucide-react';
@@ -170,6 +171,24 @@ export default function HomePage() {
               </Link>
 
               <Link
+                href="/tools/image/resize"
+                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-amber-500 hover:shadow-lg hover:shadow-amber-500/10 transition"
+              >
+                <div className="h-10 w-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center font-bold mb-4">
+                  <Maximize2 size={20} />
+                </div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-600 transition mb-1">
+                  ปรับขนาดรูปภาพ (Resize)
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+                  ย่อรูป 1 นิ้ว, 1.5 นิ้ว, 2 นิ้ว สมัครงาน ก.พ. ข้าราชการ และรูปสินค้า Shopee 800x800 คมชัด ไม่เสียสัดส่วน
+                </p>
+                <span className="text-xs font-bold text-amber-600 flex items-center gap-1">
+                  เริ่มปรับขนาด <ArrowRight size={13} />
+                </span>
+              </Link>
+
+              <Link
                 href="/tools/image/convert"
                 className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/10 transition"
               >
@@ -184,24 +203,6 @@ export default function HomePage() {
                 </p>
                 <span className="text-xs font-bold text-purple-600 flex items-center gap-1">
                   เริ่มแปลงไฟล์ <ArrowRight size={13} />
-                </span>
-              </Link>
-
-              <Link
-                href="/tools/image/convert"
-                className="group p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/10 transition"
-              >
-                <div className="h-10 w-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold mb-4">
-                  <Zap size={20} />
-                </div>
-                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 transition mb-1">
-                  แปลงภาพเป็น WebP ยุคใหม่
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                  แปลงภาพเป็น WebP ไฟล์เล็กจิ๋ว โหลดเร็ว เหมาะสำหรับผู้ทำเว็บไซต์และพ่อค้าแม่ค้าออนไลน์
-                </p>
-                <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                  เริ่มแปลง <ArrowRight size={13} />
                 </span>
               </Link>
 
