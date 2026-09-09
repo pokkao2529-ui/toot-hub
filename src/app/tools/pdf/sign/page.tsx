@@ -228,21 +228,12 @@ export default function SignPdfPage() {
       const drawCanvas = drawCanvasRef.current;
       if (drawCanvas && hasDrawn) {
         ctx.drawImage(drawCanvas, (canvasWidth - 200) / 2, 42, 200, 50);
-      } else {
-        // เส้นประสำหรับลงลายมือชื่อ
-        ctx.beginPath();
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 3]);
-        ctx.moveTo(canvasWidth / 2 - 85, 80);
-        ctx.lineTo(canvasWidth / 2 + 85, 80);
-        ctx.stroke();
-        ctx.setLineDash([]);
       }
 
       // 3. ชื่อ-นามสกุล ตัวบรรจง (เช่น นายพีรวิชญ์ อภินิษฐวงศ์)
       ctx.font = '15px "Prompt", "Noto Sans Thai", sans-serif';
       const effectiveName = stampFullName.trim() || typedName.trim();
-      const displayName = effectiveName ? `(${effectiveName})` : '( .................................................... )';
+      const displayName = effectiveName ? `(${effectiveName})` : '';
       ctx.fillText(displayName, canvasWidth / 2, 112);
 
       // 4. วันที่ (เช่น วันที่: 9 ก.ย. 2569)
