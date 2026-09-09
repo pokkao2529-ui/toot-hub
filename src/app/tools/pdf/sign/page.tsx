@@ -28,6 +28,8 @@ import {
   ArrowDown,
   ArrowLeft,
   ArrowRight,
+  RotateCw,
+  Maximize2,
 } from 'lucide-react';
 
 export default function SignPdfPage() {
@@ -59,6 +61,8 @@ export default function SignPdfPage() {
   const [stampPurpose, setStampPurpose] = useState<string>('ใช้สำหรับสมัครงานเท่านั้น');
   const [stampDate, setStampDate] = useState<string>('');
   const [includePurposeInStamp, setIncludePurposeInStamp] = useState<boolean>(false);
+  const [bannerAngle, setBannerAngle] = useState<number>(-15); // Default: diagonal left -15° (popular standard for ID crossing)
+  const [bannerWidth, setBannerWidth] = useState<number>(0.75); // Default: 75% width
 
   // Type Name State
   const [typedName, setTypedName] = useState<string>('');
@@ -292,22 +296,26 @@ export default function SignPdfPage() {
       relY: 0.70, // 70% from top
       relWidth: activeTab === 'stamp' ? 0.35 : 0.28,
       relHeight: activeTab === 'stamp' ? (includePurposeInStamp ? 0.16 : 0.13) : 0.10,
+      rotation: 0,
     };
 
     setPlacedSignatures((prev) => [...prev, newSig]);
     setSelectedSigId(newSig.id);
   };
 
-  // Add wide purpose banner across document (separate element)
-  const handlePlacePurposeBanner = () => {
+  // Add wide purpose banner across document (separate element with customizable slant & width)
+  const handlePlacePurposeBanner = (customAngle?: number, customWidth?: number) => {
     if (!stampPurpose.trim()) {
       alert('กรุณาระบุข้อความวัตถุประสงค์');
       return;
     }
 
+    const angle = customAngle !== undefined ? customAngle : bannerAngle;
+    const width = customWidth !== undefined ? customWidth : bannerWidth;
+
     const bannerCanvas = document.createElement('canvas');
-    bannerCanvas.width = 800;
-    bannerCanvas.height = 80;
+    bannerCanvas.width = 1200; // Crisp high-res canvas
+    bannerCanvas.height = 100;
     const ctx = bannerCanvas.getContext('2d');
     if (!ctx) return;
 
@@ -316,29 +324,30 @@ export default function SignPdfPage() {
     ctx.strokeStyle = penColor;
 
     // Draw clean parallel lines across
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(10, 15);
-    ctx.lineTo(790, 15);
-    ctx.moveTo(10, 65);
-    ctx.lineTo(790, 65);
+    ctx.moveTo(10, 20);
+    ctx.lineTo(1190, 20);
+    ctx.moveTo(10, 80);
+    ctx.lineTo(1190, 80);
     ctx.stroke();
 
     // Text between lines
-    ctx.font = 'bold 22px "Prompt", "Noto Sans Thai", sans-serif';
+    ctx.font = 'bold 30px "Prompt", "Noto Sans Thai", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`- - - ${stampPurpose.trim()} - - -`, 400, 40);
+    ctx.fillText(`- - - ${stampPurpose.trim()} - - -`, 600, 50);
 
     const dataUrl = bannerCanvas.toDataURL('image/png');
     const newSig: PlacedSignature = {
       id: `purpose_${Date.now()}`,
       pageNumber: currentPage,
       dataUrl,
-      relX: 0.15,
-      relY: 0.50,
-      relWidth: 0.70, // wide across document, can be resized/moved anywhere!
+      relX: Math.max(0.01, (1 - width) / 2),
+      relY: 0.45,
+      relWidth: width,
       relHeight: 0.07,
+      rotation: angle,
     };
 
     setPlacedSignatures((prev) => [...prev, newSig]);
@@ -361,6 +370,7 @@ export default function SignPdfPage() {
         relY: 0.70,
         relWidth: 0.25,
         relHeight: 0.10,
+        rotation: 0,
       };
       setPlacedSignatures((prev) => [...prev, newSig]);
       setSelectedSigId(newSig.id);
@@ -502,14 +512,70 @@ export default function SignPdfPage() {
     );
   };
 
-  // Resize signature
+  // Resize signature proportionally
   const handleScaleChange = (id: string, scaleFactor: number) => {
     setPlacedSignatures((prev) =>
       prev.map((s) => {
         if (s.id !== id) return s;
-        const newW = Math.max(0.08, Math.min(0.85, s.relWidth * scaleFactor));
-        const newH = Math.max(0.03, Math.min(0.5, s.relHeight * scaleFactor));
+        const newW = Math.max(0.08, Math.min(0.98, s.relWidth * scaleFactor));
+        const newH = Math.max(0.02, Math.min(0.6, s.relHeight * scaleFactor));
         return { ...s, relWidth: newW, relHeight: newH };
+      })
+    );
+  };
+
+  // Set rotation angle
+  const handleRotate = (id: string, angle: number) => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, rotation: angle } : s))
+    );
+  };
+
+  // Nudge rotation angle (+/- degrees)
+  const handleRotateNudge = (id: string, deltaAngle: number) => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => {
+        if (s.id !== id) return s;
+        const currentRot = s.rotation || 0;
+        let newRot = currentRot + deltaAngle;
+        if (newRot > 90) newRot = 90;
+        if (newRot < -90) newRot = -90;
+        return { ...s, rotation: newRot };
+      })
+    );
+  };
+
+  // Free width adjustment (stretch or shrink horizontally)
+  const handleWidthChange = (id: string, factor: number) => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => {
+        if (s.id !== id) return s;
+        const newW = Math.max(0.10, Math.min(0.98, s.relWidth * factor));
+        const newX = Math.min(s.relX, 1 - newW);
+        return { ...s, relWidth: newW, relX: Math.max(0, newX) };
+      })
+    );
+  };
+
+  // Set explicit width percent
+  const handleSetWidth = (id: string, relW: number) => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => {
+        if (s.id !== id) return s;
+        const newX = Math.max(0.01, (1 - relW) / 2);
+        return { ...s, relWidth: relW, relX: newX };
+      })
+    );
+  };
+
+  // Free height adjustment (stretch or shrink vertically)
+  const handleHeightChange = (id: string, factor: number) => {
+    setPlacedSignatures((prev) =>
+      prev.map((s) => {
+        if (s.id !== id) return s;
+        const newH = Math.max(0.02, Math.min(0.60, s.relHeight * factor));
+        const newY = Math.min(s.relY, 1 - newH);
+        return { ...s, relHeight: newH, relY: Math.max(0, newY) };
       })
     );
   };
@@ -726,6 +792,8 @@ export default function SignPdfPage() {
                         top: `${sig.relY * 100}%`,
                         width: `${sig.relWidth * 100}%`,
                         height: `${sig.relHeight * 100}%`,
+                        transform: `rotate(${sig.rotation || 0}deg)`,
+                        transformOrigin: 'center center',
                       }}
                     >
                       <img
@@ -740,11 +808,61 @@ export default function SignPdfPage() {
                           {/* Drag Badge */}
                           <div className="absolute -top-7 left-0 bg-blue-600 text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-md flex items-center gap-1 cursor-grab active:cursor-grabbing select-none pointer-events-none">
                             <Move size={11} />
-                            <span>ลากเลื่อนตำแหน่ง</span>
+                            <span>ลากเลื่อน</span>
                           </div>
 
-                          {/* Quick Scale & Delete Toolbar */}
-                          <div className="absolute -top-7 right-0 flex items-center gap-1 bg-slate-900 text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-md z-20">
+                          {/* Quick Scale, Tilt & Delete Toolbar */}
+                          <div className="absolute -top-7 right-0 flex items-center gap-1 bg-slate-900/95 backdrop-blur text-white rounded-lg px-2 py-0.5 text-[10px] font-bold shadow-xl z-20 border border-slate-700">
+                            {/* Slant Quick Buttons */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRotate(sig.id, -15);
+                              }}
+                              className={`px-1 py-0.5 rounded ${sig.rotation === -15 ? 'bg-blue-600 text-white' : 'hover:text-blue-300 text-slate-300'}`}
+                              title="ทะแยงซ้าย (-15°)"
+                            >
+                              ⤹ -15°
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRotate(sig.id, 0);
+                              }}
+                              className={`px-1 py-0.5 rounded ${(sig.rotation || 0) === 0 ? 'bg-blue-600 text-white' : 'hover:text-blue-300 text-slate-300'}`}
+                              title="แนวนอนตรง (0°)"
+                            >
+                              0°
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRotate(sig.id, 15);
+                              }}
+                              className={`px-1 py-0.5 rounded ${sig.rotation === 15 ? 'bg-blue-600 text-white' : 'hover:text-blue-300 text-slate-300'}`}
+                              title="ทะแยงขวา (+15°)"
+                            >
+                              ⤵ +15°
+                            </button>
+                            <span className="text-slate-600">|</span>
+
+                            {/* Free Width Expand */}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleWidthChange(sig.id, 1.15);
+                              }}
+                              className="hover:text-blue-300 px-1 font-bold"
+                              title="ยืดขยายความกว้าง"
+                            >
+                              ↔ กว้าง
+                            </button>
+                            <span className="text-slate-600">|</span>
+
                             <button
                               type="button"
                               onClick={(e) => {
@@ -752,11 +870,10 @@ export default function SignPdfPage() {
                                 handleScaleChange(sig.id, 0.9);
                               }}
                               className="hover:text-blue-300 px-1 font-bold"
-                              title="ย่อขนาด"
+                              title="ย่อขนาดรวม"
                             >
                               - ย่อ
                             </button>
-                            <span className="text-slate-500">|</span>
                             <button
                               type="button"
                               onClick={(e) => {
@@ -764,11 +881,11 @@ export default function SignPdfPage() {
                                 handleScaleChange(sig.id, 1.1);
                               }}
                               className="hover:text-blue-300 px-1 font-bold"
-                              title="ขยายขนาด"
+                              title="ขยายขนาดรวม"
                             >
                               + ขยาย
                             </button>
-                            <span className="text-slate-500">|</span>
+                            <span className="text-slate-600">|</span>
                             <button
                               type="button"
                               onClick={(e) => {
@@ -798,78 +915,307 @@ export default function SignPdfPage() {
                 })}
               </div>
 
-              {/* Selected Signature Precision Control Panel */}
-              {selectedSigId && (
-                <div className="mt-4 w-full p-4 bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-900/60 rounded-2xl shadow-sm">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                      <Move size={14} className="text-blue-600" />
-                      <span>ปรับตำแหน่งลายเซ็นที่เลือก (คลิกลากที่รูป หรือใช้ปุ่มด้านล่าง)</span>
-                    </span>
+              {/* Selected Item Comprehensive Precision Control Panel */}
+              {selectedSigId && (() => {
+                const selectedSig = placedSignatures.find((s) => s.id === selectedSigId);
+                if (!selectedSig) return null;
 
-                    {/* Quick Position Pills */}
-                    <div className="flex flex-wrap gap-1.5 text-[11px] font-bold">
+                return (
+                  <div className="mt-4 w-full p-4 sm:p-5 bg-white dark:bg-slate-900 border-2 border-blue-400/50 dark:border-blue-700/60 rounded-3xl shadow-lg space-y-4">
+                    {/* Header with Title & Quick Info */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                          ✓
+                        </div>
+                        <div>
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                            ปรับแต่งชิ้นส่วนที่เลือก (ทะแยงซ้าย-ขวา / ขยายอิสระ / จัดตำแหน่ง)
+                          </h4>
+                          <p className="text-[11px] text-slate-500">
+                            องศา: <strong className="text-blue-600">{selectedSig.rotation || 0}°</strong> | ความกว้าง: <strong className="text-blue-600">{Math.round(selectedSig.relWidth * 100)}%</strong>
+                          </p>
+                        </div>
+                      </div>
                       <button
                         type="button"
-                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-right')}
-                        className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-600 hover:bg-blue-100 rounded-lg border border-blue-200 dark:border-blue-900 transition"
+                        onClick={() => removePlacedSignature(selectedSig.id)}
+                        className="px-2.5 py-1 text-[11px] font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-xl transition flex items-center gap-1 border border-rose-200 dark:border-rose-900"
                       >
-                        มุมล่างขวา
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-center')}
-                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-lg transition"
-                      >
-                        กึ่งกลางล่าง
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPosition(selectedSigId, 'bottom-left')}
-                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 rounded-lg transition"
-                      >
-                        มุมล่างซ้าย
+                        <Trash2 size={12} />
+                        <span>ลบชิ้นนี้</span>
                       </button>
                     </div>
-                  </div>
 
-                  {/* Nudge Direction Buttons */}
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleNudge(selectedSigId, 0, -0.03)}
-                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
-                      title="เลื่อนขึ้น"
-                    >
-                      <ArrowUp size={14} /> <span>ขึ้น</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleNudge(selectedSigId, 0, 0.03)}
-                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
-                      title="เลื่อนลง"
-                    >
-                      <ArrowDown size={14} /> <span>ลง</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleNudge(selectedSigId, -0.03, 0)}
-                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
-                      title="เลื่อนซ้าย"
-                    >
-                      <ArrowLeft size={14} /> <span>ซ้าย</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleNudge(selectedSigId, 0.03, 0)}
-                      className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-blue-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
-                      title="เลื่อนขวา"
-                    >
-                      <ArrowRight size={14} /> <span>ขวา</span>
-                    </button>
+                    {/* SECTION 1: องศาการเอียง / ทะแยงซ้าย-ขวา */}
+                    <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl space-y-2 border border-slate-200/60 dark:border-slate-700/50">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                          <RotateCw size={13} className="text-blue-600" />
+                          <span>องศาการเอียง / ทะแยงซ้าย-ขวา:</span>
+                        </span>
+
+                        {/* Quick Slant Preset Buttons */}
+                        <div className="flex flex-wrap gap-1 text-[11px] font-bold">
+                          <button
+                            type="button"
+                            onClick={() => handleRotate(selectedSig.id, -25)}
+                            className={`px-2 py-1 rounded-lg border transition ${selectedSig.rotation === -25 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'}`}
+                          >
+                            ⤹ ทะแยงซ้ายมาก (-25°)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRotate(selectedSig.id, -15)}
+                            className={`px-2 py-1 rounded-lg border transition ${selectedSig.rotation === -15 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'}`}
+                          >
+                            ⤹ ทะแยงซ้าย (-15°) ⭐
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRotate(selectedSig.id, 0)}
+                            className={`px-2 py-1 rounded-lg border transition ${(selectedSig.rotation || 0) === 0 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'}`}
+                          >
+                            แนวนอนตรง (0°)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRotate(selectedSig.id, 15)}
+                            className={`px-2 py-1 rounded-lg border transition ${selectedSig.rotation === 15 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'}`}
+                          >
+                            ⤵ ทะแยงขวา (+15°) ⭐
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRotate(selectedSig.id, 25)}
+                            className={`px-2 py-1 rounded-lg border transition ${selectedSig.rotation === 25 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'}`}
+                          >
+                            ⤵ ทะแยงขวามาก (+25°)
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Slider & Fine Nudge */}
+                      <div className="flex items-center gap-3 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleRotateNudge(selectedSig.id, -2)}
+                          className="px-2.5 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 text-slate-700 dark:text-slate-200"
+                          title="หมุนเอียงซ้าย 2 องศา"
+                        >
+                          ⟲ -2°
+                        </button>
+                        <input
+                          type="range"
+                          min="-60"
+                          max="60"
+                          step="1"
+                          value={selectedSig.rotation || 0}
+                          onChange={(e) => handleRotate(selectedSig.id, Number(e.target.value))}
+                          className="flex-1 accent-blue-600 cursor-pointer h-2 bg-slate-200 dark:bg-slate-700 rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRotateNudge(selectedSig.id, 2)}
+                          className="px-2.5 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-100 text-slate-700 dark:text-slate-200"
+                          title="หมุนเอียงขวา 2 องศา"
+                        >
+                          ⟳ +2°
+                        </button>
+                        <span className="text-xs font-mono font-bold w-12 text-center text-blue-600 dark:text-blue-400">
+                          {selectedSig.rotation || 0}°
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* SECTION 2: ปรับขยายขนาดอิสระ (ความกว้าง / ความสูง / ขนาดรวม) */}
+                    <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl space-y-2 border border-slate-200/60 dark:border-slate-700/50">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                          <Maximize2 size={13} className="text-blue-600" />
+                          <span>ปรับขยายขนาดอิสระ (กว้าง / สูง / ขยายรวม):</span>
+                        </span>
+
+                        {/* Quick Width Presets */}
+                        <div className="flex flex-wrap gap-1 text-[11px] font-bold">
+                          <span className="text-[10px] text-slate-400 self-center mr-1">ความกว้าง:</span>
+                          <button
+                            type="button"
+                            onClick={() => handleSetWidth(selectedSig.id, 0.50)}
+                            className="px-2 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-blue-50 rounded-lg text-slate-700 dark:text-slate-300"
+                          >
+                            50% (พอดีบัตร)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSetWidth(selectedSig.id, 0.75)}
+                            className="px-2 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-blue-50 rounded-lg text-slate-700 dark:text-slate-300"
+                          >
+                            75% (มาตรฐาน)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSetWidth(selectedSig.id, 0.92)}
+                            className="px-2 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-blue-50 rounded-lg text-slate-700 dark:text-slate-300"
+                          >
+                            92% (เต็มหน้า)
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Free Scale Buttons */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                        {/* Width Controls */}
+                        <div className="flex items-center justify-between p-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">↔ ความกว้าง</span>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleWidthChange(selectedSig.id, 0.90)}
+                              className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-bold"
+                              title="บีบให้แคบลง"
+                            >
+                              - แคบ
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleWidthChange(selectedSig.id, 1.10)}
+                              className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-100 text-xs font-bold"
+                              title="ยืดให้กว้างขึ้น"
+                            >
+                              + กว้าง
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Height Controls */}
+                        <div className="flex items-center justify-between p-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">↕ ความสูง</span>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleHeightChange(selectedSig.id, 0.90)}
+                              className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-bold"
+                              title="ย่นความสูงลง"
+                            >
+                              - เตี้ย
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleHeightChange(selectedSig.id, 1.10)}
+                              className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-100 text-xs font-bold"
+                              title="เพิ่มความสูง"
+                            >
+                              + สูง
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Proportional Scale */}
+                        <div className="flex items-center justify-between p-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                          <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">🔍 ขนาดรวม</span>
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleScaleChange(selectedSig.id, 0.90)}
+                              className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-bold"
+                              title="ย่อขนาดรวม"
+                            >
+                              - ย่อ
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleScaleChange(selectedSig.id, 1.10)}
+                              className="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-100 text-xs font-bold"
+                              title="ขยายขนาดรวม"
+                            >
+                              + ขยาย
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SECTION 3: จัดตำแหน่ง (ลูกศร และ Quick Positions) */}
+                    <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl space-y-2 border border-slate-200/60 dark:border-slate-700/50">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                          <Move size={13} className="text-blue-600" />
+                          <span>จัดตำแหน่ง (หรือคลิกลากที่รูปได้โดยตรง):</span>
+                        </span>
+
+                        {/* Quick Position Pills */}
+                        <div className="flex flex-wrap gap-1 text-[11px] font-bold">
+                          <button
+                            type="button"
+                            onClick={() => handleQuickPosition(selectedSig.id, 'center')}
+                            className="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 rounded-lg border border-slate-200 dark:border-slate-700 transition"
+                          >
+                            กึ่งกลางหน้า
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickPosition(selectedSig.id, 'bottom-right')}
+                            className="px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-600 hover:bg-blue-100 rounded-lg border border-blue-200 dark:border-blue-900 transition"
+                          >
+                            มุมล่างขวา
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickPosition(selectedSig.id, 'bottom-center')}
+                            className="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 rounded-lg border border-slate-200 dark:border-slate-700 transition"
+                          >
+                            กึ่งกลางล่าง
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleQuickPosition(selectedSig.id, 'bottom-left')}
+                            className="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 rounded-lg border border-slate-200 dark:border-slate-700 transition"
+                          >
+                            มุมล่างซ้าย
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Nudge Direction Buttons */}
+                      <div className="flex items-center justify-center gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleNudge(selectedSig.id, 0, -0.03)}
+                          className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                          title="เลื่อนขึ้น"
+                        >
+                          <ArrowUp size={14} /> <span>ขึ้น</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNudge(selectedSig.id, 0, 0.03)}
+                          className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                          title="เลื่อนลง"
+                        >
+                          <ArrowDown size={14} /> <span>ลง</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNudge(selectedSig.id, -0.03, 0)}
+                          className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                          title="เลื่อนซ้าย"
+                        >
+                          <ArrowLeft size={14} /> <span>ซ้าย</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleNudge(selectedSig.id, 0.03, 0)}
+                          className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition"
+                          title="เลื่อนขวา"
+                        >
+                          <ArrowRight size={14} /> <span>ขวา</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Instructions below preview */}
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 text-center">
@@ -1065,15 +1411,102 @@ export default function SignPdfPage() {
                         </select>
                       </div>
 
-                      {/* Separate button to place wide purpose banner across document */}
-                      <button
-                        type="button"
-                        onClick={handlePlacePurposeBanner}
-                        className="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-blue-950/60 border border-slate-200 dark:border-slate-700 hover:border-blue-300 text-blue-600 font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
-                      >
-                        <Plus size={14} />
-                        <span>วางข้อความวัตถุประสงค์คาดเอกสาร (กว้างเต็มหน้า)</span>
-                      </button>
+                      {/* Slant & Width Options for Purpose Banner */}
+                      <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2.5">
+                        <div className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                          ตั้งค่าแถบคาดเอกสาร (แยกทำ):
+                        </div>
+
+                        {/* Slant Selection */}
+                        <div>
+                          <div className="text-[10px] text-slate-500 font-semibold mb-1">ทิศทางการเอียง / ทะแยง:</div>
+                          <div className="grid grid-cols-3 gap-1 text-[11px] font-bold">
+                            <button
+                              type="button"
+                              onClick={() => setBannerAngle(-15)}
+                              className={`py-1.5 px-1 rounded-xl border text-center transition ${
+                                bannerAngle === -15
+                                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              ⤹ ทะแยงซ้าย ⭐
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setBannerAngle(0)}
+                              className={`py-1.5 px-1 rounded-xl border text-center transition ${
+                                bannerAngle === 0
+                                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              แนวนอนตรง
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setBannerAngle(15)}
+                              className={`py-1.5 px-1 rounded-xl border text-center transition ${
+                                bannerAngle === 15
+                                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              ⤵ ทะแยงขวา
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Width Selection */}
+                        <div>
+                          <div className="text-[10px] text-slate-500 font-semibold mb-1">ความกว้างแถบคาด:</div>
+                          <div className="grid grid-cols-3 gap-1 text-[11px] font-bold">
+                            <button
+                              type="button"
+                              onClick={() => setBannerWidth(0.55)}
+                              className={`py-1 px-1 rounded-xl border text-center transition ${
+                                bannerWidth === 0.55
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              55% (พอดีบัตร)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setBannerWidth(0.75)}
+                              className={`py-1 px-1 rounded-xl border text-center transition ${
+                                bannerWidth === 0.75
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              75% (มาตรฐาน)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setBannerWidth(0.92)}
+                              className={`py-1 px-1 rounded-xl border text-center transition ${
+                                bannerWidth === 0.92
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50'
+                              }`}
+                            >
+                              92% (เต็มหน้า)
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Separate button to place wide purpose banner across document */}
+                        <button
+                          type="button"
+                          onClick={() => handlePlacePurposeBanner(bannerAngle, bannerWidth)}
+                          className="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer shadow-md"
+                        >
+                          <Plus size={14} />
+                          <span>วางข้อความวัตถุประสงค์คาดเอกสาร ({bannerAngle === 0 ? 'แนวนอน' : bannerAngle < 0 ? 'ทะแยงซ้าย' : 'ทะแยงขวา'})</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div className="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-xl text-xs text-blue-800 dark:text-blue-300">

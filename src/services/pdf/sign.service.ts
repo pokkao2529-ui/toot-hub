@@ -1,4 +1,4 @@
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, degrees } from 'pdf-lib';
 
 export interface PlacedSignature {
   id: string;
@@ -8,6 +8,7 @@ export interface PlacedSignature {
   relY: number; // 0 to 1 relative to page height (top)
   relWidth: number; // 0 to 1 relative to page width
   relHeight: number; // 0 to 1 relative to page height
+  rotation?: number; // degrees, positive = clockwise in UI
 }
 
 export interface SignPdfOptions {
@@ -85,15 +86,38 @@ export async function signPdf(
       // Note: In PDF coordinate system, (0,0) is bottom-left, whereas UI is top-left
       const drawWidth = sig.relWidth * pageWidth;
       const drawHeight = sig.relHeight * pageHeight;
-      const drawX = sig.relX * pageWidth;
-      const drawY = pageHeight - sig.relY * pageHeight - drawHeight;
+      const rotationDeg = sig.rotation || 0;
 
-      page.drawImage(embeddedImage, {
-        x: Math.max(0, drawX),
-        y: Math.max(0, drawY),
-        width: drawWidth,
-        height: drawHeight,
-      });
+      if (rotationDeg === 0) {
+        const drawX = sig.relX * pageWidth;
+        const drawY = pageHeight - sig.relY * pageHeight - drawHeight;
+        page.drawImage(embeddedImage, {
+          x: Math.max(0, drawX),
+          y: Math.max(0, drawY),
+          width: drawWidth,
+          height: drawHeight,
+        });
+      } else {
+        // Center of the bounding box in PDF points
+        const cx = (sig.relX + sig.relWidth / 2) * pageWidth;
+        const cy = pageHeight - (sig.relY + sig.relHeight / 2) * pageHeight;
+
+        // UI clockwise rotation maps to PDF counter-clockwise degrees
+        const pdfRotDeg = -rotationDeg;
+        const phi = (pdfRotDeg * Math.PI) / 180;
+
+        // Pivot point in PDF coordinates so image rotates around its center
+        const drawX = cx - ((drawWidth / 2) * Math.cos(phi) - (drawHeight / 2) * Math.sin(phi));
+        const drawY = cy - ((drawWidth / 2) * Math.sin(phi) + (drawHeight / 2) * Math.cos(phi));
+
+        page.drawImage(embeddedImage, {
+          x: drawX,
+          y: drawY,
+          width: drawWidth,
+          height: drawHeight,
+          rotate: degrees(pdfRotDeg),
+        });
+      }
 
       processedCount++;
       const currentProgress = 35 + Math.floor((processedCount / totalSigs) * 50);
