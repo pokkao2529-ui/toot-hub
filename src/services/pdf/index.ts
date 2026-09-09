@@ -12,6 +12,7 @@ import { validateFile, validateFileList, sanitizeFilename, type ValidationResult
 import { addWatermark, type WatermarkOptions } from './watermark.service';
 import { addPageNumbers, type PageNumbersOptions, type PageNumberPosition, type PageNumberFormat } from './page-numbers.service';
 import { unlockPdf, type UnlockPdfOptions } from './unlock.service';
+import { compressPdf, type CompressPdfOptions, type CompressPdfResult, type CompressionPreset } from './compress.service';
 
 /**
  * Centralized PDF Service Layer Facade
@@ -30,6 +31,7 @@ export const pdfService = {
   watermark: addWatermark,
   pageNumbers: addPageNumbers,
   unlock: unlockPdf,
+  compress: compressPdf,
 
   // Rendering & Utilities
   renderThumbnails: renderPdfThumbnails,
@@ -39,9 +41,6 @@ export const pdfService = {
   sanitizeFilename: sanitizeFilename,
 
   // Future Server/AI Service Placeholders
-  compress: async () => {
-    throw new Error('ฟังก์ชันบีบอัด PDF กำลังพัฒนา (Server Mode)');
-  },
   ocr: async () => {
     throw new Error('ฟังก์ชัน OCR กำลังพัฒนา (AI/Server Mode)');
   },
@@ -76,6 +75,9 @@ export type {
   PageNumberPosition,
   PageNumberFormat,
   UnlockPdfOptions,
+  CompressPdfOptions,
+  CompressPdfResult,
+  CompressionPreset,
   PageThumbnail,
   ValidationResult,
 };

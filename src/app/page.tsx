@@ -348,7 +348,7 @@ export default function HomePage() {
                 href="/pdf"
                 className="mt-4 md:mt-0 text-sm font-bold text-red-600 hover:text-red-700 flex items-center gap-1"
               >
-                <span>ดูทั้งหมด {PDF_TOOLS.length} เครื่องมือ</span>
+                <span>ดูทั้งหมด {activeTools.length} เครื่องมือ</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

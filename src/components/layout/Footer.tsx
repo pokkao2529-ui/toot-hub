@@ -38,6 +38,11 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/tools/pdf/compress" className="hover:text-red-600 transition font-medium text-red-600 dark:text-red-400">
+                  บีบอัดลดขนาด PDF
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools/pdf/merge" className="hover:text-red-600 transition">
                   รวมไฟล์ PDF
                 </Link>
@@ -50,6 +55,11 @@ export const Footer: React.FC = () => {
               <li>
                 <Link href="/tools/pdf/jpg-to-pdf" className="hover:text-red-600 transition">
                   แปลง JPG เป็น PDF
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools/pdf/png-to-pdf" className="hover:text-red-600 transition">
+                  แปลง PNG เป็น PDF
                 </Link>
               </li>
               <li>
