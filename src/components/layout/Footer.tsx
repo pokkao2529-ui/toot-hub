@@ -72,6 +72,11 @@ export const Footer: React.FC = () => {
                   ใส่ลายน้ำ PDF
                 </Link>
               </li>
+              <li>
+                <Link href="/tools/pdf/sign" className="hover:text-red-600 transition font-medium text-blue-600 dark:text-blue-400">
+                  เซ็น PDF & รับรองสำเนา
+                </Link>
+              </li>
             </ul>
           </div>
 

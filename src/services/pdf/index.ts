@@ -13,6 +13,7 @@ import { addWatermark, type WatermarkOptions } from './watermark.service';
 import { addPageNumbers, type PageNumbersOptions, type PageNumberPosition, type PageNumberFormat } from './page-numbers.service';
 import { unlockPdf, type UnlockPdfOptions } from './unlock.service';
 import { compressPdf, type CompressPdfOptions, type CompressPdfResult, type CompressionPreset } from './compress.service';
+import { signPdf, type SignPdfOptions, type PlacedSignature } from './sign.service';
 
 /**
  * Centralized PDF Service Layer Facade
@@ -32,6 +33,7 @@ export const pdfService = {
   pageNumbers: addPageNumbers,
   unlock: unlockPdf,
   compress: compressPdf,
+  sign: signPdf,
 
   // Rendering & Utilities
   renderThumbnails: renderPdfThumbnails,
@@ -46,9 +48,6 @@ export const pdfService = {
   },
   protect: async () => {
     throw new Error('ฟังก์ชันล็อกรหัสผ่านกำลังพัฒนา');
-  },
-  sign: async () => {
-    throw new Error('ฟังก์ชันเซ็นชื่อกำลังพัฒนา');
   },
   redact: async () => {
     throw new Error('ฟังก์ชันเซ็นเซอร์ข้อความกำลังพัฒนา');
@@ -78,6 +77,8 @@ export type {
   CompressPdfOptions,
   CompressPdfResult,
   CompressionPreset,
+  SignPdfOptions,
+  PlacedSignature,
   PageThumbnail,
   ValidationResult,
 };
