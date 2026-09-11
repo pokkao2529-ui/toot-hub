@@ -58,7 +58,7 @@ export default function SignPdfPage() {
 
   // Stamp "สำเนาถูกต้อง" State (มาตรฐานข้าราชการ)
   const [stampFullName, setStampFullName] = useState<string>('');
-  const [stampPurpose, setStampPurpose] = useState<string>('ใช้สำหรับสมัครงานเท่านั้น');
+  const [stampPurpose, setStampPurpose] = useState<string>('');
   const [stampDate, setStampDate] = useState<string>('');
   const [includePurposeInStamp, setIncludePurposeInStamp] = useState<boolean>(false);
   const [bannerAngle, setBannerAngle] = useState<number>(-15); // Default: diagonal left -15° (popular standard for ID crossing)
@@ -912,7 +912,7 @@ export default function SignPdfPage() {
                 if (!selectedSig) return null;
 
                 return (
-                  <div className="mt-4 w-full p-4 sm:p-5 bg-white dark:bg-slate-900 border-2 border-blue-400/50 dark:border-blue-700/60 rounded-3xl shadow-lg space-y-4">
+                  <div className="hidden mt-4 w-full p-4 sm:p-5 bg-white dark:bg-slate-900 border-2 border-blue-400/50 dark:border-blue-700/60 rounded-3xl shadow-lg space-y-4">
                     {/* Header with Title & Quick Info */}
                     <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
                       <div className="flex items-center gap-2">
@@ -1389,17 +1389,13 @@ export default function SignPdfPage() {
                             <span>รวมในตรายาง</span>
                           </label>
                         </div>
-                        <select
+                        <input
+                          type="text"
                           value={stampPurpose}
                           onChange={(e) => setStampPurpose(e.target.value)}
+                          placeholder="เช่น ใช้สำหรับสมัครงานเท่านั้น"
                           className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="ใช้สำหรับสมัครงานเท่านั้น">ใช้สำหรับสมัครงานเท่านั้น</option>
-                          <option value="ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น">ใช้สำหรับยื่นสอบ ก.พ. เท่านั้น</option>
-                          <option value="ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น">ใช้สำหรับเปิดบัญชีธนาคารเท่านั้น</option>
-                          <option value="ใช้สำหรับติดต่อราชการเท่านั้น">ใช้สำหรับติดต่อราชการเท่านั้น</option>
-                          <option value="ใช้สำหรับการทำสัญญาเท่านั้น">ใช้สำหรับการทำสัญญาเท่านั้น</option>
-                        </select>
+                        />
                       </div>
 
                       {/* Slant & Width Options for Purpose Banner */}

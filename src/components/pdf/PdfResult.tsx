@@ -25,7 +25,58 @@ export const PdfResult: React.FC<PdfResultProps> = ({
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+    const isAndroid = /Android/i.test(ua);
+    const isMobile = isIOS || isAndroid || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+    const isInApp = /Line|FBAN|FBAV|Instagram|MicroMessenger/i.test(ua);
+
+    // --- IN-APP BROWSER (LINE, Facebook): cannot download blobs, just guide user ---
+    if (isInApp) {
+      alert('⚠️ ไม่สามารถดาวน์โหลดได้ในแอปนี้\n\n👉 กรุณากดเมนู (•••) หรือ (...) มุมขวาบน\n👉 เลือก "เปิดใน Safari" หรือ "เปิดในเบราว์เซอร์" แล้วโหลดอีกครั้งครับ');
+      return;
+    }
+
+    // --- iOS Safari: Web Share API works best (saves to Files / share sheet) ---
+    if (isIOS) {
+      try {
+        if (navigator.share && navigator.canShare) {
+          const response = await fetch(downloadUrl);
+          const blob = await response.blob();
+          const file = new File([blob], filename, { type: blob.type || 'application/pdf' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: filename });
+            return;
+          }
+        }
+      } catch (err: any) {
+        if (err?.name === 'AbortError') return; // user cancelled share sheet - that's fine
+        console.warn('iOS share failed, trying window.open fallback', err);
+      }
+      // iOS fallback: open blob URL in new tab — iOS Safari will show PDF viewer with download option
+      window.open(downloadUrl, '_blank');
+      return;
+    }
+
+    // --- Android: Web Share API first, then normal anchor download ---
+    if (isAndroid) {
+      try {
+        if (navigator.share && navigator.canShare) {
+          const response = await fetch(downloadUrl);
+          const blob = await response.blob();
+          const file = new File([blob], filename, { type: blob.type || 'application/pdf' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: filename });
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Android share failed, using anchor download', err);
+      }
+    }
+
+    // --- Desktop / Android fallback: standard anchor click ---
     const a = document.createElement('a');
     a.href = downloadUrl;
     a.download = filename;

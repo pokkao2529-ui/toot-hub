@@ -117,10 +117,38 @@ export default function ImageConverterPage() {
     setIsZipping(true);
     try {
       const zipBlob = await createConvertedImagesZip(results);
+      const filename = `converted-images-toolhub-${Date.now()}.zip`;
+      
+      const isMobile =
+        typeof window !== 'undefined' &&
+        (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+          (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
+      const isInApp = typeof navigator !== 'undefined' && /Line|FBAN|FBAV|Instagram|MicroMessenger/i.test(navigator.userAgent);
+
+      if ((isMobile || isInApp) && typeof navigator !== 'undefined' && navigator.share && navigator.canShare) {
+        try {
+          const file = new File([zipBlob], filename, { type: 'application/zip' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: filename,
+            });
+            return;
+          }
+        } catch (e) {
+          console.warn('Native share failed', e);
+        }
+      }
+
+      if (isInApp) {
+        alert('⚠️ ไม่สามารถดาวน์โหลดไฟล์ ZIP ในแอปนี้ได้โดยตรง\n\n👉 กรุณากดปุ่มเมนู (จุด 3 จุด) มุมขวาบน\n👉 เลือก "เปิดในเบราว์เซอร์" (Open in Browser) เพื่อดาวน์โหลดไฟล์ของคุณครับ');
+        return;
+      }
+
       const url = URL.createObjectURL(zipBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `converted-images-toolhub-${Date.now()}.zip`;
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
