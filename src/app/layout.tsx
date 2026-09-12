@@ -13,8 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TOOL HUB — ศูนย์รวมเครื่องมือออนไลน์ฟรี & PDF Suite",
+  metadataBase: new URL('https://toot-hub.vercel.app'),
+  title: {
+    default: "TOOL HUB — ศูนย์รวมเครื่องมือออนไลน์ฟรี & PDF Suite",
+    template: "%s | TOOL HUB",
+  },
   description: "ศูนย์รวมเครื่องมือออนไลน์คุณภาพสูง ฟรี ปลอดภัย และรวดเร็ว พร้อมชุดเครื่องมือ PDF Suite ครบวงจร",
+  openGraph: {
+    title: "TOOL HUB — ศูนย์รวมเครื่องมือออนไลน์ฟรี & PDF Suite",
+    description: "ศูนย์รวมเครื่องมือออนไลน์คุณภาพสูง ฟรี ปลอดภัย และรวดเร็ว พร้อมชุดเครื่องมือ PDF Suite ครบวงจร",
+    url: "https://toot-hub.vercel.app",
+    siteName: "TOOL HUB",
+    locale: "th_TH",
+    type: "website",
+  },
   other: {
     "google-adsense-account": "ca-pub-5688187756853332",
   },

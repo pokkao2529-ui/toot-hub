@@ -42,11 +42,6 @@ export const JsonLd: React.FC<JsonLdProps> = ({
       price: '0',
       priceCurrency: 'THB',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '1280',
-    },
     description: toolDesc,
     url: `${appUrl}${toolRoute}`,
   };
