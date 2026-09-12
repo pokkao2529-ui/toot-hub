@@ -83,15 +83,28 @@ export default function BlurImagePage() {
       if (rw === 0 || rh === 0) return;
 
       if (type === 'blur') {
-        // Create an offscreen canvas for the blurred part
+        // Use scale-down + scale-up approach (works on ALL browsers incl. iOS Safari)
+        // ctx.filter is NOT supported on iOS Safari < 18 and some Android browsers
+        const blurLevel = Math.max(2, actIntensity);
+        // Scale factor: the more we shrink, the blurrier it appears after scaling up
+        const scaleFactor = Math.max(0.02, 1 / blurLevel);
+        const offW = Math.max(2, Math.round(rw * scaleFactor));
+        const offH = Math.max(2, Math.round(rh * scaleFactor));
+
         const off = document.createElement('canvas');
-        off.width = rw;
-        off.height = rh;
+        off.width = offW;
+        off.height = offH;
         const offCtx = off.getContext('2d');
         if (offCtx) {
-          offCtx.filter = `blur(${actIntensity}px)`;
-          offCtx.drawImage(canvas, rx, ry, rw, rh, 0, 0, rw, rh);
-          ctx.drawImage(off, rx, ry);
+          offCtx.imageSmoothingEnabled = true;
+          offCtx.imageSmoothingQuality = 'low';
+          offCtx.drawImage(canvas, rx, ry, rw, rh, 0, 0, offW, offH);
+
+          // Scale back up to original region (blurry)
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'low';
+          ctx.drawImage(off, 0, 0, offW, offH, rx, ry, rw, rh);
+          ctx.imageSmoothingQuality = 'high'; // reset
         }
       } else if (type === 'mosaic') {
         const off = document.createElement('canvas');
