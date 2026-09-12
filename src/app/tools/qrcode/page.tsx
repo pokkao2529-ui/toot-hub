@@ -39,6 +39,7 @@ import {
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 
 type QRType = 'url' | 'promptpay' | 'wifi' | 'text' | 'vcard';
 
@@ -321,29 +322,7 @@ export default function QRCodeGeneratorPage() {
       />
 
       {/* Header */}
-      <header className="w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="text-2xl font-black bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 bg-clip-text text-transparent">
-              TOOL HUB
-            </Link>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <span className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <QrCode size={18} className="text-red-600" />
-              <span>QR Code Suite</span>
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <Link
-              href="/pdf"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-            >
-              📄 ไปที่ PDF Suite
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Top Banner Ad Container */}
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-4">

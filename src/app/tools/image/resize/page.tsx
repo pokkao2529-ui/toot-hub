@@ -39,6 +39,7 @@ import {
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 
 export default function ImageResizePage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -273,42 +274,7 @@ export default function ImageResizePage() {
       />
 
       {/* Header Bar */}
-      <header className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link
-              href="/"
-              className="text-xl font-black bg-gradient-to-r from-rose-600 to-amber-600 bg-clip-text text-transparent"
-            >
-              TOOL HUB
-            </Link>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-              Image Suite
-            </span>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <span className="text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
-              <Maximize2 size={16} />
-              <span>ปรับขนาดรูปภาพ (Resize Image)</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/tools/image/compress"
-              className="hidden sm:inline-flex text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition"
-            >
-              บีบอัดรูปภาพ
-            </Link>
-            <Link
-              href="/tools/image/convert"
-              className="hidden sm:inline-flex text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition"
-            >
-              แปลงไฟล์รูปภาพ
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">

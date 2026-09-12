@@ -8,6 +8,7 @@ import { DynamicIcon } from '@/components/common/DynamicIcon';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 
 interface PdfToolLayoutProps {
   tool: PdfToolDefinition;
@@ -48,37 +49,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
       <JsonLd tool={tool} faqs={displayFaqs} />
 
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="text-xl font-black bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent">
-                TOOL HUB
-              </span>
-            </Link>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <Link
-              href="/pdf"
-              className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-red-600 transition"
-            >
-              PDF Suite
-            </Link>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <span className="text-sm font-medium text-slate-900 dark:text-white truncate max-w-[150px] sm:max-w-none">
-              {tool.nameTH}
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <Link
-              href="/pdf"
-              className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-red-600 transition px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
-            >
-              ดูเครื่องมือ PDF ทั้งหมด
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Container */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">

@@ -22,6 +22,7 @@ import {
 import { PDF_TOOLS } from '@/config/pdf-tools';
 import { BLOG_POSTS } from '@/config/blog-posts';
 import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 
 export default function HomePage() {
   const activeTools = PDF_TOOLS.filter((t) => t.status === 'active');
@@ -29,45 +30,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       {/* Header */}
-      <header className="w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl font-black bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 bg-clip-text text-transparent">
-              TOOL HUB
-            </span>
-          </div>
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            <Link
-              href="/tools/image/compress"
-              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center gap-1.5 transition"
-            >
-              <ImageIcon size={16} className="text-rose-600" />
-              <span>Image Suite</span>
-            </Link>
-            <Link
-              href="/tools/qrcode"
-              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
-            >
-              <QrCode size={16} className="text-red-600" />
-              <span>QR Code Suite</span>
-            </Link>
-            <Link
-              href="/blog"
-              className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-1.5 transition"
-            >
-              <BookOpen size={16} className="text-amber-500" />
-              <span>บทความ</span>
-            </Link>
-            <Link
-              href="/pdf"
-              className="text-xs sm:text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-700 flex items-center gap-1"
-            >
-              <span>PDF Suite</span>
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero */}
       <main className="flex-1">
