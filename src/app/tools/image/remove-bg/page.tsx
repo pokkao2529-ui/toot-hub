@@ -50,6 +50,8 @@ export default function RemoveBgPage() {
       const { removeBackground } = await import('@imgly/background-removal');
 
       const config = {
+        model: 'isnet' as const,  // ใช้ isnet แทน isnet_fp16 (default) ให้คุณภาพดีขึ้นมาก
+        debug: false,
         progress: (key: string, current: number, total: number) => {
           if (total > 0) {
             setProgress(`กำลังดาวน์โหลดไฟล์ AI... ${Math.round((current / total) * 100)}%`);
