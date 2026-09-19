@@ -13,6 +13,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { trackFileSelected, trackToolStart, trackToolSuccess, trackToolError, trackToolDownload } from '@/lib/analytics';
 
 export default function RemoveBgPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -36,6 +37,7 @@ export default function RemoveBgPage() {
     setResultUrl(null);
     setProgress('');
     setError('');
+    trackFileSelected({ tool_name: 'image_remove_bg', tool_category: 'image' });
   };
 
   const processImage = async () => {
@@ -44,6 +46,7 @@ export default function RemoveBgPage() {
     setIsProcessing(true);
     setError('');
     setProgress('กำลังโหลดโมเดล AI...');
+    trackToolStart({ tool_name: 'image_remove_bg', tool_category: 'image' });
 
     try {
       // Dynamically import the library (works in browser only)
@@ -65,9 +68,11 @@ export default function RemoveBgPage() {
       const newUrl = URL.createObjectURL(blob);
       setResultUrl(newUrl);
       setProgress('');
+      trackToolSuccess({ tool_name: 'image_remove_bg', tool_category: 'image', output_type: 'png' });
     } catch (err: any) {
       console.error('Error removing background:', err);
       setError('เกิดข้อผิดพลาด: ' + (err?.message || 'ลองใหม่อีกครั้ง'));
+      trackToolError({ tool_name: 'image_remove_bg', tool_category: 'image', error_type: 'process_failed' });
     } finally {
       setIsProcessing(false);
     }
@@ -88,6 +93,7 @@ export default function RemoveBgPage() {
 
   const downloadResult = () => {
     if (!resultUrl || !file) return;
+    trackToolDownload({ tool_name: 'image_remove_bg', tool_category: 'image', output_type: 'png' });
     const a = document.createElement('a');
     a.href = resultUrl;
     const originalName = file.name.split('.')[0];
@@ -244,6 +250,41 @@ export default function RemoveBgPage() {
           )}
         </div>
       </main>
+
+      {/* SEO Content — วิธีใช้งาน + FAQ */}
+      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+
+        {/* How To */}
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-5">วิธีลบพื้นหลังรูปภาพออนไลน์ฟรี (3 ขั้นตอน)</h2>
+          <ol className="space-y-3 text-sm text-slate-700 dark:text-slate-300">
+            <li className="flex gap-3"><span className="shrink-0 w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold flex items-center justify-center text-xs">1</span><span><strong>อัปโหลดรูปภาพ</strong> — กดปุ่ม &ldquo;เลือกรูปภาพ&rdquo; หรือลากไฟล์ JPG / PNG / WebP มาวาง</span></li>
+            <li className="flex gap-3"><span className="shrink-0 w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold flex items-center justify-center text-xs">2</span><span><strong>กดเริ่มลบพื้นหลัง (AI)</strong> — AI จะวิเคราะห์และตัดพื้นหลังออกโดยอัตโนมัติ ครั้งแรกโหลดโมเดล ~30 วินาที</span></li>
+            <li className="flex gap-3"><span className="shrink-0 w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold flex items-center justify-center text-xs">3</span><span><strong>ดาวน์โหลด PNG พื้นใส</strong> — กดปุ่มดาวน์โหลด รูปภาพพื้นโปร่งใสจะถูกบันทึกลงเครื่องทันที</span></li>
+          </ol>
+        </div>
+
+        {/* FAQ */}
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-5">คำถามที่พบบ่อย (FAQ)</h2>
+          <div className="space-y-4">
+            {[
+              { q: 'ลบพื้นหลังรูปภาพนี้ฟรีจริงไหม มีลายน้ำไหม?', a: 'ฟรี 100% ครับ ไม่มีลายน้ำ ไม่จำกัดจำนวนรูป และไม่ต้องสมัครสมาชิก ดาวน์โหลด PNG พื้นใสได้ทันที' },
+              { q: 'รูปของฉันปลอดภัยไหม? ถูกส่งขึ้นเซิร์ฟเวอร์ไหม?', a: 'ปลอดภัย 100% ครับ AI ประมวลผลในเบราว์เซอร์ของคุณโดยตรง รูปภาพไม่ถูกส่งขึ้นเซิร์ฟเวอร์ใดๆ ทั้งสิ้น' },
+              { q: 'รองรับไฟล์อะไรบ้าง? มีขนาดจำกัดไหม?', a: 'รองรับ JPG, PNG, WebP ขนาดไฟล์ขึ้นอยู่กับ RAM ของอุปกรณ์ โดยทั่วไปรองรับไฟล์ได้ถึง 10-20MB' },
+              { q: 'ใช้งานบนมือถือได้ไหม?', a: 'ได้ครับ รองรับทุกเบราว์เซอร์บน iOS และ Android แต่การโหลดโมเดล AI อาจใช้เวลานานขึ้นเล็กน้อยบนมือถือ' },
+            ].map(({ q, a }, i) => (
+              <details key={i} className="group border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                <summary className="px-5 py-4 cursor-pointer font-semibold text-sm text-slate-800 dark:text-slate-200 flex justify-between items-center list-none">
+                  <span>{q}</span>
+                  <span className="text-amber-500 text-lg group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <div className="px-5 pb-4 text-sm text-slate-600 dark:text-slate-400">{a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
