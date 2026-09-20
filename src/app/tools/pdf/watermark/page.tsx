@@ -311,18 +311,34 @@ export default function WatermarkPage() {
             </div>
           </div>
 
-          {targetScope === 'selected' && (
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-500">
-                คลิกเลือกหน้าที่ต้องการประทับลายน้ำ:
-              </p>
-              <PdfThumbnailGrid
-                items={pages}
-                onToggleSelect={handleToggleSelect}
-                selectable={true}
-              />
-            </div>
-          )}
+            {targetScope === 'all' && (
+              <div className="space-y-2 mt-4">
+                <p className="text-xs font-semibold text-slate-500">
+                  ตัวอย่างลายน้ำ (ทุกหน้า):
+                </p>
+                <div className="opacity-90">
+                  <PdfThumbnailGrid
+                    items={pages}
+                    selectable={false}
+                    watermarkPreview={{ text, opacity, rotation, colorHex }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {targetScope === 'selected' && (
+              <div className="space-y-2 mt-4">
+                <p className="text-xs font-semibold text-slate-500">
+                  คลิกเลือกหน้าที่ต้องการประทับลายน้ำ (ตัวอย่างแสดงเฉพาะหน้าที่เลือก):
+                </p>
+                <PdfThumbnailGrid
+                  items={pages}
+                  onToggleSelect={handleToggleSelect}
+                  selectable={true}
+                  watermarkPreview={{ text, opacity, rotation, colorHex }}
+                />
+              </div>
+            )}
 
           <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
             <button

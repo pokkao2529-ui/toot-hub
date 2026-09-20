@@ -21,6 +21,7 @@ interface PdfThumbnailProps {
   selectable?: boolean;
   canRotate?: boolean;
   canDelete?: boolean;
+  watermarkPreview?: { text: string; opacity: number; rotation: number; colorHex: string };
 }
 
 export const PdfThumbnail: React.FC<PdfThumbnailProps> = ({
@@ -32,6 +33,7 @@ export const PdfThumbnail: React.FC<PdfThumbnailProps> = ({
   selectable = true,
   canRotate = false,
   canDelete = false,
+  watermarkPreview,
 }) => {
   return (
     <div
@@ -71,6 +73,27 @@ export const PdfThumbnail: React.FC<PdfThumbnailProps> = ({
         ) : (
           <div className="flex flex-col items-center justify-center text-slate-400">
             <span className="text-sm font-medium">หน้า {item.originalPageNumber}</span>
+          </div>
+        )}
+
+        {/* Watermark Preview Overlay */}
+        {watermarkPreview && (!selectable || item.selected) && (
+          <div 
+            className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
+            style={{ opacity: watermarkPreview.opacity }}
+          >
+            <span 
+              className="font-bold text-center select-none"
+              style={{
+                color: watermarkPreview.colorHex === 'gray' ? '#808080' : watermarkPreview.colorHex === 'blue' ? '#3b82f6' : '#ef4444',
+                transform: `rotate(${-watermarkPreview.rotation}deg)`, // Visually rotate opposite for CSS
+                fontSize: '18px', // Scaled down for thumbnail
+                whiteSpace: 'nowrap',
+                lineHeight: 1
+              }}
+            >
+              {watermarkPreview.text || 'ลายน้ำ'}
+            </span>
           </div>
         )}
       </div>
@@ -120,6 +143,7 @@ interface PdfThumbnailGridProps {
   selectable?: boolean;
   canRotate?: boolean;
   canDelete?: boolean;
+  watermarkPreview?: { text: string; opacity: number; rotation: number; colorHex: string };
 }
 
 export const PdfThumbnailGrid: React.FC<PdfThumbnailGridProps> = ({
@@ -132,6 +156,7 @@ export const PdfThumbnailGrid: React.FC<PdfThumbnailGridProps> = ({
   selectable = true,
   canRotate = false,
   canDelete = false,
+  watermarkPreview,
 }) => {
   const selectedCount = items.filter((i) => i.selected).length;
 
@@ -175,6 +200,7 @@ export const PdfThumbnailGrid: React.FC<PdfThumbnailGridProps> = ({
             selectable={selectable}
             canRotate={canRotate}
             canDelete={canDelete}
+            watermarkPreview={watermarkPreview}
             onToggleSelect={onToggleSelect}
             onRotate={onRotate}
             onDelete={onDelete}

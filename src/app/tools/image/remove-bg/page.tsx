@@ -144,7 +144,15 @@ export default function RemoveBgPage() {
               onDrop={(e) => {
                 e.preventDefault();
                 setIsDragging(false);
-                handleFilesAdded(e.dataTransfer.files);
+                const file = e.dataTransfer.files?.[0];
+                if (file) {
+                  setFile(file);
+                  setOriginalUrl(URL.createObjectURL(file));
+                  setResultUrl(null);
+                  setProgress('');
+                  setError('');
+                  trackFileSelected({ tool_name: 'image_remove_bg', tool_category: 'image' });
+                }
               }}
               className={`border-2 border-dashed rounded-3xl p-12 text-center cursor-pointer transition-all duration-200 group ${
                 isDragging

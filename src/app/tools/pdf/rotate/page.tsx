@@ -205,18 +205,32 @@ export default function RotatePdfPage() {
             </div>
           </div>
 
-          {targetScope === 'selected' && (
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                คลิกเลือกหน้าที่ต้องการหมุน:
-              </p>
-              <PdfThumbnailGrid
-                items={pages}
-                onToggleSelect={handleToggleSelect}
-                selectable={true}
-              />
-            </div>
-          )}
+            {targetScope === 'all' && (
+              <div className="space-y-2 mt-4">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                  ตัวอย่างการหมุน (ทุกหน้า):
+                </p>
+                <div className="opacity-80">
+                  <PdfThumbnailGrid
+                    items={pages.map(p => ({ ...p, rotation: rotationAngle }))}
+                    selectable={false}
+                  />
+                </div>
+              </div>
+            )}
+
+            {targetScope === 'selected' && (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                  คลิกเลือกหน้าที่ต้องการหมุน (ตัวอย่างจะแสดงตามที่เลือก):
+                </p>
+                <PdfThumbnailGrid
+                  items={pages.map(p => ({ ...p, rotation: p.selected ? rotationAngle : 0 }))}
+                  onToggleSelect={handleToggleSelect}
+                  selectable={true}
+                />
+              </div>
+            )}
 
           <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
             <button
