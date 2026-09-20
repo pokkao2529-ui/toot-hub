@@ -30,6 +30,7 @@ import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { trackFileSelected, trackToolStart, trackToolSuccess, trackToolError, trackToolDownload } from '@/lib/analytics';
 
 type CompressionPreset = 'balanced' | 'high' | 'small' | 'custom';
 type OutputFormatOption = 'original' | 'image/webp' | 'image/jpeg';
@@ -66,6 +67,7 @@ export default function ImageCompressPage() {
 
     setFiles((prev) => [...prev, ...validImages]);
     setResults([]); // Reset previous results if new files added
+    trackFileSelected({ tool_name: 'image_compress', tool_category: 'image' });
   };
 
   const removeFile = (index: number) => {
@@ -84,6 +86,7 @@ export default function ImageCompressPage() {
 
     setIsCompressing(true);
     setProgress({ current: 0, total: files.length });
+    trackToolStart({ tool_name: 'image_compress', tool_category: 'image' });
 
     try {
       const compressedList = await compressMultipleImages(
@@ -98,8 +101,10 @@ export default function ImageCompressPage() {
         }
       );
       setResults(compressedList);
+      trackToolSuccess({ tool_name: 'image_compress', tool_category: 'image', output_type: outputFormat === 'image/webp' ? 'webp' : 'jpeg' });
     } catch (err) {
       console.error('Compression failed:', err);
+      trackToolError({ tool_name: 'image_compress', tool_category: 'image', error_type: 'process_failed' });
     } finally {
       setIsCompressing(false);
     }
@@ -107,6 +112,7 @@ export default function ImageCompressPage() {
 
   // Download Single File
   const handleDownloadSingle = (item: CompressedResult) => {
+    trackToolDownload({ tool_name: 'image_compress', tool_category: 'image', output_type: item.mimeType.split('/')[1] });
     const isMobile =
       typeof window !== 'undefined' &&
       (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||

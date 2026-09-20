@@ -15,6 +15,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { trackFileSelected, trackToolDownload } from '@/lib/analytics';
 
 type ToolMode = 'blur' | 'mosaic';
 type Action = { type: ToolMode; x: number; y: number; width: number; height: number; intensity: number };
@@ -42,6 +43,7 @@ export default function BlurImagePage() {
     
     setFile(selected);
     setActions([]);
+    trackFileSelected({ tool_name: 'image_blur', tool_category: 'image' });
     
     const url = URL.createObjectURL(selected);
     const img = new Image();
@@ -237,6 +239,7 @@ export default function BlurImagePage() {
   const downloadResult = () => {
     const canvas = canvasRef.current;
     if (!canvas || !file) return;
+    trackToolDownload({ tool_name: 'image_blur', tool_category: 'image', output_type: file.type === 'image/png' ? 'png' : 'jpg' });
     
     const url = canvas.toDataURL(file.type || 'image/jpeg', 0.95);
     const a = document.createElement('a');
