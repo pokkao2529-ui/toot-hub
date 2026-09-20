@@ -28,6 +28,7 @@ import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { trackFileSelected, trackToolStart, trackToolSuccess, trackToolError, trackToolDownload } from '@/lib/analytics';
 
 export default function ImageConverterPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -46,6 +47,7 @@ export default function ImageConverterPage() {
 
     setFiles((prev) => [...prev, ...validImages]);
     setResults([]);
+    trackFileSelected({ tool_name: 'image_convert', tool_category: 'image' });
   };
 
   const removeFile = (index: number) => {
@@ -63,6 +65,7 @@ export default function ImageConverterPage() {
 
     setIsConverting(true);
     setProgress({ current: 0, total: files.length });
+    trackToolStart({ tool_name: 'image_convert', tool_category: 'image' });
 
     try {
       const convertedList = await convertMultipleImages(
@@ -76,8 +79,10 @@ export default function ImageConverterPage() {
         }
       );
       setResults(convertedList);
+      trackToolSuccess({ tool_name: 'image_convert', tool_category: 'image', output_type: targetFormat.split('/')[1] });
     } catch (err) {
       console.error('Conversion failed:', err);
+      trackToolError({ tool_name: 'image_convert', tool_category: 'image', error_type: 'process_failed' });
     } finally {
       setIsConverting(false);
     }

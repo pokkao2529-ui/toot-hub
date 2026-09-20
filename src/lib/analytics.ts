@@ -51,7 +51,13 @@ export type ToolName =
   | 'unlock_pdf'
   | 'jpg_to_pdf'
   | 'png_to_pdf'
-  | 'pdf_to_jpg';
+  | 'pdf_to_jpg'
+  | 'word_to_pdf'
+  | 'excel_to_pdf'
+  | 'pptx_to_pdf'
+  | 'pdf_to_word'
+  | 'pdf_to_excel'
+  | 'pdf_to_pptx';
 
 export type ToolCategory = 'image' | 'pdf' | 'qrcode';
 

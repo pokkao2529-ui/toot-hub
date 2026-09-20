@@ -40,6 +40,7 @@ import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { trackFileSelected, trackToolStart, trackToolSuccess, trackToolError, trackToolDownload } from '@/lib/analytics';
 
 export default function ImageResizePage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -134,6 +135,7 @@ export default function ImageResizePage() {
 
     setFiles((prev) => [...prev, ...validImages]);
     setResults([]);
+    trackFileSelected({ tool_name: 'image_resize', tool_category: 'image' });
   };
 
   const removeFile = (index: number) => {
@@ -169,6 +171,7 @@ export default function ImageResizePage() {
 
     setIsProcessing(true);
     setProgress({ current: 0, total: files.length });
+    trackToolStart({ tool_name: 'image_resize', tool_category: 'image' });
 
     let targetWidth = customWidth;
     let targetHeight = customHeight;
@@ -200,8 +203,10 @@ export default function ImageResizePage() {
         }
       );
       setResults(output);
+      trackToolSuccess({ tool_name: 'image_resize', tool_category: 'image', output_type: outputFormat === 'original' ? 'original' : outputFormat.split('/')[1] });
     } catch (err) {
       alert(`เกิดข้อผิดพลาดในการปรับขนาดรูปภาพ: ${(err as Error).message}`);
+      trackToolError({ tool_name: 'image_resize', tool_category: 'image', error_type: 'process_failed' });
     } finally {
       setIsProcessing(false);
       setProgress(null);
