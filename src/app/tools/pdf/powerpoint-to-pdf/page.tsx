@@ -118,8 +118,46 @@ export default function PptxToPdfPage() {
     }
   };
 
+  const articleContent = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">วิธีแปลง PowerPoint เป็น PDF ง่ายๆ</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> ลากไฟล์ PowerPoint (PPTX หรือ PPT) มาวางในพื้นที่ที่กำหนด หรือคลิกเพื่อเลือกสไลด์จากคอมพิวเตอร์ของคุณ</li>
+          <li><strong>เริ่มการแปลง:</strong> ระบบจะทำการแปลงภาพสไลด์และข้อความให้เป็นหน้า PDF (แบบแนวนอน) ทันทีบนเบราว์เซอร์ของคุณ</li>
+          <li><strong>ดาวน์โหลด:</strong> เมื่อแถบความคืบหน้าเต็ม 100% คุณสามารถคลิกปุ่มดาวน์โหลดเพื่อรับไฟล์ PDF พร้อมนำเสนอหรือแชร์ต่อได้ทันที</li>
+        </ol>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ความเป็นส่วนตัวและความปลอดภัย (Privacy & Security)</h2>
+        <p>เราเข้าใจดีว่าไฟล์พรีเซนเทชันมักมีข้อมูลสำคัญหรือความลับทางธุรกิจ เครื่องมือแปลง PowerPoint เป็น PDF ของเรารับประกันความปลอดภัยสูงสุดด้วยการทำงานแบบ <strong>Client-side Processing</strong> ซึ่งหมายความว่าไฟล์ของคุณจะถูกประมวลผลบนเครื่องของคุณเองเท่านั้น ไม่มีการส่งไปจัดเก็บบนเซิร์ฟเวอร์ของเรา</p>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ข้อจำกัดที่ควรทราบ</h2>
+        <p>ระบบรองรับขนาดไฟล์สูงสุด {Math.round(tool.maxFileSize / (1024 * 1024))}MB การแสดงผลในไฟล์ PDF จะเน้นที่เนื้อหาและเลย์เอาต์หลัก อย่างไรก็ตาม Animation (แอนิเมชัน) หรือ Transition ลูกเล่นการเปลี่ยนสไลด์ จะไม่สามารถทำงานได้ในรูปแบบเอกสาร PDF นอกจากนี้หากพรีเซนเทชันใช้ฟอนต์ที่ไม่ได้ติดตั้งในระบบของคุณ อาจส่งผลให้สัดส่วนของตัวอักษรเปลี่ยนไปบ้างเล็กน้อย</p>
+      </div>
+    </div>
+  );
+
+  const pptToPdfFaqs = [
+    {
+      question: 'รองรับไฟล์ PowerPoint รูปแบบไหนบ้าง?',
+      answer: 'ระบบของเรารองรับไฟล์ Microsoft PowerPoint นามสกุล .pptx เป็นหลัก และสามารถอ่านไฟล์ .ppt รุ่นเก่าได้เช่นกัน แต่แนะนำให้ใช้ .pptx เพื่อความสมบูรณ์ในการแปลงมากที่สุด'
+    },
+    {
+      question: 'แปลงไฟล์ PowerPoint เป็น PDF เสียค่าใช้จ่ายหรือไม่?',
+      answer: 'ฟรี 100% ครับ คุณสามารถใช้งานเครื่องมือแปลงไฟล์บน TOOL HUB ได้โดยไม่ต้องสมัครสมาชิกและไม่ต้องจ่ายเงินแต่อย่างใด'
+    },
+    {
+      question: 'ทำไมฟอนต์บางตัวหรือเลย์เอาต์สไลด์เพี้ยนไปเมื่อแปลงเสร็จ?',
+      answer: 'เนื่องจากการแปลงทำบนเบราว์เซอร์ของคุณเอง หากไฟล์ PowerPoint ใช้ฟอนต์พิเศษที่ไม่ได้มีติดตั้งในเครื่องของคุณ ระบบอาจใช้ฟอนต์พื้นฐานแทน ทำให้การเว้นวรรคหรือขนาดตัวอักษรบนสไลด์เปลี่ยนไป'
+    }
+  ];
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={articleContent} faqs={pptToPdfFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

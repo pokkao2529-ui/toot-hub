@@ -96,8 +96,46 @@ export default function WordToPdfPage() {
     }
   };
 
+  const articleContent = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">วิธีแปลง Word เป็น PDF ง่ายๆ ใน 3 ขั้นตอน</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> ลากไฟล์ Word (DOCX หรือ DOC) มาวางในพื้นที่ที่กำหนด หรือคลิกเพื่อเลือกไฟล์จากคอมพิวเตอร์ของคุณ</li>
+          <li><strong>เริ่มการแปลง:</strong> ระบบจะทำการแปลงไฟล์ด้วยเทคโนโลยี WebAssembly บนเครื่องของคุณทันที ไม่ต้องรอคิวเซิร์ฟเวอร์</li>
+          <li><strong>ดาวน์โหลด:</strong> เมื่อแถบสถานะทำงานเสร็จสิ้น คุณสามารถคลิกดาวน์โหลดไฟล์ PDF นำไปใช้งานต่อได้ทันที</li>
+        </ol>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ความเป็นส่วนตัวและความปลอดภัย (Privacy & Security)</h2>
+        <p>เนื่องจากเครื่องมือของเราทำงานบน <strong>เบราว์เซอร์ของคุณโดยตรง (Client-side Processing)</strong> นั่นหมายความว่าไฟล์ Word ของคุณจะไม่ถูกส่งผ่านอินเทอร์เน็ตไปจัดเก็บในเซิร์ฟเวอร์ของเราแต่อย่างใด คุณจึงมั่นใจได้ 100% ว่าข้อมูลสำคัญในเอกสารจะไม่รั่วไหล และมีความเป็นส่วนตัวระดับสูงสุด</p>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ข้อจำกัดที่ควรทราบ</h2>
+        <p>เพื่อให้การทำงานบนเบราว์เซอร์เป็นไปอย่างรวดเร็วและปลอดภัย เราได้ตั้งค่าขนาดไฟล์สูงสุดไว้ที่ไม่เกิน {Math.round(tool.maxFileSize / (1024 * 1024))}MB และระบบของเราในปัจจุบันเหมาะสำหรับเอกสาร Word ที่มีรูปแบบข้อความทั่วไป หากเอกสารของคุณมีการจัดรูปแบบ (Formatting) ที่ซับซ้อนมาก หรือมีตารางและกราฟิกที่ซ้อนทับกัน อาจพบว่าผลลัพธ์ PDF แตกต่างจากต้นฉบับเล็กน้อย</p>
+      </div>
+    </div>
+  );
+
+  const wordToPdfFaqs = [
+    {
+      question: 'รองรับไฟล์ Word นามสกุลใดบ้าง?',
+      answer: 'ระบบของเรารองรับไฟล์ Microsoft Word นามสกุล .docx เป็นหลัก และสามารถอ่านไฟล์ .doc ได้เช่นกัน แต่แนะนำให้ใช้ .docx เพื่อความสมบูรณ์ที่สุดในการแปลง'
+    },
+    {
+      question: 'แปลงไฟล์ Word เป็น PDF เสียค่าใช้จ่ายหรือไม่?',
+      answer: 'TOOL HUB ให้บริการเครื่องมือแปลงไฟล์ฟรี 100% คุณไม่จำเป็นต้องสมัครสมาชิก และไฟล์ผลลัพธ์จะไม่มีลายน้ำลายเซ็นแอบแฝงใดๆ'
+    },
+    {
+      question: 'ทำไมฟอนต์บางตัวถึงดูเพี้ยนไปเมื่อแปลงเสร็จ?',
+      answer: 'เนื่องจากการแปลงทำบนเบราว์เซอร์ของคุณเอง หากไฟล์ Word ใช้ฟอนต์พิเศษที่ไม่ได้ติดตั้งในเครื่องของคุณ ระบบอาจใช้ฟอนต์พื้นฐานแทน ทำให้การเว้นวรรคหรือขนาดตัวอักษรเปลี่ยนไป'
+    }
+  ];
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={articleContent} faqs={wordToPdfFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

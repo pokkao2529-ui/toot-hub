@@ -115,8 +115,46 @@ export default function ExcelToPdfPage() {
     }
   };
 
+  const articleContent = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">วิธีแปลง Excel เป็น PDF ด้วยตัวเองใน 3 ขั้นตอน</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> ลากไฟล์ Excel (XLSX หรือ XLS) มาวางในพื้นที่ที่กำหนด หรือคลิกเพื่อเลือกไฟล์จากคอมพิวเตอร์ของคุณ</li>
+          <li><strong>เริ่มการแปลง:</strong> ระบบจะดึงข้อมูลจากตารางและสร้างพรีวิว HTML ก่อนแปลงเป็นหน้า PDF ให้พอดีกระดาษ</li>
+          <li><strong>ดาวน์โหลด:</strong> เมื่อการแปลงข้อมูลเสร็จสมบูรณ์ คุณสามารถคลิกดาวน์โหลดไฟล์ PDF ไปแชร์ต่อได้อย่างเป็นระเบียบ</li>
+        </ol>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ความเป็นส่วนตัวและความปลอดภัย (Privacy & Security)</h2>
+        <p>คุณสามารถมั่นใจในการแปลงไฟล์ชีตหรืองบการเงินได้ 100% เพราะระบบของเรา <strong>ประมวลผลบนคอมพิวเตอร์ของคุณโดยตรง</strong> (Client-side) ไฟล์ Excel จะไม่ถูกส่งข้ามอินเทอร์เน็ตไปบันทึกบนเซิร์ฟเวอร์ของเราแต่อย่างใด</p>
+      </div>
+      
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ข้อจำกัดที่ควรทราบ</h2>
+        <p>เนื่องจากหน้ากระดาษ Excel ไม่ได้จำกัดความกว้าง ทำให้เครื่องมือนี้จะพยายามปรับขนาด (Scale) เพื่อให้พอดีกับกระดาษ A4 ในแนวนอน หากชีตของคุณมีคอลัมน์เยอะมากๆ อาจทำให้ตัวอักษรใน PDF เล็กกว่าปกติ เราแนะนำให้ซ่อนคอลัมน์ที่ไม่จำเป็นก่อนนำมาแปลงที่นี่</p>
+      </div>
+    </div>
+  );
+
+  const excelToPdfFaqs = [
+    {
+      question: 'รองรับการแปลงไฟล์ Excel ที่มีหลายชีต (Sheets) หรือไม่?',
+      answer: 'ในเวอร์ชันปัจจุบัน ระบบจะดึงข้อมูลตารางและทำการแปลงเฉพาะข้อมูลชีตแรกเท่านั้น หากคุณมีหลายชีต แนะนำให้แยกบันทึกเป็นไฟล์ละ 1 ชีตก่อนอัปโหลด'
+    },
+    {
+      question: 'แปลงไฟล์ Excel เป็น PDF ปลอดภัยแค่ไหน?',
+      answer: 'ปลอดภัยสูงสุดครับ เพราะไฟล์ของคุณจะถูกแปลงผ่านเบราว์เซอร์ในอุปกรณ์ของคุณเอง ไม่มีการอัปโหลดไฟล์ไปยังคลาวด์หรือเก็บประวัติใดๆ ไว้'
+    },
+    {
+      question: 'ตารางใน PDF ถูกตัด หรือตัวหนังสือเล็กเกินไป ต้องทำอย่างไร?',
+      answer: 'ระบบจะพยายามย่อตารางทั้งหมดให้อยู่ในความกว้างหน้ากระดาษ A4 แนวนอนโดยอัตโนมัติ หากมีคอลัมน์มากเกินไปจะทำให้ตัวอักษรเล็ก แนะนำให้ลบหรือซ่อนคอลัมน์ที่ไม่จำเป็นออกจากไฟล์ต้นฉบับ'
+    }
+  ];
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={articleContent} faqs={excelToPdfFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

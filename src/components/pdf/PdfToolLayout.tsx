@@ -14,6 +14,7 @@ interface PdfToolLayoutProps {
   tool: PdfToolDefinition;
   currentStep: 1 | 2 | 3;
   faqs?: { question: string; answer: string }[];
+  article?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
   tool,
   currentStep,
   faqs,
+  article,
   children,
 }) => {
   const categoryInfo = PDF_CATEGORIES.find((c) => c.id === tool.category);
@@ -162,6 +164,13 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
             </div>
           </div>
         </div>
+
+        {/* SEO Article */}
+        {article && (
+          <article className="mb-16">
+            {article}
+          </article>
+        )}
 
         {/* FAQs */}
         <section className="mb-16">
