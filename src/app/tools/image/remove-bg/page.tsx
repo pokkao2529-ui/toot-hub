@@ -20,6 +20,7 @@ export default function RemoveBgPage() {
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [progress, setProgress] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -45,7 +46,7 @@ export default function RemoveBgPage() {
 
     setIsProcessing(true);
     setError('');
-    setProgress('กำลังโหลดโมเดล AI...');
+    setProgress('กำลังเตรียม AI (ครั้งแรกอาจใช้เวลา 5-10 วินาที)...');
     trackToolStart({ tool_name: 'image_remove_bg', tool_category: 'image' });
 
     try {
@@ -57,9 +58,9 @@ export default function RemoveBgPage() {
         debug: false,
         progress: (key: string, current: number, total: number) => {
           if (total > 0) {
-            setProgress(`กำลังดาวน์โหลดไฟล์ AI... ${Math.round((current / total) * 100)}%`);
+            setProgress(`กำลังเตรียม AI ไดคัทรูป... ${Math.round((current / total) * 100)}%`);
           } else if (key === 'compute:inference') {
-            setProgress('กำลังประมวลผลลบพื้นหลัง...');
+            setProgress('กำลังวิเคราะห์และตัดขอบเนียนๆ...');
           }
         },
       };
@@ -134,13 +135,26 @@ export default function RemoveBgPage() {
 
         <div className="max-w-4xl mx-auto bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800 p-6 sm:p-8">
 
-          {/* File Upload Area */}
-          {!file && (
+          {/* Upload Dropzone */}
+          {!originalUrl && (
             <div
-              className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-12 flex flex-col items-center justify-center cursor-pointer hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/10 transition group"
               onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                handleFilesAdded(e.dataTransfer.files);
+              }}
+              className={`border-2 border-dashed rounded-3xl p-12 text-center cursor-pointer transition-all duration-200 group ${
+                isDragging
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                  : 'border-slate-300 dark:border-slate-700 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800'
+              }`}
             >
-              <div className="w-20 h-20 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${
+                isDragging ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'bg-white dark:bg-slate-900 shadow-sm text-amber-500'
+              }`}>
                 <Upload size={32} className="text-amber-600 dark:text-amber-400" />
               </div>
               <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">อัปโหลดรูปภาพเพื่อลบพื้นหลัง</h3>
@@ -238,7 +252,7 @@ export default function RemoveBgPage() {
                   className="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl flex items-center gap-2 transition disabled:opacity-50"
                 >
                   <RefreshCw size={20} />
-                  ล้างข้อมูล
+                  {resultUrl ? 'ทำรูปอื่นต่อ' : 'เปลี่ยนรูป'}
                 </button>
               </div>
               

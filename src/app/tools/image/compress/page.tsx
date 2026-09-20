@@ -46,6 +46,7 @@ export default function ImageCompressPage() {
   const [progress, setProgress] = useState<{ current: number; total: number } | null>(null);
   const [results, setResults] = useState<CompressedResult[]>([]);
   const [isZipping, setIsZipping] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -237,12 +238,18 @@ export default function ImageCompressPage() {
           <div className="max-w-3xl mx-auto mb-10">
             <div
               onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
               onDrop={(e) => {
                 e.preventDefault();
+                setIsDragging(false);
                 handleFilesAdded(e.dataTransfer.files);
               }}
-              className="border-2 border-dashed border-rose-300 dark:border-rose-900/60 hover:border-rose-500 dark:hover:border-rose-500 rounded-3xl p-8 sm:p-12 text-center bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition cursor-pointer group"
+              className={`border-2 border-dashed rounded-3xl p-8 sm:p-12 text-center shadow-sm hover:shadow-md transition cursor-pointer group ${
+                isDragging 
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
+                  : 'border-rose-300 dark:border-rose-900/60 hover:border-rose-500 dark:hover:border-rose-500 bg-white dark:bg-slate-900'
+              }`}
             >
               <input
                 ref={fileInputRef}
@@ -253,7 +260,9 @@ export default function ImageCompressPage() {
                 onChange={(e) => handleFilesAdded(e.target.files)}
               />
 
-              <div className="h-16 w-16 mx-auto rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+              <div className={`h-16 w-16 mx-auto rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition ${
+                isDragging ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'bg-rose-50 dark:bg-rose-950/60 text-rose-600'
+              }`}>
                 <Upload size={32} />
               </div>
 
