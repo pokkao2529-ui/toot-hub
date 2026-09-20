@@ -15,6 +15,7 @@ async function getAnalytics() {
   if (analyticsInstance) return analyticsInstance;
 
   try {
+    if (!app) return null;
     const { getAnalytics: _getAnalytics, isSupported } = await import('firebase/analytics');
     const supported = await isSupported();
     if (!supported) return null;

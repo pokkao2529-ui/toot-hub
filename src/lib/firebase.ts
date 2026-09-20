@@ -14,10 +14,17 @@ const firebaseConfig = {
 };
 
 // Safe initialization for both SSR and Client environments
-export const app: FirebaseApp = getApps().length > 0 
-  ? getApp() 
-  : initializeApp(firebaseConfig);
+// Prevent Vercel build crash if env variables are not set
+const isFirebaseConfigured = !!firebaseConfig.apiKey;
 
-export const auth: Auth = getAuth(app);
-export const db: Firestore = getFirestore(app);
-export const storage: FirebaseStorage = getStorage(app);
+let appInstance: FirebaseApp | undefined;
+
+if (isFirebaseConfigured) {
+  appInstance = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+}
+
+// Export as optional or mock so it doesn't crash SSR/Build
+export const app: FirebaseApp | undefined = appInstance;
+export const auth: Auth | null = appInstance ? getAuth(appInstance) : null;
+export const db: Firestore | null = appInstance ? getFirestore(appInstance) : null;
+export const storage: FirebaseStorage | null = appInstance ? getStorage(appInstance) : null;

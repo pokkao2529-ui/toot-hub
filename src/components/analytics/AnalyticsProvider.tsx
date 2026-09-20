@@ -17,6 +17,7 @@ export function AnalyticsProvider() {
     async function initAndTrack() {
       if (typeof window === 'undefined') return;
       try {
+        if (!app) return;
         const { getAnalytics, isSupported, logEvent } = await import('firebase/analytics');
         const supported = await isSupported();
         if (!supported) return;
