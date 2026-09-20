@@ -42,8 +42,12 @@ function createRotatedTextPng(
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);
 
-  const boxWidth = Math.ceil(textWidth * cos + textHeight * sin) + 20 * scale;
-  const boxHeight = Math.ceil(textWidth * sin + textHeight * cos) + 20 * scale;
+  // Add extra padding (50% of textWidth) to guarantee it never gets cut off on mobile browsers
+  // where font loading metrics might temporarily misreport width.
+  const extraPadding = Math.ceil(textWidth * 0.5) + (50 * scale);
+  
+  const boxWidth = Math.ceil(textWidth * cos + textHeight * sin) + extraPadding;
+  const boxHeight = Math.ceil(textWidth * sin + textHeight * cos) + extraPadding;
 
   // Step 3: Draw on the properly sized canvas
   const canvas = document.createElement('canvas');
