@@ -103,8 +103,44 @@ export default function MergePdfPage() {
     setError(null);
   };
 
+  const mergeFaqs = [
+    {
+      question: 'รวม PDF ได้ครั้งละกี่ไฟล์?',
+      answer: `ระบบรองรับการรวมไฟล์ PDF สูงสุด ${tool.maxFiles} ไฟล์ต่อครั้ง โดยแต่ละไฟล์ต้องมีขนาดไม่เกิน ${Math.round(tool.maxFileSize / (1024 * 1024))} MB`,
+    },
+    {
+      question: 'ลำดับหน้าหลังรวมไฟล์ PDF จะเป็นอย่างไร?',
+      answer: 'ลำดับหน้าจะเรียงตามลำดับไฟล์ที่คุณเรียงไว้ในขั้นตอนที่ 2 คุณสามารถลากสลับลำดับไฟล์ก่อนกดรวมได้ตามต้องการ',
+    },
+    {
+      question: 'ไฟล์ PDF ที่รวมแล้วจะถูกเก็บบนเซิร์ฟเวอร์หรือไม่?',
+      answer: 'ไม่ครับ เครื่องมือนี้ทำงาน 100% บนเบราว์เซอร์ของคุณ (Client-side Processing) ไฟล์ทั้งหมดถูกประมวลผลในหน่วยความจำของเครื่องคุณโดยตรง ไม่มีการส่งข้อมูลขึ้นอินเทอร์เน็ตแต่อย่างใด',
+    },
+  ];
+
+  const mergeArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">รวมไฟล์ PDF หลายไฟล์ให้เป็นไฟล์เดียว ทำได้ใน 3 ขั้นตอน</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>เลือกไฟล์:</strong> ลากไฟล์ PDF หลายไฟล์มาวาง หรือคลิกเพื่อเลือก รองรับหลายไฟล์พร้อมกัน</li>
+          <li><strong>จัดลำดับ:</strong> ลากเพื่อสลับลำดับไฟล์ตามที่ต้องการก่อนรวม</li>
+          <li><strong>รวมและดาวน์โหลด:</strong> กดปุ่ม "รวมไฟล์" ระบบจะสร้างไฟล์ PDF ใหม่ให้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">เหมาะกับงานประเภทใดบ้าง?</h2>
+        <p>เครื่องมือรวม PDF เหมาะสำหรับ: รวมรายงานหลายบท, รวมใบเสร็จและสลิปหลายรายการ, รวมเอกสารสมัครงาน (วุฒิการศึกษา, ใบผ่านงาน, Portfolio), และรวมสัญญาที่แบ่งเป็นหลายตอน</p>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ความปลอดภัยของข้อมูล</h2>
+        <p>เนื่องจากกระบวนการรวมไฟล์ทั้งหมดทำงานบนเบราว์เซอร์ของคุณโดยตรง (Client-side Processing) เอกสารสำคัญ เช่น สัญญา งบการเงิน หรือข้อมูลส่วนตัว จะไม่ถูกส่งผ่านอินเทอร์เน็ตไปจัดเก็บบนเซิร์ฟเวอร์ของเราแม้แต่ไบต์เดียว</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={mergeArticle} faqs={mergeFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

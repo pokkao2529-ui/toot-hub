@@ -125,8 +125,40 @@ export default function RemovePagesPage() {
 
   const selectedCount = pages.filter((p) => p.selected).length;
 
+  const removePagesFaqs = [
+    {
+      question: 'วิธีเลือกหน้าที่ต้องการลบทำอย่างไร?',
+      answer: 'หลังจากอัปโหลดไฟล์ ระบบจะแสดงตัวอย่างทุกหน้าเป็น Thumbnail ให้คุณคลิกเลือกหน้าที่ต้องการลบ (หน้าที่เลือกจะแสดงกรอบสีแดง) จากนั้นกดปุ่ม "ลบหน้าที่เลือก"',
+    },
+    {
+      question: 'ลบหน้า PDF ได้สูงสุดกี่หน้าต่อครั้ง?',
+      answer: 'คุณสามารถลบได้หลายหน้าพร้อมกัน แต่ต้องคงเหลือไว้อย่างน้อย 1 หน้าในเอกสาร (ไม่สามารถลบทุกหน้าออกได้)',
+    },
+    {
+      question: 'ลบหน้าแล้วคุณภาพหน้าที่เหลือจะลดลงไหม?',
+      answer: 'ไม่ลดเลยครับ เนื้อหาในหน้าที่คงเหลือจะมีคุณภาพและความคมชัดเหมือนต้นฉบับ 100% ระบบเพียงแค่ตัดหน้าที่ไม่ต้องการออกโดยไม่ส่งผลต่อหน้าอื่น',
+    },
+  ];
+
+  const removePagesArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีลบหน้า PDF ที่ไม่ต้องการออก</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> เลือก PDF ที่ต้องการจัดการ ระบบจะแสดงทุกหน้าเป็นภาพขนาดย่อ</li>
+          <li><strong>คลิกเลือกหน้าที่ต้องการลบ:</strong> คลิกบน Thumbnail หน้าที่ไม่ต้องการ กรอบสีแดงจะปรากฏขึ้น</li>
+          <li><strong>ยืนยันและดาวน์โหลด:</strong> กดปุ่มลบ ระบบจะสร้างไฟล์ PDF ใหม่ที่ไม่มีหน้าที่คุณเลือกให้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">เหมาะกับงานประเภทใดบ้าง?</h2>
+        <p>เครื่องมือลบหน้า PDF เหมาะสำหรับ: ลบหน้าปกที่ไม่ต้องการออกก่อนส่งเอกสาร, ลบหน้าโฆษณาหรือเงื่อนไขในเอกสารที่ดาวน์โหลดมา, ลบหน้าเปล่าที่พิมพ์ติดมาโดยไม่ตั้งใจ, และลบหน้าที่มีข้อมูลเก่าหรือไม่เกี่ยวข้องออกจากรายงาน</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={removePagesArticle} faqs={removePagesFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

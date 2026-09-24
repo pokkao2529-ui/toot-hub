@@ -82,8 +82,44 @@ export default function UnlockPdfPage() {
     setError(null);
   };
 
+  const unlockFaqs = [
+    {
+      question: 'เครื่องมือนี้ใช้กับไฟล์ PDF ที่มีรหัสผ่านแบบใดได้บ้าง?',
+      answer: 'รองรับการปลดล็อกรหัสผ่านสำหรับ PDF ที่ใช้รหัสผ่านเปิดไฟล์ (User Password) และยังสามารถลบข้อจำกัดการพิมพ์หรือแก้ไข (Owner Password / Permissions) ออกได้ด้วย',
+    },
+    {
+      question: 'ต้องพิมพ์รหัสผ่านก่อนปลดล็อกไหม?',
+      answer: 'หากไฟล์มีรหัสผ่านสำหรับเปิด คุณจะต้องพิมพ์รหัสผ่านที่ถูกต้องก่อนเพื่อยืนยันว่าคุณมีสิทธิ์เข้าถึงไฟล์ ระบบไม่มีฟังก์ชันเดารหัสผ่านแต่อย่างใด',
+    },
+    {
+      question: 'รหัสผ่านที่พิมพ์จะถูกบันทึกหรือส่งไปยังเซิร์ฟเวอร์ไหม?',
+      answer: 'ไม่ครับ ทุกอย่างทำงานบนเบราว์เซอร์ของคุณเอง ทั้งรหัสผ่านและไฟล์ PDF จะไม่ถูกส่งผ่านอินเทอร์เน็ตแต่อย่างใด ความปลอดภัยและความเป็นส่วนตัวของคุณอยู่ในมือคุณเอง 100%',
+    },
+  ];
+
+  const unlockArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีปลดล็อกไฟล์ PDF ที่ติดรหัสผ่าน</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์ PDF:</strong> เลือกไฟล์ที่ถูกล็อกรหัสผ่าน</li>
+          <li><strong>พิมพ์รหัสผ่าน:</strong> กรอกรหัสผ่านที่ถูกต้องของไฟล์ (คุณต้องรู้รหัสผ่านอยู่แล้ว)</li>
+          <li><strong>ปลดล็อกและดาวน์โหลด:</strong> กดปุ่มปลดล็อก ระบบจะสร้างไฟล์ PDF ใหม่ที่ไม่ต้องใส่รหัสผ่านเปิดอ่านอีกต่อไป</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">เหตุผลที่ผู้ใช้นิยมปลดล็อก PDF</h2>
+        <p>กรณีที่พบบ่อย ได้แก่: Statement ธนาคารที่ต้องพิมพ์รหัสผ่านทุกครั้ง, รายงานที่ดาวน์โหลดมาแล้วพิมพ์ไม่ได้เนื่องจากติด Permission Lock, และเอกสารที่ต้องการรวมกับ PDF ไฟล์อื่น (ไฟล์ที่ล็อกอยู่จะรวมไม่ได้)</p>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ข้อควรระวัง</h2>
+        <p>เครื่องมือนี้มีไว้เพื่อความสะดวกของเจ้าของเอกสารที่ทราบรหัสผ่านอยู่แล้วเท่านั้น ไม่สามารถใช้เพื่อเจาะหรือแฮ็กรหัสผ่านของไฟล์ที่ไม่มีสิทธิ์เข้าถึง</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={unlockArticle} faqs={unlockFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

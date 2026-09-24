@@ -125,8 +125,40 @@ export default function SplitPdfPage() {
     setError(null);
   };
 
+  const splitFaqs = [
+    {
+      question: 'แยกไฟล์ PDF ออกเป็นไฟล์ย่อยได้โหมดไหนบ้าง?',
+      answer: 'รองรับ 2 โหมด: (1) แยกทุกหน้าออกเป็นไฟล์เดี่ยว และ (2) กำหนดช่วงหน้าเอง เช่น "1-3, 4-7" เพื่อแยกเป็นกลุ่มหน้าตามต้องการ',
+    },
+    {
+      question: 'ไฟล์ที่ได้หลังจากแยก PDF จะดาวน์โหลดอย่างไร?',
+      answer: 'หากแยกออกเป็นหลายไฟล์ ระบบจะรวมทุกไฟล์ไว้ใน ZIP อัตโนมัติ แล้วดาวน์โหลดในคลิกเดียว สะดวกไม่ต้องดาวน์โหลดทีละไฟล์',
+    },
+    {
+      question: 'การแยกหน้า PDF ปลอดภัยไหม?',
+      answer: 'ปลอดภัยอย่างสูงครับ เพราะทุกขั้นตอนทำงานบนเบราว์เซอร์ของคุณเอง ไม่มีการส่งไฟล์ผ่านอินเทอร์เน็ต เหมาะสำหรับเอกสารที่มีข้อมูลส่วนตัวหรือข้อมูลทางธุรกิจ',
+    },
+  ];
+
+  const splitArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีแยกไฟล์ PDF ออกเป็นหลายส่วน</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> เลือกหรือลากไฟล์ PDF ที่ต้องการแยก</li>
+          <li><strong>เลือกโหมด:</strong> แยกทุกหน้า หรือกำหนดช่วงหน้าเอง (เช่น 1-5, 6-10)</li>
+          <li><strong>ดาวน์โหลด:</strong> ระบบแยกไฟล์ให้ในทันที พร้อมบรรจุใน ZIP สำหรับหลายไฟล์</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">แยก PDF เหมาะกับงานประเภทไหน?</h2>
+        <p>เครื่องมือแยก PDF เหมาะสำหรับ: แยกเอกสารสัญญาหลายบทออกเป็นส่วนๆ, แยกบทรายงานวิจัยออกเป็นตอน, แยกใบแจ้งหนี้รายเดือนออกเป็นรายฉบับ, และดึงเฉพาะบทที่ต้องใช้งานออกจากหนังสือ PDF</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={splitArticle} faqs={splitFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

@@ -131,8 +131,40 @@ export default function ExtractPagesPage() {
 
   const selectedCount = pages.filter((p) => p.selected).length;
 
+  const extractPagesFaqs = [
+    {
+      question: 'วิธีระบุหน้าที่ต้องการดึงออกมาทำอย่างไร?',
+      answer: 'หลังอัปโหลดไฟล์ ระบบจะแสดง Thumbnail ทุกหน้า คลิกเลือกหน้าที่ต้องการดึงออก (รองรับการเลือกหลายหน้าพร้อมกัน) จากนั้นกดปุ่ม "ดึงหน้าที่เลือก"',
+    },
+    {
+      question: 'หน้าที่ดึงออกมาจะรวมอยู่ในไฟล์เดียวหรือแยกไฟล์?',
+      answer: 'ระบบจะรวมหน้าที่คุณเลือกทั้งหมดไว้ในไฟล์ PDF ไฟล์เดียว โดยเรียงตามลำดับหน้าในเอกสารต้นฉบับ',
+    },
+    {
+      question: 'ความแตกต่างระหว่าง "ดึงหน้า" (Extract) กับ "แยกไฟล์" (Split) คืออะไร?',
+      answer: 'Extract คือการเลือกเฉพาะหน้าที่ต้องการนำออกมาสร้างเป็นไฟล์ใหม่ ส่วน Split คือการตัดเอกสารออกเป็นหลายกลุ่มตามช่วงหน้า ซึ่งเหมาะกับการแบ่งบทหรือบทที่ของเอกสาร',
+    },
+  ];
+
+  const extractPagesArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ดึงหน้า PDF เฉพาะที่ต้องการ ใน 3 ขั้นตอนง่ายๆ</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>เปิดไฟล์:</strong> อัปโหลดไฟล์ PDF ต้นฉบับ ระบบจะโหลดตัวอย่างทุกหน้า</li>
+          <li><strong>เลือกหน้า:</strong> คลิกบน Thumbnail หน้าที่ต้องการดึงออกมา คุณสามารถเลือกได้หลายหน้า</li>
+          <li><strong>ดาวน์โหลด:</strong> กดปุ่มดึงหน้า ระบบจะสร้างไฟล์ PDF ใหม่ที่มีเฉพาะหน้าที่เลือก</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">กรณีใช้งานที่พบบ่อย</h2>
+        <p>นักศึกษาใช้ดึงเฉพาะบทที่ต้องอ่านสอบ, พนักงานดึงหน้าสำคัญจากรายงานขนาดใหญ่เพื่อแนบอีเมล, ทนายความดึงเฉพาะหน้าที่ต้องการแนบประกอบคดี, และนักวิจัยดึงกราฟหรือตารางสำคัญออกมาใช้ในงานนำเสนอ</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={extractPagesArticle} faqs={extractPagesFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

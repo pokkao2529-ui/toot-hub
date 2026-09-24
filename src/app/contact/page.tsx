@@ -15,7 +15,10 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) return;
-    // In static client mode, simulate instant confirmation
+    // Open default email client with pre-filled content
+    const subject = encodeURIComponent(`[TOOL HUB] ${category}: ${name}`);
+    const body = encodeURIComponent(`ชื่อ: ${name}\nอีเมล: ${email}\nหมวดหมู่: ${category}\n\nข้อความ:\n${message}`);
+    window.open(`mailto:contact@toot-hub.com?subject=${subject}&body=${body}`, '_blank');
     setIsSubmitted(true);
   };
 

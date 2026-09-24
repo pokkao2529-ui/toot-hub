@@ -96,8 +96,40 @@ export default function PageNumbersPage() {
     setError(null);
   };
 
+  const pageNumbersFaqs = [
+    {
+      question: 'ใส่เลขหน้าแบบใดได้บ้าง เช่น เริ่มจากเลขอะไร?',
+      answer: 'คุณสามารถกำหนดเลขหน้าเริ่มต้น (เช่น เริ่มที่ 1 หรือ 10) ตำแหน่งที่วางเลขหน้า (มุมบนขวา, กลางล่าง, ฯลฯ) รูปแบบตัวเลข และขนาดฟอนต์ได้ตามต้องการ',
+    },
+    {
+      question: 'ใส่เลขหน้าลงไปแล้วแก้ไขได้ไหม?',
+      answer: 'เลขหน้าจะถูกฝังเข้าไปในเนื้อหา PDF เป็นการถาวร หากต้องการแก้ไข คุณต้องใช้ไฟล์ต้นฉบับ (ก่อนใส่เลขหน้า) มาทำใหม่ ดังนั้นแนะนำให้เก็บสำเนาไฟล์ต้นฉบับไว้เสมอ',
+    },
+    {
+      question: 'ใส่เลขหน้าไม่รวมหน้าปก (หน้าแรก) ได้ไหม?',
+      answer: 'ได้ครับ คุณสามารถตั้งค่าให้เริ่มนับจากหน้าที่ 2 เป็นต้นไป เพื่อให้หน้าปกไม่มีเลขหน้าแสดง',
+    },
+  ];
+
+  const pageNumbersArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีเพิ่มเลขหน้าลงในไฟล์ PDF</h2>
+        <ol className="list-decimal pl-6 space-y-2">
+          <li><strong>อัปโหลดไฟล์:</strong> เลือกไฟล์ PDF ที่ต้องการใส่เลขหน้า</li>
+          <li><strong>ปรับแต่ง:</strong> เลือกตำแหน่ง รูปแบบ ขนาดฟอนต์ และเลขหน้าเริ่มต้น</li>
+          <li><strong>ดาวน์โหลด:</strong> ระบบจะฝังเลขหน้าลงทุกหน้าและสร้างไฟล์ PDF ใหม่ให้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">เหมาะกับงานประเภทใดบ้าง?</h2>
+        <p>เพิ่มเลขหน้าสำหรับ: รายงานวิจัยหรือวิทยานิพนธ์, เอกสารประกอบการประชุม, คู่มือการใช้งาน, งานเย็บเล่มเอกสาร, และสัญญาหรือข้อตกลงทางกฎหมายที่ต้องการอ้างอิงหน้า</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={pageNumbersArticle} faqs={pageNumbersFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />
