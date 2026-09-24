@@ -145,8 +145,41 @@ export default function WatermarkPage() {
 
   const selectedCount = pages.filter((p) => p.selected).length;
 
+  const watermarkFaqs = [
+    {
+      question: 'สามารถเลือกว่าจะใส่ลายน้ำเฉพาะบางหน้าได้หรือไม่?',
+      answer: 'ทำได้ครับ! คุณสามารถเลือก "เฉพาะหน้าที่เลือก" และคลิกเลือกหน้าที่ต้องการใส่ลายน้ำจากภาพพรีวิว (Thumbnail) ได้เลย หน้าที่ไม่ได้เลือกจะยังคงเป็นเอกสารเดิม',
+    },
+    {
+      question: 'ลายน้ำรองรับภาษาไทยไหม?',
+      answer: 'รองรับภาษาไทย 100% ครับ เราฟอนต์ภาษาไทยมาตรฐานที่แสดงผลสระและวรรณยุกต์ได้อย่างถูกต้องสมบูรณ์',
+    },
+    {
+      question: 'ไฟล์ PDF ที่ใส่ลายน้ำแล้ว จะถูกเก็บไว้ในเซิร์ฟเวอร์ไหม?',
+      answer: 'ไม่ถูกเก็บครับ ระบบการสร้างลายน้ำของเราทำงานบนเครื่องคอมพิวเตอร์หรือโทรศัพท์ของคุณเอง (Client-side Rendering) ดังนั้นจะไม่มีใครเข้าถึงเอกสารของคุณได้ ปลอดภัยสุดๆ',
+    },
+  ];
+
+  const watermarkArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">โปรแกรมใส่ลายน้ำ PDF (Watermark) ออนไลน์ ฟรี</h2>
+        <p>ปกป้องผลงานและเอกสารสำคัญของคุณจากการถูกคัดลอก ดัดแปลง หรือนำไปแอบอ้าง ด้วยการประทับ <strong>ลายน้ำ (Watermark)</strong> ลงบนไฟล์ PDF ของคุณ คุณสามารถพิมพ์ข้อความ เช่น "เอกสารลับ", "Draft", หรือ "ลิขสิทธิ์ของ..." ได้ตามต้องการ</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>อัปโหลดเอกสาร:</strong> เลือกไฟล์ PDF ที่ต้องการใส่ลายน้ำ</li>
+          <li><strong>ตั้งค่าลายน้ำ:</strong> พิมพ์ข้อความลายน้ำ ปรับแต่งสี (ดำ, แดง, น้ำเงิน, เทา) ขนาดตัวอักษร ความเอียง และความโปร่งแสง</li>
+          <li><strong>พรีวิวและดาวน์โหลด:</strong> ตรวจสอบความถูกต้องจากภาพตัวอย่างบนหน้าจอ จากนั้นกดบันทึกเป็น PDF ไฟล์ใหม่ได้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ดูภาพตัวอย่างลายน้ำแบบเรียลไทม์</h2>
+        <p>คุณไม่ต้องนั่งเดาว่าลายน้ำจะออกมาหน้าตาเป็นอย่างไร เพราะเรามีระบบแสดงภาพตัวอย่าง (Real-time Preview) เมื่อคุณพิมพ์ข้อความหรือเปลี่ยนสี ลายน้ำบนหน้าจอจะอัปเดตให้ดูทันที ช่วยให้คุณกะขนาดและความเข้มได้เหมาะสมที่สุดก่อนนำไปใช้งานจริง</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={watermarkArticle} faqs={watermarkFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

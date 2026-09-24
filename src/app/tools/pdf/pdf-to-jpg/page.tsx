@@ -128,8 +128,41 @@ export default function PdfToJpgPage() {
 
   const selectedCount = pages.filter((p) => p.selected).length;
 
+  const pdfToJpgFaqs = [
+    {
+      question: 'แปลงจาก PDF เป็นรูปภาพแล้วตัวอักษรจะเบลอไหม?',
+      answer: 'ไม่เบลอครับ ระบบของเราเรนเดอร์ PDF ที่ความละเอียดสูง ทำให้ตัวอักษร เส้น และรูปภาพที่ได้มีความคมชัดเท่ากับต้นฉบับเลยครับ',
+    },
+    {
+      question: 'เลือกแปลงแค่บางหน้าเป็นรูปภาพได้ไหม?',
+      answer: 'ได้แน่นอนครับ คุณสามารถคลิกเลือกเฉพาะหน้าที่ต้องการ (เช่น หน้า 1 และ 5) จากหน้าตัวอย่าง แล้วกดแปลงไฟล์ ระบบจะดึงเฉพาะหน้านั้นๆ มาเป็นรูปให้คุณ',
+    },
+    {
+      question: 'ไฟล์ที่ได้จะเป็นไฟล์ ZIP หรือเป็นรูปภาพแยก?',
+      answer: 'เมื่อแปลงไฟล์เสร็จ คุณจะได้รับไฟล์รวมอยู่ในรูปแบบ ZIP เพื่อความสะดวกในการดาวน์โหลดในครั้งเดียว แต่เมื่อแตกไฟล์ออกมาก็จะเป็นรูปภาพ JPG แยกทีละหน้าครับ',
+    },
+  ];
+
+  const pdfToJpgArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีแปลงไฟล์ PDF เป็นรูปภาพ JPG ออนไลน์ฟรี</h2>
+        <p>หากคุณต้องการอัปโหลดเอกสาร PDF ลงในโซเชียลมีเดีย เช่น Facebook หรือ LINE รูปแบบไฟล์ที่เหมาะสมที่สุดคือ JPG โปรแกรมแปลงไฟล์ PDF เป็น JPG ของเราจะเปลี่ยนเอกสารทุกหน้าให้กลายเป็นรูปภาพความละเอียดสูงในไม่กี่วินาที</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>อัปโหลด PDF:</strong> เลือกไฟล์เอกสารที่คุณต้องการแปลงเป็นรูปภาพ</li>
+          <li><strong>เลือกหน้ากระดาษ:</strong> เลือกว่าจะแปลงทุกหน้า หรือเลือกเฉพาะหน้าที่คุณต้องการผ่านภาพพรีวิว</li>
+          <li><strong>ดาวน์โหลดไฟล์ ZIP:</strong> กดปุ่มแปลงไฟล์ ระบบจะทำงานและแพ็ครูปภาพทั้งหมดเป็นไฟล์ ZIP ให้คุณดาวน์โหลดได้ในคลิกเดียว</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ทำงานรวดเร็วและปลอดภัยระดับสูงสุด</h2>
+        <p>ระบบแปลง PDF เป็นรูปภาพของเราถูกออกแบบมาให้ทำงานบนเครื่องของผู้ใช้ (Client-Side) ทั้งหมด หมายความว่าเอกสารต้นฉบับและรูปภาพที่ได้ จะไม่ถูกอัปโหลดขึ้นอินเทอร์เน็ตเลยแม้แต่หน้าเดียว คุณจึงสบายใจได้เมื่อต้องแปลงเอกสารที่เป็นความลับหรือข้อมูลทางการเงิน</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={pdfToJpgArticle} faqs={pdfToJpgFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

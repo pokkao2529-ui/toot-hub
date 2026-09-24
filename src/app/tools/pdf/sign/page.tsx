@@ -616,10 +616,30 @@ export default function SignPdfPage() {
     (s) => s.pageNumber === currentPage
   );
 
+  const signArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">เซ็นเอกสาร PDF ออนไลน์ ง่าย สะดวก รวดเร็ว (e-Signature)</h2>
+        <p>ไม่จำเป็นต้องปริ้นท์เอกสารออกมาเซ็นแล้วสแกนกลับไปใหม่ให้เสียเวลา เครื่องมือ <strong>เซ็นเอกสารออนไลน์</strong> ของ TOOL HUB ให้คุณสร้างลายเซ็นอิเล็กทรอนิกส์ (e-Signature) ลงบนไฟล์สัญญา, ใบสมัครงาน, ใบเสนอราคา หรือเอกสารอื่นๆ ได้อย่างง่ายดายบนเบราว์เซอร์</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>เปิดไฟล์ PDF:</strong> อัปโหลดเอกสารที่คุณต้องการเซ็น</li>
+          <li><strong>เพิ่มลายเซ็น:</strong> วาดลายเซ็นของคุณสดๆ (รองรับการใช้เมาส์หรือนิ้วบนจอมือถือ), พิมพ์ชื่อด้วยฟอนต์ลายมือ, หรือเลือกตราประทับสำเร็จรูป</li>
+          <li><strong>ปรับแต่งและจัดวาง:</strong> ลากลายเซ็นไปวางในตำแหน่งที่ต้องการ ย่อ-ขยายขนาดได้อิสระ</li>
+          <li><strong>บันทึกพร้อมใช้:</strong> กดบันทึกเพื่อรับไฟล์ PDF พร้อมลายเซ็นที่ผนวกเข้ากับเนื้อหาอย่างสมบูรณ์</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">รับรองสำเนาถูกต้อง (บัตรประชาชน, ทะเบียนบ้าน)</h2>
+        <p>นอกจากการเซ็นชื่อทั่วไปแล้ว เรายังมีฟังก์ชัน <strong>รับรองสำเนาถูกต้อง (Certified True Copy)</strong> พร้อมระบุวันที่และ "วัตถุประสงค์" การใช้งาน เช่น <em>'ใช้สำหรับสมัครงานบริษัท...เท่านั้น'</em> เพื่อขีดคร่อมเอกสารสำคัญ ป้องกันการนำไปใช้ในทางที่ผิด หรือแอบอ้างทำธุรกรรมทางการเงิน</p>
+      </div>
+    </div>
+  );
+
   return (
     <PdfToolLayout
       tool={tool}
       currentStep={step}
+      article={signArticle}
       faqs={[
         {
           question: 'ลายเซ็นอิเล็กทรอนิกส์บนเว็บนี้มีผลทางกฎหมายในประเทศไทยหรือไม่?',

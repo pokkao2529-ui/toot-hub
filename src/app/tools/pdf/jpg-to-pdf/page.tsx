@@ -117,8 +117,41 @@ export default function JpgToPdfPage() {
     setError(null);
   };
 
+  const jpgToPdfFaqs = [
+    {
+      question: 'รวมรูปภาพหลายรูปในไฟล์ PDF เดียวได้ไหม?',
+      answer: 'ได้แน่นอนครับ คุณสามารถอัปโหลดรูปภาพได้สูงสุด 20 รูปพร้อมกัน และเลือกจัดเรียงลำดับใหม่ก่อนกดสร้าง PDF เพื่อรวมทั้งหมดไว้ในไฟล์เดียว',
+    },
+    {
+      question: 'ปรับขนาดหน้ากระดาษ A4 หรือปรับระยะขอบได้หรือไม่?',
+      answer: 'ได้ครับ เครื่องมือของเรารองรับการตั้งค่าขนาดหน้ากระดาษ (A4 หรือพอดีกับรูปภาพ) แนวหน้ากระดาษ (ตั้ง/นอน) และปรับระยะขอบ (ไม่มีขอบ/ปกติ/กว้าง) ได้อิสระ',
+    },
+    {
+      question: 'รองรับไฟล์นามสกุลอะไรบ้าง?',
+      answer: 'รองรับไฟล์ภาพมาตรฐานทั้งหมด ได้แก่ JPG, JPEG, PNG, และ WebP ครับ ภาพของคุณจะยังคงความคมชัดและรายละเอียดไว้ดังเดิม',
+    },
+  ];
+
+  const jpgToPdfArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีแปลงรูปภาพ JPG/PNG เป็น PDF ออนไลน์</h2>
+        <p>คุณต้องการส่งเอกสารที่เป็นรูปถ่าย บัตรประชาชน หรือรายงานที่สแกนเป็นรูปภาพ ให้ดูเป็นมืออาชีพมากขึ้นใช่หรือไม่? โปรแกรมแปลงรูปเป็น PDF ของเราช่วยคุณได้ จัดหน้าและรวมไฟล์ทั้งหมดง่ายๆ ในพริบตา</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>เลือกรูปภาพ:</strong> อัปโหลดไฟล์ JPG, PNG หรือ WebP ที่ต้องการ (เลือกหลายไฟล์เพื่อรวมเป็นเอกสารชุดเดียวได้)</li>
+          <li><strong>ปรับแต่งหน้าตา:</strong> จัดลำดับรูปภาพ ปรับขนาดหน้าเป็น A4 เลือกระยะขอบ และแนวตั้ง/แนวนอนได้ตามความเหมาะสม</li>
+          <li><strong>กดรวมเป็น PDF:</strong> รับไฟล์ PDF คุณภาพสูง พร้อมบันทึกลงเครื่อง หรือส่งต่อได้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ไฟล์รูปส่วนตัวปลอดภัย ไม่ถูกบันทึก</h2>
+        <p>เราให้ความสำคัญกับความเป็นส่วนตัวของคุณ เครื่องมือนี้ประมวลผลรูปภาพบนอุปกรณ์ของคุณเท่านั้น (Client-side Rendering) ภาพถ่ายและเอกสารสำคัญจะไม่ถูกส่งขึ้นคลาวด์หรือเซิร์ฟเวอร์ภายนอก คุณจึงมั่นใจได้เรื่องความปลอดภัย</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step}>
+    <PdfToolLayout tool={tool} currentStep={step} article={jpgToPdfArticle} faqs={jpgToPdfFaqs}>
       {error && (
         <div className="mb-6">
           <PdfError message={error} onReset={handleReset} />

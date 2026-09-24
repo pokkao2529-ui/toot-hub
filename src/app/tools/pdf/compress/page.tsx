@@ -122,8 +122,26 @@ export default function CompressPdfPage() {
     },
   ];
 
+  const compressArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">วิธีบีบอัดไฟล์ PDF (ลดขนาด) ให้เล็กลง ฟรี</h2>
+        <p>หมดปัญหาการส่งไฟล์งานผ่านอีเมลไม่ผ่าน หรืออัปโหลดเอกสารขึ้นเว็บไซต์ราชการ/สมัครงานไม่ได้ เพราะขนาดไฟล์ PDF ใหญ่เกินไป เครื่องมือบีบอัด PDF ของเราช่วยลดขนาดไฟล์ให้เล็กลงได้สูงสุดถึง 80% แต่ยังคงอ่านออกและชัดเจนเหมือนเดิม</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>อัปโหลดไฟล์ PDF:</strong> ลากและวางไฟล์ที่ต้องการบีบอัด หรือกดปุ่มอัปโหลด</li>
+          <li><strong>เลือกระดับการบีบอัด:</strong> เลือกระดับความละเอียดภาพและคุณภาพเอกสารตามที่ต้องการ</li>
+          <li><strong>รับไฟล์ที่เล็กลง:</strong> ระบบบีบอัดในเบราว์เซอร์เสร็จเรียบร้อย กดดาวน์โหลดไฟล์ที่มีขนาดเล็กลงได้ทันที</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">ปลอดภัยและเป็นส่วนตัว 100%</h2>
+        <p>การบีบอัดไฟล์ทั้งหมดทำงานด้วยเทคโนโลยี <strong>Client-side</strong> บนเบราว์เซอร์และทรัพยากรเครื่องของคุณเอง (ทั้งคอมพิวเตอร์และมือถือ) หมายความว่าเอกสารความลับทางธุรกิจ บัตรประชาชน หรือข้อมูลส่วนตัวของคุณ จะไม่ถูกส่งข้ามอินเทอร์เน็ต และไม่ถูกบันทึกไว้ในเซิร์ฟเวอร์ใดๆ แม้แต่นิดเดียว ปลอดภัยเต็ม 100%</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step} faqs={faqs}>
+    <PdfToolLayout tool={tool} currentStep={step} article={compressArticle} faqs={faqs}>
       {/* Error Alert */}
       {error && (
         <div className="mb-6">

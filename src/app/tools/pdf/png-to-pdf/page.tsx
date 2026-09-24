@@ -138,8 +138,26 @@ export default function PngToPdfPage() {
     },
   ];
 
+  const pngToPdfArticle = (
+    <div className="text-slate-700 dark:text-slate-300 space-y-8 leading-relaxed">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">โปรแกรมแปลงไฟล์ PNG เป็น PDF รวมรูปภาพอย่างง่าย</h2>
+        <p>คุณกำลังมีภาพถ่าย ภาพแคปหน้าจอ หรือกราฟิกไฟล์ PNG หลายภาพ และต้องการส่งเป็นไฟล์เอกสารไฟล์เดียวใช่ไหม? ระบบแปลงไฟล์รูปภาพ PNG เป็น PDF ของเราจะช่วยมัดรวมรูปภาพเหล่านั้นให้กลายเป็นเอกสารคุณภาพสูง พร้อมใช้งานได้ทันที</p>
+        <ol className="list-decimal pl-6 mt-4 space-y-2">
+          <li><strong>ลากรูปมาวาง:</strong> เลือกภาพ PNG หนึ่งรูป หรือหลายรูปพร้อมกันเพื่อทำการมัดรวมเป็นไฟล์เดียว</li>
+          <li><strong>จัดเรียงใหม่:</strong> สลับลำดับภาพ ตั้งค่ากระดาษให้เป็น A4 หรือตั้งค่าขอบกระดาษได้ตามความเหมาะสม</li>
+          <li><strong>แปลงและเซฟ:</strong> รับไฟล์ PDF ที่รวมรูปไว้เรียบร้อย ดาวน์โหลดเก็บเข้าคอมพิวเตอร์หรือสมาร์ทโฟนได้เลย</li>
+        </ol>
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">รองรับภาพโปร่งใส แปลงได้โดยไม่ติดขอบดำ</h2>
+        <p>จุดเด่นของไฟล์ PNG คือการมีพื้นหลังแบบโปร่งใส (Transparent) โปรแกรมทั่วไปมักจะมีปัญหาภาพติดพื้นหลังสีดำหลังการแปลงไฟล์ แต่ที่ <strong>TOOL HUB</strong> เราดูแลเรื่องความโปร่งใสนี้ให้ เพื่อให้รูปภาพของคุณอยู่ในสภาพสวยงาม คมชัด และจัดวางลงบนหน้ากระดาษ PDF พื้นขาวได้อย่างไร้ที่ติ</p>
+      </div>
+    </div>
+  );
+
   return (
-    <PdfToolLayout tool={tool} currentStep={step} faqs={faqs}>
+    <PdfToolLayout tool={tool} currentStep={step} article={pngToPdfArticle} faqs={faqs}>
       {/* Error Alert */}
       {error && (
         <div className="mb-6">
