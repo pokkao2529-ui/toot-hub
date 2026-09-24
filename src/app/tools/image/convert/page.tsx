@@ -505,7 +505,7 @@ export default function ImageConverterPage() {
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                 เพราะ TOOL HUB ใช้เทคโนโลยีประมวลผลบนเบราว์เซอร์ของเครื่องคุณโดยตรง (Client-side HTML5 Canvas) ไม่ต้องเสียเวลาอัปโหลดภาพขนาดใหญ่ขึ้นเซิร์ฟเวอร์ และไม่ต้องรอคิวประมวลผลร่วมกับคนอื่น แปลงเสร็จได้ในเสี้ยววินาที
               </p>
-            </div>
+          </div>
           </div>
         </section>
       </main>

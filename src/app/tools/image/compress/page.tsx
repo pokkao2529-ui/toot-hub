@@ -633,6 +633,7 @@ export default function ImageCompressPage() {
               </p>
             </div>
           </div>
+          </div>
         </section>
       </main>
 
