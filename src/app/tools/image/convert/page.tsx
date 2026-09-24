@@ -455,10 +455,36 @@ export default function ImageConverterPage() {
         )}
 
         {/* SEO FAQ Section */}
-        <section className="mt-20 pt-12 border-t border-slate-200 dark:border-slate-800 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">
-            คำถามที่พบบ่อยเกี่ยวกับการแปลงไฟล์รูปภาพ (FAQ)
-          </h2>
+        <section className="mt-20 pt-12 border-t border-slate-200 dark:border-slate-800 max-w-4xl mx-auto space-y-12">
+          
+          {/* Article Section */}
+          <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-rose-600 prose-img:rounded-2xl">
+            <h2>โปรแกรมแปลงไฟล์รูปภาพ (Convert Image) ฟรี ไม่มีอัปโหลด</h2>
+            <p>
+              บ่อยครั้งที่คุณมีไฟล์ภาพสกุลหนึ่งแต่ระบบปลายทางต้องการอีกสกุล เครื่องมือ <strong>แปลงไฟล์รูปภาพ</strong> 
+              ของเราให้คุณสลับสกุลไฟล์ระหว่าง JPG, PNG, และ WebP ได้อย่างรวดเร็วและปลอดภัย 100% 
+              โดยระบบจะทำการแปลงผ่านเบราว์เซอร์บนเครื่องคุณ ไม่ต้องส่งไฟล์ผ่านอินเทอร์เน็ตแม้แต่น้อย
+            </p>
+
+            <h3>เลือกฟอร์แมตไหนดีให้เหมาะกับงาน?</h3>
+            <ul>
+              <li><strong>JPG (JPEG):</strong> เหมาะที่สุดสำหรับภาพถ่ายทั่วไป มีขนาดไฟล์เล็ก แต่ไม่รองรับพื้นหลังโปร่งใส</li>
+              <li><strong>PNG:</strong> เหมาะสำหรับภาพกราฟิก โลโก้ ข้อความ หรือภาพที่ต้องการพื้นหลังทะลุโปร่งใส (Transparent) แต่ขนาดไฟล์มักจะใหญ่กว่า</li>
+              <li><strong>WebP:</strong> ไฟล์ยุคใหม่จาก Google ที่ควบรวมข้อดีทั้งสอง คือทำได้ทั้งโปร่งใสและมีขนาดไฟล์เล็กมาก เหมาะอย่างยิ่งสำหรับการทำเว็บไซต์</li>
+            </ul>
+
+            <h3>ขั้นตอนการแปลงสกุลไฟล์รูปภาพ</h3>
+            <ol>
+              <li><strong>อัปโหลดภาพ:</strong> เลือกภาพหรือลากภาพมาวาง รองรับการแปลงหลายไฟล์พร้อมกัน</li>
+              <li><strong>เลือกสกุลปลายทาง:</strong> คลิกเลือกว่าจะแปลงเป็น JPG, PNG หรือ WebP (สามารถเลือกภาพพื้นหลังสำหรับแปลง PNG เป็น JPG ได้ด้วย)</li>
+              <li><strong>แปลงไฟล์และรับรูป:</strong> กดปุ่มดาวน์โหลดแต่ละไฟล์ หรือดาวน์โหลดรวบยอดในรูปแบบ ZIP ได้ทันที</li>
+            </ol>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">
+              คำถามที่พบบ่อยเกี่ยวกับการแปลงไฟล์รูปภาพ (FAQ)
+            </h2>
 
           <div className="space-y-4">
             <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">

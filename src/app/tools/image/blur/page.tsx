@@ -416,6 +416,52 @@ export default function BlurImagePage() {
         </div>
       </main>
 
+      {/* SEO & FAQ Section */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-16 border-t border-slate-200 dark:border-slate-800 mt-12 space-y-12">
+        <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-rose-600 prose-img:rounded-2xl">
+          <h2>เบลอรูปภาพออนไลน์ (Blur Image / Sensor Image)</h2>
+          <p>
+            ปกป้องความเป็นส่วนตัวของคุณก่อนแชร์ภาพลงโซเชียลมีเดีย เครื่องมือ <strong>เซ็นเซอร์รูปภาพ</strong> 
+            ของเราให้คุณเบลอหน้าคน ปิดบังป้ายทะเบียนรถ ซ่อนข้อมูลบัตรประชาชน หรือข้อความแชทที่เป็นความลับได้อย่างรวดเร็ว
+            คุณสามารถเลือกรูปแบบการเซ็นเซอร์ได้ทั้งแบบ <strong>ภาพเบลอ (Blur)</strong> นุ่มนวล หรือแบบ <strong>เซ็นเซอร์พิกเซล (Pixelate)</strong> คลาสสิก
+          </p>
+
+          <h3>ฟีเจอร์เด่นของเครื่องมือเบลอภาพ TOOL HUB</h3>
+          <ul>
+            <li><strong>ประมวลผลบนเครื่องคุณ:</strong> การวาดกรอบและการเบลอทั้งหมดเกิดขึ้นบนเบราว์เซอร์ 100% รูปภาพที่มีข้อมูลสำคัญจะไม่ถูกอัปโหลดขึ้นเซิร์ฟเวอร์ใดๆ มั่นใจได้เรื่องความปลอดภัยระดับสูงสุด</li>
+            <li><strong>ลากกรอบง่ายดาย:</strong> เพียงแค่ใช้เมาส์หรือนิ้วลากครอบบริเวณที่ต้องการ ระบบจะเบลอให้ทันที</li>
+            <li><strong>ปรับระดับความเบลอ:</strong> เลือกความเข้มของการเบลอหรือขนาดพิกเซลเซ็นเซอร์ได้ตามต้องการ</li>
+            <li><strong>ย้อนกลับได้ (Undo):</strong> หากลากผิดสามารถกดย้อนกลับ (Undo) เพื่อแก้ไขใหม่ได้อย่างอิสระ</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">
+            คำถามที่พบบ่อย (FAQ)
+          </h2>
+          <div className="space-y-4">
+            <details className="group border border-slate-200 dark:border-slate-800 rounded-2xl p-4 bg-slate-50/50 dark:bg-slate-950">
+              <summary className="font-bold text-slate-900 dark:text-white cursor-pointer list-none flex justify-between items-center">
+                <span>เซ็นเซอร์แบบ "เบลอ" กับ "พิกเซล (โมเสก)" ต่างกันอย่างไร?</span>
+                <span className="text-slate-400 group-open:rotate-180 transition transform">▼</span>
+              </summary>
+              <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                การเบลอ (Blur) จะทำให้ภาพดูฟุ้งและนุ่มนวล นิยมใช้เบลอพื้นหลังหรือใบหน้าคนที่ไม่ต้องการให้เห็นชัด ส่วนแบบพิกเซล (Pixelate / Mosaic) จะทำให้ภาพแตกเป็นช่องสี่เหลี่ยม นิยมใช้เซ็นเซอร์ข้อมูลสำคัญ เช่น ตัวเลขบัตรประชาชน, ป้ายทะเบียนรถ หรือข้อมูลแชท
+              </p>
+            </details>
+            <details className="group border border-slate-200 dark:border-slate-800 rounded-2xl p-4 bg-slate-50/50 dark:bg-slate-950">
+              <summary className="font-bold text-slate-900 dark:text-white cursor-pointer list-none flex justify-between items-center">
+                <span>ภาพที่มีข้อมูลบัตรประชาชน ปลอดภัยที่จะนำมาเซ็นเซอร์ที่นี่หรือไม่?</span>
+                <span className="text-slate-400 group-open:rotate-180 transition transform">▼</span>
+              </summary>
+              <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                ปลอดภัยสูงสุดครับ! เพราะเว็บไซต์ของเราเขียนด้วยเทคโนโลยี Client-Side (HTML5 Canvas) ไฟล์รูปภาพของคุณจะไม่เคยออกจากโทรศัพท์หรือคอมพิวเตอร์ของคุณเลย ไม่มีใครสามารถแอบดูข้อมูลได้แม้แต่แอดมินระบบก็ตาม
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

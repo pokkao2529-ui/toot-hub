@@ -570,10 +570,37 @@ export default function ImageCompressPage() {
         )}
 
         {/* SEO & FAQ Section */}
-        <section className="mt-20 pt-12 border-t border-slate-200 dark:border-slate-800 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">
-            คำถามที่พบบ่อยเกี่ยวกับการบีบอัดรูปภาพ (FAQ)
-          </h2>
+        <section className="mt-20 pt-12 border-t border-slate-200 dark:border-slate-800 max-w-4xl mx-auto space-y-12">
+          
+          {/* Article Section */}
+          <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-rose-600 prose-img:rounded-2xl">
+            <h2>โปรแกรมบีบอัดรูปภาพ (Compress Image) ที่ดีที่สุด</h2>
+            <p>
+              หมดปัญหาไฟล์รูปภาพใหญ่เกินไปอัปโหลดขึ้นเว็บไม่ได้ ส่งอีเมลไม่ผ่าน หรือทำให้เว็บไซต์โหลดช้า 
+              เครื่องมือ <strong>บีบอัดรูปภาพ</strong> ของเราช่วยลดขนาดไฟล์ JPG, PNG และ WebP ลงได้สูงสุดถึง 90% 
+              โดยยังคงความคมชัดและรายละเอียดของภาพไว้ได้อย่างครบถ้วน ทำงานรวดเร็ว ปลอดภัย และฟรี 100%
+            </p>
+
+            <h3>ทำไมต้องใช้ตัวลดขนาดรูปภาพของเรา?</h3>
+            <ul>
+              <li><strong>รวดเร็วทันใจ:</strong> ประมวลผลบนเบราว์เซอร์ (Client-side) ด้วยความเร็วของอุปกรณ์คุณ ไม่ต้องรออัปโหลดและดาวน์โหลด</li>
+              <li><strong>ปลอดภัยสูงสุด:</strong> รูปภาพส่วนตัวหรือความลับทางธุรกิจของคุณจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ ข้อมูลไม่รั่วไหล</li>
+              <li><strong>รองรับ WebP:</strong> สามารถเลือกแปลงภาพที่บีบอัดแล้วเป็นฟอร์แมต WebP เพื่อลดขนาดไฟล์ลงไปได้อีก 30-50% เหมาะกับการทำเว็บไซต์</li>
+              <li><strong>จัดการหลายไฟล์:</strong> บีบอัดรูปภาพจำนวนมากพร้อมกันได้ และดาวน์โหลดกลับมาเป็นไฟล์ ZIP ในคลิกเดียว</li>
+            </ul>
+
+            <h3>วิธีบีบอัดรูปภาพให้ขนาดเล็กลงใน 3 ขั้นตอน</h3>
+            <ol>
+              <li><strong>เลือกรูปภาพ:</strong> ลากและวางไฟล์ JPG, PNG, WebP ที่ต้องการลดขนาด หรือคลิกที่กล่องเพื่อเลือกไฟล์</li>
+              <li><strong>เลือกคุณภาพ:</strong> แนะนำให้เลือก "สมดุล (80%)" ซึ่งให้ผลลัพธ์ที่ดีที่สุดทั้งขนาดไฟล์เล็กและความคมชัด หรือปรับเป็น WebP เพื่อขนาดไฟล์ที่เล็กที่สุด</li>
+              <li><strong>กดบีบอัดและดาวน์โหลด:</strong> ระบบจะประมวลผลทันที และให้คุณดาวน์โหลดรูปภาพที่ถูกบีบอัดแล้ว หรือดาวน์โหลดทั้งหมดเป็นไฟล์ ZIP</li>
+            </ol>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6 text-center">
+              คำถามที่พบบ่อยเกี่ยวกับการบีบอัดรูปภาพ (FAQ)
+            </h2>
 
           <div className="space-y-4">
             <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
