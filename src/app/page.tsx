@@ -101,7 +101,7 @@ export default function HomePage() {
                   Image Suite — บีบอัดและจัดการรูปภาพออนไลน์
                 </h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                  ลดขนาดรูปภาพ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% คมชัดเหมือนเดิม ไม่เปลืองเน็ตและพื้นที่เก็บข้อมูล
+                  ลดขนาดรูปภาพ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% และคงคุณภาพที่ดี ไม่เปลืองเน็ตและพื้นที่เก็บข้อมูล
                 </p>
               </div>
 

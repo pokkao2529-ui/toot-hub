@@ -205,7 +205,7 @@ export default function ImageCompressPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <JsonLd
         title="บีบอัดรูปภาพออนไลน์ฟรี (Compress Image JPG/PNG/WebP) — TOOL HUB"
-        description="ลดขนาดรูปภาพออนไลน์ฟรี ไม่จำกัดจำนวนไฟล์ บีบอัดไฟล์ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% คมชัดเหมือนเดิม ปลอดภัยในเครื่องคุณ 100%"
+        description="ลดขนาดรูปภาพออนไลน์ฟรี ไม่จำกัดจำนวนไฟล์ บีบอัดไฟล์ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% และยังคงคุณภาพที่ดี ปลอดภัยในเครื่องคุณ 100%"
         url="/tools/image/compress"
       />
 
@@ -574,7 +574,7 @@ export default function ImageCompressPage() {
           
           {/* Article Section */}
           <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-rose-600 prose-img:rounded-2xl">
-            <h2>โปรแกรมบีบอัดรูปภาพ (Compress Image) ที่ดีที่สุด</h2>
+            <h2>โปรแกรมบีบอัดรูปภาพออนไลน์ฟรี (Compress Image)</h2>
             <p>
               หมดปัญหาไฟล์รูปภาพใหญ่เกินไปอัปโหลดขึ้นเว็บไม่ได้ ส่งอีเมลไม่ผ่าน หรือทำให้เว็บไซต์โหลดช้า 
               เครื่องมือ <strong>บีบอัดรูปภาพ</strong> ของเราช่วยลดขนาดไฟล์ JPG, PNG และ WebP ลงได้สูงสุดถึง 90% 
@@ -592,7 +592,7 @@ export default function ImageCompressPage() {
             <h3>วิธีบีบอัดรูปภาพให้ขนาดเล็กลงใน 3 ขั้นตอน</h3>
             <ol>
               <li><strong>เลือกรูปภาพ:</strong> ลากและวางไฟล์ JPG, PNG, WebP ที่ต้องการลดขนาด หรือคลิกที่กล่องเพื่อเลือกไฟล์</li>
-              <li><strong>เลือกคุณภาพ:</strong> แนะนำให้เลือก "สมดุล (80%)" ซึ่งให้ผลลัพธ์ที่ดีที่สุดทั้งขนาดไฟล์เล็กและความคมชัด หรือปรับเป็น WebP เพื่อขนาดไฟล์ที่เล็กที่สุด</li>
+              <li><strong>เลือกคุณภาพ:</strong> แนะนำให้เลือก "สมดุล (80%)" ซึ่งเป็นค่าแนะนำเพื่อให้ได้ขนาดไฟล์เล็กและคุณภาพที่ยอมรับได้ หรือปรับเป็น WebP เพื่อขนาดไฟล์ที่เล็กที่สุด</li>
               <li><strong>กดบีบอัดและดาวน์โหลด:</strong> ระบบจะประมวลผลทันที และให้คุณดาวน์โหลดรูปภาพที่ถูกบีบอัดแล้ว หรือดาวน์โหลดทั้งหมดเป็นไฟล์ ZIP</li>
             </ol>
           </div>

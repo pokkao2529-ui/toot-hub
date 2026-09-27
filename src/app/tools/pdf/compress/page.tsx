@@ -215,7 +215,7 @@ export default function CompressPdfPage() {
                   สมดุล (Recommended)
                 </h4>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
-                  ลดขนาดไฟล์ลง 60-80% คมชัดเหมือนเดิม เหมาะกับเอกสารส่วนใหญ่
+                  ลดขนาดไฟล์ลง 60-80% และยังคงคุณภาพให้อ่านได้ชัดเจน เหมาะกับเอกสารส่วนใหญ่
                 </p>
                 <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
                   <CheckCircle2 size={13} />
