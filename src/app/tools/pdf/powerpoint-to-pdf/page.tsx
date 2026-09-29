@@ -36,17 +36,18 @@ export default function PptxToPdfPage() {
       trackToolStart({ tool_name: 'pptx_to_pdf', tool_category: 'pdf' });
 
       // Dynamically import to prevent SSR issues
-      // @ts-ignore
-      const PptxToHtml = (await import('@jvmr/pptx-to-html')).default;
+      const { pptxToHtml } = await import('@jvmr/pptx-to-html');
       
       setProgress(40);
       setProgressMsg('กำลังสร้างโครงสร้างสไลด์...');
 
       const arrayBuffer = await file.arrayBuffer();
       
-      const parser = new PptxToHtml();
-      await parser.load(arrayBuffer);
-      const slidesHtml = await parser.renderAll(); 
+      const slidesHtml = await pptxToHtml(arrayBuffer, {
+        width: 1280,
+        height: 720,
+        scaleToFit: true
+      }); 
 
       // Combine slides into a vertical stack
       let combinedHtml = '';
