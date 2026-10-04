@@ -114,32 +114,13 @@ export default function ImageCompressPage() {
   // Download Single File
   const handleDownloadSingle = (item: CompressedResult) => {
     trackToolDownload({ tool_name: 'image_compress', tool_category: 'image', output_type: item.mimeType.split('/')[1] });
-    const isMobile =
-      typeof window !== 'undefined' &&
-      (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-        (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
-
-    if (isMobile && typeof navigator !== 'undefined' && navigator.share && navigator.canShare) {
-      try {
-        const file = new File([item.compressedBlob], item.outputName, {
-          type: item.mimeType,
-        });
-        if (navigator.canShare({ files: [file] })) {
-          navigator.share({
-            files: [file],
-            title: item.outputName,
-          });
-          return;
-        }
-      } catch (e) {}
-    }
-
     const a = document.createElement('a');
+    a.style.display = 'none';
     a.href = item.previewUrl;
     a.download = item.outputName;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    setTimeout(() => document.body.removeChild(a), 300);
   };
 
   // Download All as ZIP
@@ -549,26 +530,14 @@ export default function ImageCompressPage() {
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center">
-                    <a
-                      href={item.previewUrl}
-                      download={item.outputName}
-                      onClick={(e) => {
-                        const isMobile =
-                          typeof window !== 'undefined' &&
-                          (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-                            (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
-                        if (isMobile) {
-                          e.preventDefault();
-                          handleDownloadSingle(item);
-                        } else {
-                          trackToolDownload({ tool_name: 'image_compress', tool_category: 'image', output_type: item.mimeType.split('/')[1] });
-                        }
-                      }}
-                      className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-700 dark:text-slate-200 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadSingle(item)}
+                      className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-700 dark:text-slate-200 font-bold text-xs transition flex items-center gap-1.5"
                     >
                       <Download size={15} />
                       <span>ดาวน์โหลด</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}

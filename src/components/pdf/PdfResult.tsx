@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Download, CheckCircle2, RotateCcw, FileCheck } from 'lucide-react';
 
 interface PdfResultProps {
@@ -9,6 +9,18 @@ interface PdfResultProps {
   fileSizeBytes?: number;
   message?: string;
   onReset: () => void;
+}
+
+// Universal download helper — works on Chrome, Firefox, Safari, Mobile
+function triggerDownload(url: string, filename: string) {
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  // Small delay before cleanup so browser has time to start download
+  setTimeout(() => document.body.removeChild(a), 300);
 }
 
 export const PdfResult: React.FC<PdfResultProps> = ({
@@ -25,13 +37,20 @@ export const PdfResult: React.FC<PdfResultProps> = ({
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   };
 
-  const handleDownload = async () => {
+  const handleDownloadClick = async () => {
     const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
     const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    // iOS Safari — open in new tab so PDF viewer appears with share button
+    if (isIOS) {
+      const opened = window.open(downloadUrl, '_blank');
+      if (opened) return;
+    }
+
+    // Android/Mobile — try Web Share API (native share sheet)
     const isAndroid = /Android/i.test(ua);
     const isMobile = isIOS || isAndroid || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 2);
 
-    // --- Mobile: Try Web Share API first (works on Safari, Chrome, and some in-app browsers) ---
     if (isMobile && typeof navigator !== 'undefined' && navigator.share && navigator.canShare) {
       try {
         const response = await fetch(downloadUrl);
@@ -39,31 +58,16 @@ export const PdfResult: React.FC<PdfResultProps> = ({
         const file = new File([blob], filename, { type: blob.type || 'application/pdf' });
         if (navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file], title: filename });
-          return; // Done!
+          return;
         }
       } catch (err: any) {
-        if (err?.name === 'AbortError') return; // User cancelled share sheet — that's fine
-        console.warn('Share failed, trying next method', err);
+        if (err?.name === 'AbortError') return;
+        console.warn('Share failed, falling back to anchor download', err);
       }
     }
 
-    // --- iOS fallback: open blob URL in new tab (Safari shows PDF viewer with share/save button) ---
-    if (isIOS) {
-      const opened = window.open(downloadUrl, '_blank');
-      if (opened) return;
-    }
-
-    // --- Desktop / Android fallback: standard anchor click ---
-    try {
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch {
-      alert('⚠️ ไม่สามารถดาวน์โหลดได้อัตโนมัติ\n\n👉 กรุณากดเมนู "เปิดใน Safari" มุมขวาบน แล้วลองใหม่อีกครั้งครับ');
-    }
+    // Desktop (Chrome, Firefox, Edge) — simple anchor click, always works with blob URLs
+    triggerDownload(downloadUrl, filename);
   };
 
   return (
@@ -87,25 +91,14 @@ export const PdfResult: React.FC<PdfResultProps> = ({
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
-        <a
-          href={downloadUrl}
-          download={filename}
-          onClick={(e) => {
-            const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
-            const isIOS = /iPhone|iPad|iPod/i.test(ua);
-            const isAndroid = /Android/i.test(ua);
-            const isMobile = isIOS || isAndroid || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 2);
-            
-            if (isMobile) {
-              e.preventDefault();
-              handleDownload(); // Use the existing handleDownload logic for mobile
-            }
-          }}
+        <button
+          type="button"
+          onClick={handleDownloadClick}
           className="flex-1 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3.5 shadow-md shadow-red-500/20 transition cursor-pointer"
         >
           <Download size={20} />
           <span>ดาวน์โหลดไฟล์</span>
-        </a>
+        </button>
 
         <button
           type="button"
