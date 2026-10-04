@@ -87,14 +87,25 @@ export const PdfResult: React.FC<PdfResultProps> = ({
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
-        <button
-          type="button"
-          onClick={handleDownload}
-          className="flex-1 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3.5 shadow-md shadow-red-500/20 transition"
+        <a
+          href={downloadUrl}
+          download={filename}
+          onClick={(e) => {
+            const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+            const isIOS = /iPhone|iPad|iPod/i.test(ua);
+            const isAndroid = /Android/i.test(ua);
+            const isMobile = isIOS || isAndroid || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 2);
+            
+            if (isMobile) {
+              e.preventDefault();
+              handleDownload(); // Use the existing handleDownload logic for mobile
+            }
+          }}
+          className="flex-1 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3.5 shadow-md shadow-red-500/20 transition cursor-pointer"
         >
           <Download size={20} />
           <span>ดาวน์โหลดไฟล์</span>
-        </button>
+        </a>
 
         <button
           type="button"

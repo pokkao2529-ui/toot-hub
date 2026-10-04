@@ -435,14 +435,26 @@ export default function ImageConverterPage() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleDownloadSingle(item)}
-                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-700 dark:text-slate-200 font-bold text-xs transition flex items-center gap-1.5 self-end sm:self-center"
+                  <a
+                    href={item.previewUrl}
+                    download={item.outputName}
+                    onClick={(e) => {
+                      const isMobile =
+                        typeof window !== 'undefined' &&
+                        (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                          (navigator.maxTouchPoints && navigator.maxTouchPoints > 2));
+                      if (isMobile) {
+                        e.preventDefault();
+                        handleDownloadSingle(item);
+                      } else {
+                        trackToolDownload({ tool_name: 'image_convert', tool_category: 'image', output_type: item.targetFormat });
+                      }
+                    }}
+                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-700 dark:text-slate-200 font-bold text-xs transition flex items-center gap-1.5 self-end sm:self-center cursor-pointer"
                   >
                     <Download size={15} />
                     <span>ดาวน์โหลด</span>
-                  </button>
+                  </a>
                 </div>
               ))}
             </div>
