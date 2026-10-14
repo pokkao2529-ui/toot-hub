@@ -95,7 +95,7 @@ export default function HomePage() {
               <div>
                 <span className="text-xs font-bold text-rose-600 uppercase tracking-wider flex items-center gap-1.5">
                   <Sparkles size={14} />
-                  <span>New Module • ปลอดภัย ประมวลผลในเครื่อง 100%</span>
+                  <span>New Module • ปลอดภัย ประมวลผลในเบราว์เซอร์</span>
                 </span>
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
                   Image Suite — บีบอัดและจัดการรูปภาพออนไลน์
@@ -246,7 +246,7 @@ export default function HomePage() {
                   พร้อมเพย์ (PromptPay 🇹🇭)
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                  คิวอาร์โค้ดรับเงินตามมาตรฐาน EMVCo สแกนจ่ายได้ทุกแอปธนาคาร ระบุยอดเงินได้
+                  คิวอาร์โค้ดรับเงินตามมาตรฐาน EMVCo รองรับการสแกนจ่ายผ่านแอปธนาคารชั้นนำของไทย ระบุยอดเงินได้
                 </p>
                 <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
                   สร้างเลย <ArrowRight size={13} />

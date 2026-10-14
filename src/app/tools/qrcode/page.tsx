@@ -542,7 +542,7 @@ export default function QRCodeGeneratorPage() {
                         </span>
                       </div>
                       <p className="text-[10px] text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-800">
-                        ⚠️ หมายเหตุ: กล้อง iPhone จะเชื่อมต่อได้เมื่อชื่อ <span className="text-red-500 font-bold">"{wifiSsid}"</span> สะกดตรงกับชื่อที่เร้าเตอร์ปล่อยออกมาจริง 100% (รวมตัวพิมพ์เล็ก-ใหญ่และเว้นวรรค)
+                        ⚠️ หมายเหตุ: กล้อง iPhone จะเชื่อมต่อได้เมื่อชื่อ <span className="text-red-500 font-bold">"{wifiSsid}"</span> สะกดตรงกับชื่อที่เร้าเตอร์ปล่อยออกมาจริงทุกตัวอักษร (รวมตัวพิมพ์เล็ก-ใหญ่และเว้นวรรค)
                       </p>
                     </div>
                   )}
@@ -598,7 +598,7 @@ export default function QRCodeGeneratorPage() {
 
                   <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
                     <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
-                    <span>รองรับการสแกนผ่านแอป LINE และกล้องมือถือทุกรุ่น สแกนแล้วเปิดหน้า <strong>"เพิ่มรายชื่อติดต่อ"</strong> หรือกดโทรออกได้ทันที 100% ไม่แสดงตัวอักษรขยะ</span>
+                    <span>รองรับการสแกนผ่านแอป LINE และกล้องมือถือ สแกนแล้วเปิดหน้า <strong>"เพิ่มรายชื่อติดต่อ"</strong> หรือกดโทรออกได้ทันที ไม่แสดงตัวอักษรขยะ</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
@@ -764,7 +764,7 @@ export default function QRCodeGeneratorPage() {
                   )}
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1.5">
-                  ระบบจะปรับระดับความถูกต้อง (Error Correction: High) ให้อัตโนมัติเพื่อให้สแกนติดง่าย 100%
+                  ระบบจะปรับระดับการแก้ไขข้อผิดพลาด (Error Correction: High) ให้อัตโนมัติเพื่อช่วยให้สแกนได้ง่ายขึ้น
                 </p>
               </div>
             </div>

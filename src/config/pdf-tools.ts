@@ -112,7 +112,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     isPremium: false,
     sortOrder: 2,
     seoTitle: 'แยกหน้า PDF ออนไลน์ฟรี - กำหนดช่วงหน้าได้อิสระ | TOOL HUB',
-    seoDescription: 'แยกไฟล์ PDF ออกเป็นหลายไฟล์ตามช่วงหน้าที่เลือก รวดเร็ว ทำงานบนเบราว์เซอร์ 100%',
+    seoDescription: 'แยกไฟล์ PDF ออกเป็นหลายไฟล์ตามช่วงหน้าที่เลือก รวดเร็ว ประมวลผลบนเบราว์เซอร์ ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์',
     acceptedMimeTypes: ['application/pdf'],
   },
   {
@@ -227,7 +227,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     isPremium: false,
     sortOrder: 8,
     seoTitle: 'บีบอัด PDF ออนไลน์ฟรี - ลดขนาดไฟล์ PDF ไม่เกิน 1MB 2MB ปลอดภัยสูง | TOOL HUB',
-    seoDescription: 'บริการบีบอัดไฟล์ PDF ออนไลน์ฟรี ลดขนาดเอกสาร PDF สูงสุด 90% รวดเร็ว ปลอดภัย ประมวลผลบนเบราว์เซอร์ 100% ไม่จำกัดจำนวนครั้ง',
+    seoDescription: 'บริการบีบอัดไฟล์ PDF ออนไลน์ฟรี ลดขนาดเอกสาร PDF ได้สูงสุด 90% รวดเร็ว ปลอดภัย ประมวลผลบนเบราว์เซอร์ ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์',
     acceptedMimeTypes: ['application/pdf'],
   },
   {
@@ -322,7 +322,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     isPremium: false,
     sortOrder: 13,
     seoTitle: 'แปลง PNG เป็น PDF ออนไลน์ฟรี - ภาพคมชัด ไม่แตก รวมหลายรูปได้ | TOOL HUB',
-    seoDescription: 'แปลงไฟล์รูปภาพ PNG เป็น PDF ออนไลน์ฟรี ปรับขนาดกระดาษ A4 หรือพอดีภาพ จัดเรียงหน้าได้ตามใจ ประมวลผลในเครื่อง 100%',
+    seoDescription: 'แปลงไฟล์รูปภาพ PNG เป็น PDF ออนไลน์ฟรี ปรับขนาดกระดาษ A4 หรือพอดีภาพ จัดเรียงหน้าได้ตามใจ ประมวลผลในเบราว์เซอร์ ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์',
     acceptedMimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
   },
   {
@@ -335,7 +335,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     icon: 'FileText',
     route: '/tools/pdf/word-to-pdf',
     status: 'active',
-    processingMode: 'server',
+    processingMode: 'client',
     maxFileSize: 50 * 1024 * 1024,
     maxFiles: 1,
     isPremium: false,
@@ -625,7 +625,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     slug: 'sign',
     name: 'Sign PDF',
     nameTH: 'เซ็นลายเซ็น & รับรองสำเนาถูกต้อง',
-    description: 'วาดลายเซ็น ประทับตรารับรองสำเนาถูกต้อง หรืออัปโหลดรูปภาพลายเซ็นเพื่อลงนามในเอกสาร PDF ฟรี 100%',
+    description: 'วาดลายเซ็น ประทับตรารับรองสำเนาถูกต้อง หรืออัปโหลดรูปภาพลายเซ็นเพื่อลงนามในเอกสาร PDF ฟรี',
     category: 'security',
     icon: 'FileSignature',
     route: '/tools/pdf/sign',
@@ -636,7 +636,7 @@ export const PDF_TOOLS: PdfToolDefinition[] = [
     isPremium: false,
     sortOrder: 30,
     seoTitle: 'เซ็น PDF ออนไลน์ฟรี - วาดลายเซ็น รับรองสำเนาถูกต้อง ปลอดภัยสูง | TOOL HUB',
-    seoDescription: 'เซ็นชื่อใน PDF และประทับตรารับรองสำเนาถูกต้องออนไลน์ฟรี 100% วาดลายเซ็น อัปโหลดรูป หรือพิมพ์ชื่อ ประมวลผลในเครื่อง ปลอดภัยต่อข้อมูลส่วนบุคคล',
+    seoDescription: 'เซ็นชื่อใน PDF และประทับตรารับรองสำเนาถูกต้องออนไลน์ฟรี วาดลายเซ็น อัปโหลดรูป หรือพิมพ์ชื่อ ประมวลผลในเบราว์เซอร์ ปลอดภัยต่อข้อมูลส่วนบุคคล',
     acceptedMimeTypes: ['application/pdf'],
   },
   {

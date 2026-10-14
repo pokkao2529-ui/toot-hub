@@ -965,7 +965,7 @@ export default function ImageResizePage() {
                     <ChevronDown size={16} className="text-slate-400 group-open:rotate-180 transition transform" />
                   </summary>
                   <p className="mt-3 text-slate-600 dark:text-slate-400 leading-relaxed">
-                    ไม่ถูกบันทึก 100% เพราะ TOOL HUB ใช้สถาปัตยกรรม Client-side การประมวลผลทั้งหมดเกิดขึ้นบนแรมและชิปกราฟิกของอุปกรณ์คุณผ่าน HTML5 Canvas ไม่มีข้อมูลใดๆ ส่งออกนอกเครื่อง ปลอดภัยต่อข้อมูลส่วนบุคคล
+                    ไม่ถูกบันทึกบนเซิร์ฟเวอร์แน่นอน เพราะ TOOL HUB ใช้สถาปัตยกรรม Client-side การประมวลผลทั้งหมดเกิดขึ้นบนแรมและชิปกราฟิกของอุปกรณ์คุณผ่าน HTML5 Canvas ไม่มีการส่งไฟล์ออกไปยังเซิร์ฟเวอร์ภายนอก ปลอดภัยต่อข้อมูลส่วนบุคคล
                   </p>
                 </details>
 

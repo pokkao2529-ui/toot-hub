@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'นโยบายความเป็นส่วนตัว (Privacy Policy) — TOOL HUB',
-  description: 'นโยบายความเป็นส่วนตัวและการรักษาความปลอดภัยข้อมูลของ TOOL HUB เครื่องมือประมวลผลบนเบราว์เซอร์ 100% ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์ และการใช้งานคุกกี้ Google AdSense',
+  description: 'นโยบายความเป็นส่วนตัวและการรักษาความปลอดภัยข้อมูลของ TOOL HUB เครื่องมือประมวลผลบนเบราว์เซอร์ ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์ และการใช้งานคุกกี้ Google AdSense',
 };
 
 export default function PrivacyPolicyPage() {
@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 text-xs font-bold border border-emerald-200 dark:border-emerald-900 mb-4">
             <ShieldCheck size={15} />
-            <span>มาตรฐานความปลอดภัยสูงสุด • Client-Side 100%</span>
+            <span>ประมวลผลบนเบราว์เซอร์ • ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             นโยบายความเป็นส่วนตัว
@@ -92,7 +92,7 @@ export default function PrivacyPolicyPage() {
               <span>2. นโยบายคุกกี้และโฆษณา Google AdSense (Cookie & Advertising Policy)</span>
             </h2>
             <p className="mb-3">
-              เพื่อให้เราสามารถให้บริการเครื่องมือทั้งหมดแก่ท่านได้<strong>ฟรี 100%</strong> โดยไม่มีค่าใช้จ่าย เว็บไซต์ของเราจำเป็นต้องแสดงโฆษณาที่ได้รับความร่วมมือจากพันธมิตรบุคคลที่สาม เช่น <strong>Google AdSense</strong>
+              เพื่อให้เราสามารถให้บริการเครื่องมือทั้งหมดแก่ท่านได้<strong>ฟรี</strong> โดยไม่มีค่าใช้จ่าย เว็บไซต์ของเราจำเป็นต้องแสดงโฆษณาที่ได้รับความร่วมมือจากพันธมิตรบุคคลที่สาม เช่น <strong>Google AdSense</strong>
             </p>
             <div className="space-y-3 text-xs bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
               <p>
