@@ -317,7 +317,7 @@ export default function QRCodeGeneratorPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <JsonLd
         title="สร้าง QR Code ฟรี ไม่มีวันหมดอายุ — TOOL HUB"
-        description="เครื่องมือสร้าง QR Code ออนไลน์ฟรี รองรับลิงก์ URL, พร้อมเพย์ (PromptPay), Wi-Fi, และฝังโลโก้ตรงกลาง ความละเอียดสูง ไม่จำกัดครั้ง"
+        description="เครื่องมือสร้าง QR Code ออนไลน์ฟรี รองรับลิงก์ URL, พร้อมเพย์ (PromptPay), Wi-Fi, และฝังโลโก้ตรงกลาง คมชัดสูง ดาวน์โหลดไฟล์ PNG หรือ SVG ไปใช้งานได้ทันที"
         url="/tools/qrcode"
       />
 
@@ -335,7 +335,7 @@ export default function QRCodeGeneratorPage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-4 py-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900 mb-3">
             <ShieldCheck size={14} />
-            <span>ฟรีตลอดชีพ ไม่มีวันหมดอายุ • สแกนได้ไม่จำกัด</span>
+            <span>Static QR Code • ไม่มีวันหมดอายุ • ดาวน์โหลดใช้งานฟรี</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
             สร้าง QR Code ออนไลน์ ฟรี คมชัดระดับ HD
@@ -872,7 +872,7 @@ export default function QRCodeGeneratorPage() {
                 <span>QR Code ที่สร้างจาก TOOL HUB มีวันหมดอายุหรือไม่?</span>
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                ไม่มีวันหมดอายุเด็ดขาด! QR Code ที่สร้างจาก TOOL HUB เป็นประเภท Static QR Code ข้อมูลทั้งหมดจะถูกเข้ารหัสลงไปในตัวภาพโค้ดโดยตรง สามารถสแกนได้ตลอดชีพ ไม่จำกัดจำนวนครั้ง และไม่มีการเก็บเงินย้อนหลัง
+                ไม่มีวันหมดอายุครับ QR Code ที่สร้างจาก TOOL HUB เป็นประเภท Static QR Code ข้อมูลทั้งหมดจะถูกเข้ารหัสลงไปในตัวภาพโค้ดโดยตรง สามารถสแกนใช้งานได้ต่อเนื่อง และไม่มีการเก็บค่าบริการย้อนหลัง
               </p>
             </div>
 
@@ -882,7 +882,7 @@ export default function QRCodeGeneratorPage() {
                 <span>QR Code พร้อมเพย์ (PromptPay) ปลอดภัยหรือไม่ สามารถสแกนจ่ายได้ทุกธนาคารไหม?</span>
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                ปลอดภัย 100% เพราะระบบของเราคำนวณรหัสตามมาตรฐานสากล EMVCo ของธนาคารแห่งประเทศไทยอย่างถูกต้อง สามารถใช้แอปพลิเคชันของทุกธนาคารในไทยสแกนเพื่อโอนเงินได้ทันที และข้อมูลของคุณจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ใดๆ
+                ปลอดภัยและได้มาตรฐานครับ ระบบของเราคำนวณรหัสตามมาตรฐาน EMVCo ของธนาคารแห่งประเทศไทยอย่างถูกต้อง สามารถใช้แอปพลิเคชันธนาคารในไทยที่รองรับมาตรฐานพร้อมเพย์สแกนเพื่อโอนเงินได้ทันที และข้อมูลของคุณจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ภายนอก
               </p>
             </div>
 

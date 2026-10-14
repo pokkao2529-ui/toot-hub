@@ -149,7 +149,7 @@ export default function PptxToPdfPage() {
     },
     {
       question: 'แปลงไฟล์ PowerPoint เป็น PDF เสียค่าใช้จ่ายหรือไม่?',
-      answer: 'ฟรี 100% ครับ คุณสามารถใช้งานเครื่องมือแปลงไฟล์บน TOOL HUB ได้โดยไม่ต้องสมัครสมาชิกและไม่ต้องจ่ายเงินแต่อย่างใด'
+      answer: 'ใช้งานฟรีครับ คุณสามารถใช้งานเครื่องมือแปลงไฟล์บน TOOL HUB ได้โดยไม่ต้องสมัครสมาชิกและไม่มีค่าใช้จ่ายแอบแฝง'
     },
     {
       question: 'ทำไมฟอนต์บางตัวหรือเลย์เอาต์สไลด์เพี้ยนไปเมื่อแปลงเสร็จ?',
@@ -172,7 +172,7 @@ export default function PptxToPdfPage() {
           multiple={false}
           maxFileSizeMb={Math.round(tool.maxFileSize / (1024 * 1024))}
           title="เลือกไฟล์ PowerPoint"
-          subtitle="แปลงไฟล์ PPT หรือ PPTX เป็น PDF ทำในเบราว์เซอร์ของคุณ ปลอดภัย 100%"
+          subtitle="แปลงไฟล์ PPT หรือ PPTX เป็น PDF ในเบราว์เซอร์ของคุณ ปลอดภัย ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์"
         />
       )}
 

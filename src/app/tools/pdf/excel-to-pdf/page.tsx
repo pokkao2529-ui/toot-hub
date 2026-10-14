@@ -128,7 +128,7 @@ export default function ExcelToPdfPage() {
       
       <div>
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">ความเป็นส่วนตัวและความปลอดภัย (Privacy & Security)</h2>
-        <p>คุณสามารถมั่นใจในการแปลงไฟล์ชีตหรืองบการเงินได้ 100% เพราะระบบของเรา <strong>ประมวลผลบนคอมพิวเตอร์ของคุณโดยตรง</strong> (Client-side) ไฟล์ Excel จะไม่ถูกส่งข้ามอินเทอร์เน็ตไปบันทึกบนเซิร์ฟเวอร์ของเราแต่อย่างใด</p>
+        <p>คุณสามารถมั่นใจในการแปลงไฟล์ชีตหรืองบการเงินได้อย่างเต็มที่ เพราะระบบของเรา <strong>ประมวลผลในเบราว์เซอร์ของคุณโดยตรง</strong> (Client-side) ไฟล์ Excel จะไม่ถูกส่งข้ามอินเทอร์เน็ตไปบันทึกบนเซิร์ฟเวอร์ภายนอกแต่อย่างใด</p>
       </div>
       
       <div>
@@ -168,7 +168,7 @@ export default function ExcelToPdfPage() {
           multiple={false}
           maxFileSizeMb={Math.round(tool.maxFileSize / (1024 * 1024))}
           title="เลือกไฟล์ Excel"
-          subtitle="แปลงไฟล์ XLS หรือ XLSX เป็น PDF ตารางไม่เบี้ยว ทำในเบราว์เซอร์ของคุณ ปลอดภัย 100%"
+          subtitle="แปลงไฟล์ XLS หรือ XLSX เป็น PDF ในเบราว์เซอร์ของคุณ ปลอดภัย ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์"
         />
       )}
 

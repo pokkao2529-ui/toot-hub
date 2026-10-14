@@ -18,7 +18,7 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              ศูนย์รวมเครื่องมือออนไลน์ฟรีระดับพรีเมียม ประมวลผลบนเบราว์เซอร์ 100% ปลอดภัย ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์
+              ศูนย์รวมเครื่องมือออนไลน์ฟรีคุณภาพ ประมวลผลในเบราว์เซอร์อย่างปลอดภัย ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์
             </p>
             <div className="flex items-center gap-2 text-xs text-emerald-600 font-medium">
               <ShieldCheck size={16} />

@@ -187,7 +187,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {post.relatedTool.name}
             </h2>
             <p className="text-xs text-rose-100 mt-0.5">
-              ใช้งานฟรี 100% ประมวลผลในเครื่อง ไม่จำกัดขนาดไฟล์
+              ใช้งานฟรี ประมวลผลในเครื่องของคุณโดยตรง สะดวก รวดเร็ว
             </p>
           </div>
           <Link

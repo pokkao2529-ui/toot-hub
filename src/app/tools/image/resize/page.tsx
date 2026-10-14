@@ -303,7 +303,7 @@ export default function ImageResizePage() {
           </h1>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-2">
             ย่อ-ขยายรูปภาพ กำหนดขนาดพิกเซล (px), เปอร์เซ็นต์ (%), หรือเลือกขนาดรูปติดบัตร 1 นิ้ว, 1.5 นิ้ว, 2 นิ้ว
-            สำหรับสมัครงาน ก.พ. ข้าราชการ และรูปสินค้า Shopee/Lazada ภาพคมชัด ไม่เบี้ยว ปลอดภัย 100%
+            สำหรับสมัครงาน ก.พ. ข้าราชการ และรูปสินค้า Shopee/Lazada ภาพคมชัด ไม่บิดเบี้ยว ปลอดภัย ไม่ส่งไฟล์ออกนอกเครื่อง
           </p>
         </div>
 
@@ -338,7 +338,7 @@ export default function ImageResizePage() {
                 คลิกเพื่อเลือกรูปภาพ หรือลากไฟล์มาวางที่นี่
               </h3>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md">
-                รองรับไฟล์ JPG, PNG, WebP • เลือกได้พร้อมกันหลายรูป • ประมวลผลในเบราว์เซอร์ปลอดภัย 100%
+                รองรับไฟล์ JPG, PNG, WebP • เลือกได้พร้อมกันหลายรูป • ประมวลผลในเบราว์เซอร์อย่างปลอดภัย
               </p>
 
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-slate-500">

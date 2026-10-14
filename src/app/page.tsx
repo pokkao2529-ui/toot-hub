@@ -43,12 +43,12 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-6">
             เครื่องมือทำงานออนไลน์ที่ <br />
             <span className="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 bg-clip-text text-transparent">
-              รวดเร็ว ปลอดภัย และฟรี 100%
+              รวดเร็ว ปลอดภัย และใช้งานฟรี
             </span>
           </h1>
 
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
-            แพลตฟอร์มศูนย์รวมเครื่องมือบีบอัดรูปภาพ, จัดการเอกสาร PDF, สร้าง QR Code อัจฉริยะ ใช้งานง่ายบนทุกอุปกรณ์ ประมวลผลบนเบราว์เซอร์ปลอดภัย 100%
+            แพลตฟอร์มศูนย์รวมเครื่องมือบีบอัดรูปภาพ จัดการเอกสาร PDF และสร้าง QR Code ประมวลผลในเบราว์เซอร์ของคุณโดยตรง ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -77,13 +77,13 @@ export default function HomePage() {
 
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-xs font-semibold text-slate-500">
             <span className="flex items-center gap-1.5">
-              <CheckCircle size={16} className="text-emerald-500" /> ฟรีตลอดชีพ ไม่จำกัดครั้ง
+              <CheckCircle size={16} className="text-emerald-500" /> ใช้งานฟรี ไม่มีค่าใช้จ่ายแอบแฝง
             </span>
             <span className="flex items-center gap-1.5">
               <Shield size={16} className="text-emerald-500" /> ข้อมูลไม่ถูกส่งออกนอกเครื่อง
             </span>
             <span className="flex items-center gap-1.5">
-              <Zap size={16} className="text-emerald-500" /> ประมวลผลในเบราว์เซอร์ ไม่ต้องรอโหลด
+              <Zap size={16} className="text-emerald-500" /> ประมวลผลในเบราว์เซอร์ ไม่ต้องรอคิว
             </span>
           </div>
         </section>
@@ -197,7 +197,7 @@ export default function HomePage() {
               <div>
                 <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider flex items-center gap-1.5">
                   <ShieldCheck size={14} />
-                  <span>Module • ฟรีตลอดชีพ ไม่มีวันหมดอายุ</span>
+                  <span>Module • สร้าง QR Code ออนไลน์ ใช้งานฟรี</span>
                 </span>
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
                   QR Code Suite — สร้างคิวอาร์โค้ดครบวงจร

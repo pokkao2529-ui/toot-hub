@@ -186,7 +186,7 @@ export default function ImageCompressPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <JsonLd
         title="บีบอัดรูปภาพออนไลน์ฟรี (Compress Image JPG/PNG/WebP) — TOOL HUB"
-        description="ลดขนาดรูปภาพออนไลน์ฟรี ไม่จำกัดจำนวนไฟล์ บีบอัดไฟล์ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% และยังคงคุณภาพที่ดี ปลอดภัยในเครื่องคุณ 100%"
+        description="ลดขนาดรูปภาพออนไลน์ฟรี บีบอัดไฟล์ JPG, PNG, WebP ให้เล็กลงสูงสุด 80% โดยยังคงคุณภาพที่ดี ประมวลผลในเบราว์เซอร์อย่างปลอดภัย ไม่ส่งไฟล์ออกนอกเครื่อง"
         url="/tools/image/compress"
       />
 
@@ -204,7 +204,7 @@ export default function ImageCompressPage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/60 px-4 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900 mb-3">
             <Sparkles size={14} />
-            <span>ฟรี 100% • บีบอัดในเครื่อง ไม่ต้องอัปโหลดขึ้นเซิร์ฟเวอร์</span>
+            <span>ใช้งานฟรี • บีบอัดในเครื่อง ไม่ต้องอัปโหลดขึ้นเซิร์ฟเวอร์</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
             บีบอัดรูปภาพออนไลน์ (Compress Image)
@@ -251,7 +251,7 @@ export default function ImageCompressPage() {
                 ลากและวางรูปภาพที่นี่ หรือ <span className="text-rose-600 underline">คลิกเพื่อเลือกไฟล์</span>
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                รองรับไฟล์ JPG, PNG, WebP (เลือกพร้อมกันได้หลายไฟล์ ไม่จำกัดขนาด)
+                รองรับไฟล์ JPG, PNG, WebP (เลือกพร้อมกันได้หลายไฟล์ สะดวก รวดเร็ว)
               </p>
             </div>
           </div>
@@ -600,7 +600,7 @@ export default function ImageCompressPage() {
                 <span>รูปภาพที่บีบอัดปลอดภัยหรือไม่ ไฟล์ถูกส่งไปเก็บที่ไหน?</span>
               </h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                ปลอดภัย 100% ครับ ระบบของ TOOL HUB ทำงานแบบ Client-Side ภายในเบราว์เซอร์ของเครื่องคุณทั้งหมด รูปภาพไม่เคยถูกอัปโหลดขึ้นเซิร์ฟเวอร์ใดๆ แม้แต่กิโลไบต์เดียว จึงมั่นใจในความเป็นส่วนตัวได้อย่างสมบูรณ์
+                ปลอดภัยและมีความเป็นส่วนตัวสูงครับ ระบบของ TOOL HUB ทำงานแบบ Client-Side ภายในเบราว์เซอร์ของเครื่องคุณทั้งหมด รูปภาพไม่ถูกอัปโหลดขึ้นเซิร์ฟเวอร์ภายนอก จึงมั่นใจในความปลอดภัยของข้อมูลได้อย่างเต็มที่
               </p>
             </div>
 

@@ -158,7 +158,7 @@ export default function ImageConverterPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <JsonLd
         title="แปลงไฟล์รูปภาพออนไลน์ฟรี (JPG ↔ PNG ↔ WebP) — TOOL HUB"
-        description="เครื่องมือแปลงไฟล์รูปภาพออนไลน์ฟรี ไม่จำกัดไฟล์ แปลง JPG เป็น PNG, PNG เป็น JPG, หรือแปลงเป็น WebP ในเครื่องผู้ใช้ทันที ไม่ต้องรอคิวเซิร์ฟเวอร์"
+        description="เครื่องมือแปลงไฟล์รูปภาพออนไลน์ฟรี แปลง JPG เป็น PNG, PNG เป็น JPG, หรือแปลงเป็น WebP ในเครื่องผู้ใช้ทันที สะดวก รวดเร็ว ไม่ต้องรอคิวเซิร์ฟเวอร์"
         url="/tools/image/convert"
       />
 
@@ -176,7 +176,7 @@ export default function ImageConverterPage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-rose-50 dark:bg-rose-950/60 px-4 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900 mb-3">
             <Sparkles size={14} />
-            <span>แปลงไฟล์ในเครื่องทันที • ไม่ต้องรอคิวเซิร์ฟเวอร์ • ฟรี 100%</span>
+            <span>แปลงไฟล์ในเครื่องทันที • ไม่ต้องรอคิวเซิร์ฟเวอร์ • ใช้งานฟรี</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
             แปลงไฟล์รูปภาพออนไลน์ (Image Converter)
@@ -215,7 +215,7 @@ export default function ImageConverterPage() {
                 ลากและวางรูปภาพที่นี่ หรือ <span className="text-rose-600 underline">คลิกเพื่อเลือกไฟล์</span>
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                รองรับไฟล์ JPG, PNG, WebP, GIF (เลือกพร้อมกันได้หลายไฟล์ ไม่จำกัดจำนวน)
+                รองรับไฟล์ JPG, PNG, WebP, GIF (เลือกพร้อมกันได้หลายไฟล์ สะดวก รวดเร็ว)
               </p>
             </div>
           </div>
@@ -444,7 +444,7 @@ export default function ImageConverterPage() {
             <h2>โปรแกรมแปลงไฟล์รูปภาพ (Convert Image) ฟรี ไม่มีอัปโหลด</h2>
             <p>
               บ่อยครั้งที่คุณมีไฟล์ภาพสกุลหนึ่งแต่ระบบปลายทางต้องการอีกสกุล เครื่องมือ <strong>แปลงไฟล์รูปภาพ</strong> 
-              ของเราให้คุณสลับสกุลไฟล์ระหว่าง JPG, PNG, และ WebP ได้อย่างรวดเร็วและปลอดภัย 100% 
+              ของเราให้คุณสลับสกุลไฟล์ระหว่าง JPG, PNG, และ WebP ได้อย่างสะดวกรวดเร็วและมีความเป็นส่วนตัวสูง 
               โดยระบบจะทำการแปลงผ่านเบราว์เซอร์บนเครื่องคุณ ไม่ต้องส่งไฟล์ผ่านอินเทอร์เน็ตแม้แต่น้อย
             </p>
 

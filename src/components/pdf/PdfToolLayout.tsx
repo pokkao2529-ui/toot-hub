@@ -34,7 +34,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
   const defaultFaqs = [
     {
       question: `บริการ ${tool.nameTH} เสียค่าใช้จ่ายหรือไม่?`,
-      answer: `บริการ ${tool.nameTH} บน TOOL HUB ให้บริการฟรี 100% ไม่มีลายน้ำ และไม่ต้องสมัครสมาชิกสำหรับการใช้งานทั่วไป`,
+      answer: `บริการ ${tool.nameTH} บน TOOL HUB ให้บริการฟรี ไม่มีลายน้ำ และไม่ต้องสมัครสมาชิกสำหรับการใช้งานทั่วไป`,
     },
     {
       question: 'เอกสารของฉันปลอดภัยหรือไม่ มีการส่งข้อมูลขึ้นเซิร์ฟเวอร์หรือไม่?',
@@ -73,7 +73,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
               <ShieldCheck size={14} />
-              <span>ประมวลผลบนเครื่อง (Client-Side) ปลอดภัย 100%</span>
+              <span>ประมวลผลบนเครื่อง (Client-Side) ปลอดภัย ไม่ส่งไฟล์ขึ้นเซิร์ฟเวอร์</span>
             </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-950/40 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
               <Zap size={14} />
@@ -241,7 +241,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
                   ))}
                   <li className="flex items-start gap-2">
                     <span className="text-emerald-500 font-bold">•</span>
-                    <span>ประมวลผลบนเบราว์เซอร์ของคุณโดยตรง (Client-Side) ปลอดภัย 100% ไม่ส่งข้อมูลออกนอกเครื่อง</span>
+                    <span>ประมวลผลบนเบราว์เซอร์ของคุณโดยตรง (Client-Side) ปลอดภัย ไม่ส่งข้อมูลออกนอกเครื่อง</span>
                   </li>
                 </ul>
               </div>

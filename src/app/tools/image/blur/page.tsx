@@ -255,7 +255,7 @@ export default function BlurImagePage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
       <JsonLd
         title="เบลอรูปภาพ เซ็นเซอร์รูป (Blur & Mosaic) — TOOL HUB"
-        description="เบลอรูปภาพออนไลน์ เบลอใบหน้า ทำโมเสก เซ็นเซอร์ข้อมูลสำคัญ เลือกพื้นที่ได้เองฟรี 100% ไม่ติดลายน้ำ ทำงานบนเบราว์เซอร์ ปลอดภัย"
+        description="เบลอรูปภาพออนไลน์ เบลอใบหน้า ทำโมเสก เซ็นเซอร์ข้อมูลสำคัญ เลือกพื้นที่ได้เอง ใช้งานฟรี ไม่ติดลายน้ำ ทำงานในเบราว์เซอร์อย่างปลอดภัย"
         url="/tools/image/blur"
       />
 
@@ -269,13 +269,13 @@ export default function BlurImagePage() {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 dark:bg-indigo-950/60 px-4 py-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900 mb-3">
             <ImageMinus size={14} />
-            <span>ฟรี 100% • เลือกวาดพื้นที่เพื่อเซ็นเซอร์ภาพได้ตามต้องการ</span>
+            <span>ใช้งานฟรี • เลือกวาดพื้นที่เพื่อเซ็นเซอร์ภาพได้ตามต้องการ</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
             เบลอรูปภาพ & โมเสก (เซ็นเซอร์)
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            เซ็นเซอร์ใบหน้า ปิดบังข้อมูลส่วนตัวบนรูปภาพ ทำงานในเครื่องของคุณ 100% รูปไม่รั่วไหล
+            เซ็นเซอร์ใบหน้า ปิดบังข้อมูลส่วนตัวบนรูปภาพ ประมวลผลในเครื่องของคุณโดยตรง ไม่ส่งไฟล์ออกภายนอก
           </p>
         </div>
 
@@ -428,7 +428,7 @@ export default function BlurImagePage() {
 
           <h3>ฟีเจอร์เด่นของเครื่องมือเบลอภาพ TOOL HUB</h3>
           <ul>
-            <li><strong>ประมวลผลบนเครื่องคุณ:</strong> การวาดกรอบและการเบลอทั้งหมดเกิดขึ้นบนเบราว์เซอร์ 100% รูปภาพที่มีข้อมูลสำคัญจะไม่ถูกอัปโหลดขึ้นเซิร์ฟเวอร์ใดๆ มั่นใจได้เรื่องความปลอดภัยระดับสูงสุด</li>
+            <li><strong>ประมวลผลบนเครื่องคุณ:</strong> การวาดกรอบและการเบลอทั้งหมดเกิดขึ้นในเบราว์เซอร์ของคุณ รูปภาพที่มีข้อมูลสำคัญจะไม่ถูกอัปโหลดขึ้นเซิร์ฟเวอร์ภายนอก มั่นใจได้ในความปลอดภัยของข้อมูลส่วนตัว</li>
             <li><strong>ลากกรอบง่ายดาย:</strong> เพียงแค่ใช้เมาส์หรือนิ้วลากครอบบริเวณที่ต้องการ ระบบจะเบลอให้ทันที</li>
             <li><strong>ปรับระดับความเบลอ:</strong> เลือกความเข้มของการเบลอหรือขนาดพิกเซลเซ็นเซอร์ได้ตามต้องการ</li>
             <li><strong>ย้อนกลับได้ (Undo):</strong> หากลากผิดสามารถกดย้อนกลับ (Undo) เพื่อแก้ไขใหม่ได้อย่างอิสระ</li>

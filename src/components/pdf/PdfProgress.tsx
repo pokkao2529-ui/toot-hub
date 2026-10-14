@@ -12,7 +12,7 @@ interface PdfProgressProps {
 export const PdfProgress: React.FC<PdfProgressProps> = ({
   progress,
   message = 'กำลังประมวลผลเอกสาร...',
-  subMessage = 'ระบบกำลังทำงานโดยตรงบนเบราว์เซอร์ของคุณ ปลอดภัย 100%',
+  subMessage = 'ระบบกำลังประมวลผลในเบราว์เซอร์ของคุณ ไม่มีการส่งข้อมูลขึ้นเซิร์ฟเวอร์',
 }) => {
   return (
     <div className="flex flex-col items-center justify-center p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm max-w-lg mx-auto">

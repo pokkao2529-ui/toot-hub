@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'แปลงไฟล์รูปภาพ JPG, PNG, WebP (Image Converter)',
-  description: 'แปลงไฟล์รูปภาพออนไลน์ฟรี สลับนามสกุลไฟล์ JPG, PNG, WebP ง่ายๆ ในคลิกเดียว ไม่จำกัดจำนวนรูป',
+  description: 'แปลงไฟล์รูปภาพออนไลน์ฟรี สลับนามสกุลไฟล์ JPG, PNG, WebP ง่ายๆ ในคลิกเดียว แปลงได้หลายไฟล์พร้อมกัน ดาวน์โหลดเป็น ZIP สะดวก รวดเร็ว',
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
