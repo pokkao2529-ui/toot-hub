@@ -462,7 +462,7 @@ export const BLOG_POSTS: BlogPost[] = [
     tags: ['WiFi QR Code', 'คิวอาร์โค้ดไวไฟ', 'ร้านกาแฟ', 'ร้านอาหาร', 'สร้าง QR Code'],
     relatedTool: {
       name: 'เครื่องมือสร้าง WiFi QR Code',
-      route: '/tools/qrcode/wifi',
+      route: '/tools/qrcode',
       ctaText: 'สร้าง QR Code WiFi ร้านคุณฟรี'
     },
     sections: [

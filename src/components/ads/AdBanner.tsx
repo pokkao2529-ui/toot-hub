@@ -21,7 +21,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   const clientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-5688187756853332';
 
   useEffect(() => {
-    if (clientId && typeof window !== 'undefined') {
+    if (clientId && slotId && typeof window !== 'undefined') {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
@@ -29,7 +29,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         console.error('AdSense error:', err);
       }
     }
-  }, [clientId]);
+  }, [clientId, slotId]);
 
   // Dimensions based on standard high-performing IAB ad formats
   const sizeClasses = {
@@ -38,20 +38,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     result: 'min-h-[100px] w-full max-w-lg mx-auto',
   }[format];
 
-  if (!clientId) {
-    // Development placeholder indicating monetized ad slot
-    return (
-      <div
-        className={`flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/30 p-4 text-center my-6 ${sizeClasses} ${className}`}
-      >
-        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-          พื้นที่โฆษณา (Google AdSense Slot)
-        </span>
-        <p className="text-xs text-slate-400">
-          พร้อมสร้างรายได้ทันทีเมื่อใส่รหัส AdSense Publisher ID
-        </p>
-      </div>
-    );
+  // Validate slotId: AdSense slot IDs must be 9-12 digits number string
+  const isValidNumericSlot = slotId && /^\d{9,12}$/.test(slotId);
+
+  // Don't render ad if no valid numeric slot ID provided — avoids AdSense TagError & policy violations
+  if (!isValidNumericSlot || !clientId) {
+    return null;
   }
 
   return (
@@ -60,7 +52,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         className="adsbygoogle"
         style={{ display: 'block' }}
         data-ad-client={clientId}
-        data-ad-slot={slotId || '1234567890'}
+        data-ad-slot={slotId}
         data-ad-format="auto"
         data-full-width-responsive="true"
       />

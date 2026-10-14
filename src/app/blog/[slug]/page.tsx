@@ -31,6 +31,22 @@ export async function generateStaticParams() {
   }));
 }
 
+function parseThaiDateToIso(thaiDate: string): string {
+  const parts = thaiDate.split(' ');
+  if (parts.length >= 3) {
+    const day = parts[0].padStart(2, '0');
+    const monthMap: Record<string, string> = {
+      'มกราคม': '01', 'กุมภาพันธ์': '02', 'มีนาคม': '03', 'เมษายน': '04',
+      'พฤษภาคม': '05', 'มิถุนายน': '06', 'กรกฎาคม': '07', 'สิงหาคม': '08',
+      'กันยายน': '09', 'ตุลาคม': '10', 'พฤศจิกายน': '11', 'ธันวาคม': '12'
+    };
+    const month = monthMap[parts[1]] || '09';
+    const year = parts[2] || '2026';
+    return `${year}-${month}-${day}`;
+  }
+  return '2026-09-08';
+}
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -43,6 +59,8 @@ export async function generateMetadata({
     };
   }
 
+  const isoDate = parseThaiDateToIso(post.date);
+
   return {
     title: `${post.title} — TOOL HUB บทความ`,
     description: post.description,
@@ -51,7 +69,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       type: 'article',
-      publishedTime: '2026-09-08',
+      publishedTime: isoDate,
       authors: [post.author],
     },
   };
@@ -66,6 +84,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const relatedPosts = getRelatedBlogPosts(post.id, 2);
+  const isoDate = parseThaiDateToIso(post.date);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col">
@@ -78,7 +97,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         article={{
           headline: post.title,
           description: post.description,
-          datePublished: '2026-09-08',
+          datePublished: isoDate,
           authorName: post.author,
         }}
       />

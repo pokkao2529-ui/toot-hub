@@ -15,10 +15,10 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) return;
-    // Open default email client with pre-filled content
+    // Open Gmail compose with pre-filled content (works without mail client)
     const subject = encodeURIComponent(`[TOOL HUB] ${category}: ${name}`);
     const body = encodeURIComponent(`ชื่อ: ${name}\nอีเมล: ${email}\nหมวดหมู่: ${category}\n\nข้อความ:\n${message}`);
-    window.open(`mailto:contact@toot-hub.com?subject=${subject}&body=${body}`, '_blank');
+    window.open(`https://mail.google.com/mail/?view=cm&to=toolhubofficial@gmail.com&su=${subject}&body=${body}`, '_blank');
     setIsSubmitted(true);
   };
 
@@ -74,10 +74,10 @@ export default function ContactPage() {
                 <div>
                   <span className="text-slate-400 block mb-1">อีเมลติดต่อหลัก:</span>
                   <a
-                    href="mailto:contact@toot-hub.com"
+                    href="mailto:toolhubofficial@gmail.com"
                     className="font-bold text-red-600 hover:underline break-all"
                   >
-                    contact@toot-hub.com
+                    toolhubofficial@gmail.com
                   </a>
                 </div>
 

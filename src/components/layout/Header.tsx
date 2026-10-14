@@ -142,7 +142,7 @@ export function Header() {
                 </div>
                 <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-center">
                   <Link href="/pdf" className="text-sm font-bold text-red-600 hover:text-red-700 flex items-center justify-center gap-1">
-                    ดูเครื่องมือ PDF ทั้งหมด 36 รายการ <ChevronRight size={16} />
+                    ดูเครื่องมือ PDF ทั้งหมด <ChevronRight size={16} />
                   </Link>
                 </div>
               </div>

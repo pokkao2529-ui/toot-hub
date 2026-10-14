@@ -162,7 +162,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
               <p className="font-bold text-slate-900 dark:text-white">ทีมงาน TOOL HUB</p>
-              <p className="text-slate-500">อีเมลฝ่ายสนับสนุนและนโยบายความเป็นส่วนตัว: contact@toot-hub.com (หรือผ่านหน้าติดต่อเรา)</p>
+              <p className="text-slate-500">อีเมลฝ่ายสนับสนุนและนโยบายความเป็นส่วนตัว: toolhubofficial@gmail.com (หรือผ่านหน้าติดต่อเรา)</p>
               <Link href="/contact" className="text-red-600 font-semibold hover:underline mt-2 inline-block">
                 ไปยังหน้าติดต่อเรา (Contact Us) →
               </Link>

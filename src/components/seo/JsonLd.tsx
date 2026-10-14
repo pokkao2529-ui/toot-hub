@@ -62,6 +62,15 @@ export const JsonLd: React.FC<JsonLdProps> = ({
         }
       : null;
 
+  // Determine parent category from URL or tool type
+  const getParentCategory = () => {
+    if (tool) return { name: 'PDF Suite', item: `${appUrl}/pdf` };
+    if (toolRoute.includes('/image')) return { name: 'Image Suite', item: `${appUrl}/tools/image/compress` };
+    if (toolRoute.includes('/qrcode')) return { name: 'QR Code Suite', item: `${appUrl}/tools/qrcode` };
+    return { name: 'เครื่องมือ', item: appUrl };
+  };
+  const parentCategory = getParentCategory();
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -75,8 +84,8 @@ export const JsonLd: React.FC<JsonLdProps> = ({
       {
         '@type': 'ListItem',
         position: 2,
-        name: tool ? 'PDF Suite' : 'QR Code Suite',
-        item: tool ? `${appUrl}/pdf` : `${appUrl}/tools/qrcode`,
+        name: parentCategory.name,
+        item: parentCategory.item,
       },
       {
         '@type': 'ListItem',

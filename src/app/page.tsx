@@ -57,7 +57,7 @@ export default function HomePage() {
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition flex items-center justify-center gap-2.5"
             >
               <ImageIcon size={20} />
-              <span>บีบอัดรูปภาพฟรี (ลดขนาด 80%)</span>
+              <span>บีบอัดรูปภาพฟรี (ลดขนาดได้สูงสุด 90%)</span>
             </Link>
             <Link
               href="/tools/qrcode"
@@ -71,7 +71,7 @@ export default function HomePage() {
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-red-500 text-slate-800 dark:text-slate-200 font-bold text-base shadow-sm transition flex items-center justify-center gap-2"
             >
               <FileText size={20} className="text-red-600" />
-              <span>PDF Suite ({PDF_TOOLS.length} เครื่องมือ)</span>
+              <span>PDF Suite ({PDF_TOOLS.filter(t => t.status === 'active').length} เครื่องมือ)</span>
             </Link>
           </div>
 
@@ -83,7 +83,7 @@ export default function HomePage() {
               <Shield size={16} className="text-emerald-500" /> ข้อมูลไม่ถูกส่งออกนอกเครื่อง
             </span>
             <span className="flex items-center gap-1.5">
-              <Zap size={16} className="text-emerald-500" /> ความเร็วระดับ WebAssembly
+              <Zap size={16} className="text-emerald-500" /> ประมวลผลในเบราว์เซอร์ ไม่ต้องรอโหลด
             </span>
           </div>
         </section>

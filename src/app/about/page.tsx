@@ -133,13 +133,13 @@ export default function AboutPage() {
             <div className="flex items-start gap-3">
               <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white">PDF Suite:</strong> มีเครื่องมือจัดการเอกสารครบวงจรกว่า 11 เครื่องมือ เช่น รวมไฟล์, แยกหน้า, ตัดส่วน, หมุนเอกสาร, จัดลำดับ, แปลง JPG ↔ PDF, ใส่ลายน้ำ, และใส่เลขหน้า
+                <strong className="text-white">PDF Suite:</strong> มีเครื่องมือจัดการเอกสารพร้อมใช้งาน 17 เครื่องมือ เช่น รวมไฟล์, แยกหน้า, ตัดส่วน, หมุนเอกสาร, จัดลำดับ, แปลง JPG ↔ PDF, ใส่ลายน้ำ, และใส่เลขหน้า
               </div>
             </div>
             <div className="flex items-start gap-3">
               <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white">Image Suite:</strong> บีบอัดภาพ (Compress) ลดขนาดไฟล์ได้ถึง 90%, และโปรแกรมแปลงภาพ (Convert) รองรับ JPG, PNG, WebP พร้อมดาวน์โหลดเป็น ZIP รวม
+                <strong className="text-white">Image Suite:</strong> บีบอัดภาพ (Compress) ลดขนาดไฟล์ได้สูงสุด 90% (ผลลัพธ์จริงขึ้นอยู่กับไฟล์ต้นฉบับ) และโปรแกรมแปลงภาพ (Convert) รองรับ JPG, PNG, WebP พร้อมดาวน์โหลดเป็น ZIP รวม
               </div>
             </div>
             <div className="flex items-start gap-3">
