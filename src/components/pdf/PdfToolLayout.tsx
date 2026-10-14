@@ -9,6 +9,8 @@ import { AdBanner } from '@/components/ads/AdBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { getToolGuide } from '@/config/pdf-tool-guides';
+import { CheckCircle2, AlertCircle, BookOpen } from 'lucide-react';
 
 interface PdfToolLayoutProps {
   tool: PdfToolDefinition;
@@ -27,6 +29,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
 }) => {
   const categoryInfo = PDF_CATEGORIES.find((c) => c.id === tool.category);
   const relatedTools = getToolsByCategory(tool.category).filter((t) => t.id !== tool.id).slice(0, 4);
+  const guide = getToolGuide(tool.slug);
 
   const defaultFaqs = [
     {
@@ -43,7 +46,7 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
     },
   ];
 
-  const displayFaqs = faqs && faqs.length > 0 ? faqs : defaultFaqs;
+  const displayFaqs = faqs && faqs.length > 0 ? faqs : (guide?.faqs && guide.faqs.length > 0 ? guide.faqs : defaultFaqs);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col">
@@ -165,12 +168,86 @@ export const PdfToolLayout: React.FC<PdfToolLayoutProps> = ({
           </div>
         </div>
 
-        {/* SEO Article */}
-        {article && (
+        {/* SEO Article or Built-in Educational Guide */}
+        {article ? (
           <article className="mb-16">
             {article}
           </article>
-        )}
+        ) : guide ? (
+          <article className="mb-16 space-y-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 text-xs font-bold border border-red-200 dark:border-red-900 mb-3">
+                <BookOpen size={14} />
+                <span>คู่มือและวิธีใช้งานเครื่องมือ</span>
+              </div>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+                {guide.title}
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                {guide.subtitle}
+              </p>
+            </div>
+
+            {/* 3 Steps */}
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">
+                ขั้นตอนการใช้งาน
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {guide.steps.map((st, idx) => (
+                  <div key={idx} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80">
+                    <span className="inline-block w-6 h-6 rounded-full bg-red-600 text-white font-black text-xs text-center leading-6 mb-2">
+                      {idx + 1}
+                    </span>
+                    <h4 className="font-bold text-sm text-slate-900 dark:text-white mb-1">
+                      {st.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                      {st.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Use Cases & Limitations Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+                  <CheckCircle2 size={16} className="text-emerald-500" />
+                  <span>กรณีการใช้งานที่พบบ่อย</span>
+                </h3>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                  {guide.useCases.map((uc, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-emerald-500 font-bold">•</span>
+                      <span>{uc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+                  <AlertCircle size={16} className="text-amber-500" />
+                  <span>ข้อกำหนดและข้อแนะนำ</span>
+                </h3>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                  {guide.limitations.map((lm, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-amber-500 font-bold">•</span>
+                      <span>{lm}</span>
+                    </li>
+                  ))}
+                  <li className="flex items-start gap-2">
+                    <span className="text-emerald-500 font-bold">•</span>
+                    <span>ประมวลผลบนเบราว์เซอร์ของคุณโดยตรง (Client-Side) ปลอดภัย 100% ไม่ส่งข้อมูลออกนอกเครื่อง</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        ) : null}
 
         {/* FAQs */}
         <section className="mb-16">
